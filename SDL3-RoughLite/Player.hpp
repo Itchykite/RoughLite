@@ -12,7 +12,7 @@ public:
 	void LoadTexture(SDL_Renderer* renderer, const char* pathFile);
 	void Render(SDL_Renderer* renderer);
 	void SetPosition(float x, float y);
-	void Update();
+	void Update(float deltaTime);
 	void SetVelocity(float x, float y);
 	float GetX() const;
 	float GetY() const;
@@ -23,6 +23,8 @@ public:
 	static float playerW;
 	static float playerH;
 
+	Map* map;
+
 private:
 	void UpdateAnimation();
 
@@ -30,7 +32,6 @@ private:
 	float y;
 	float velocityX;
 	float velocityY;
-	Map* map;
 	Camera* camera;
 
 	SDL_Texture* playerTexture;

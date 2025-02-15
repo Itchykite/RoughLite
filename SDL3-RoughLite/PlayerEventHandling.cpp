@@ -33,10 +33,6 @@ void PlayerEventHandling(SDL_Event* event, Player* player)
             rightPressed = true;
             break;
         default:
-            upPressed = false;
-            downPressed = false;
-			leftPressed = false;
-			rightPressed = false;
             break;
         }
     }
@@ -63,42 +59,43 @@ void PlayerEventHandling(SDL_Event* event, Player* player)
 
     float velocityX = 0;
     float velocityY = 0;
+    const float speed = 200;
 
     if (upPressed && leftPressed)
     {
-        velocityX = -1;
-        velocityY = -1;
+        velocityX = -speed;
+        velocityY = -speed;
     }
     else if (upPressed && rightPressed)
     {
-        velocityX = 1;
-        velocityY = -1;
+        velocityX = speed;
+        velocityY = -speed;
     }
     else if (downPressed && leftPressed)
     {
-        velocityX = -1;
-        velocityY = 1;
+        velocityX = -speed;
+        velocityY = speed;
     }
     else if (downPressed && rightPressed)
     {
-        velocityX = 1;
-        velocityY = 1;
+        velocityX = speed;
+        velocityY = speed;
     }
     else if (upPressed)
     {
-        velocityY = -1;
+        velocityY = -speed;
     }
     else if (downPressed)
     {
-        velocityY = 1;
+        velocityY = speed;
     }
     else if (leftPressed)
     {
-        velocityX = -1;
+        velocityX = -speed;
     }
     else if (rightPressed)
     {
-        velocityX = 1;
+        velocityX = speed;
     }
     else
     {

@@ -23,11 +23,11 @@ Player::~Player()
     }
 }
 
-void Player::Update()
+void Player::Update(float deltaTime)
 {
     SDL_Log("Updating player position...");
-    float newX = x + velocityX;
-    float newY = y + velocityY;
+    float newX = x + velocityX * deltaTime;
+    float newY = y + velocityY * deltaTime;
 
     if (map->IsWithinBounds(newX, newY, playerW, playerH))
     {

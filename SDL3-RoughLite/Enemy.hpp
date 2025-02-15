@@ -1,7 +1,9 @@
 #pragma once
 
+#include "Map.hpp"
 #include "Player.hpp"
 #include <SDL3/SDL.h>
+#include <vector>
 
 class Enemy
 {
@@ -12,7 +14,7 @@ public:
 	void LoadTexture(SDL_Renderer* renderer, const char* pathFile);
 	void Render(SDL_Renderer* renderer);
 	void SetPosition(float x, float y);
-	void Update();
+	void Update(float deltaTime);
 	void SetVelocity(float x, float y);
 	float GetX() const;
 	float GetY() const;
@@ -27,6 +29,7 @@ private:
 	Player* player;
 
 	void UpdateAnimation();
+	void FollowPath(float deltaTime);
 
 	float x;
 	float y;
@@ -34,7 +37,7 @@ private:
 	float velocityY;
 	float directionX;
 	float directionY;
-	float speed = 10.0f;
+	float speed = 400.0f;
 	SDL_Texture* playerTexture;
 	int frameWidth;
 	int frameHeight;

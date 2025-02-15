@@ -26,3 +26,21 @@ void Map::Render(SDL_Renderer* renderer, float cameraX, float cameraY) const
         SDL_RenderTexture(renderer, backgroundTexture, &srcRect, &dstRect);
     }
 }
+
+bool Map::IsNodeWalkable(int x, int y) const
+{
+    if (x < 0 || x >= width / nodeSize || y < 0 || y >= height / nodeSize)
+    {
+        return false;
+    }
+
+    return grid[y][x];
+}
+
+void Map::CreateGrid(int nodeSize)
+{
+    this->nodeSize = nodeSize;
+    int rows = height / nodeSize;
+    int cols = width / nodeSize;
+    grid.resize(rows, std::vector<bool>(cols, true));
+}

@@ -58,7 +58,7 @@ void Enemy::SetPosition(float x, float y)
 	this->y = y;
 }
 
-void Enemy::Update()
+void Enemy::Update(float deltaTime)
 {
 	if (player == nullptr)
 	{
@@ -66,22 +66,29 @@ void Enemy::Update()
 		return;
 	}
 
-	float playerX = player->GetX();
-	float playerY = player->GetY();
+	double distanceX = player->GetX() - x;
+	double distanceY = player->GetY() - y;
 
-	float deltaX = playerX - x;
-	float deltaY = playerY - y;
-	float distance = std::hypot(deltaX, deltaY);
-
-	if (distance > 0)
+	if (distanceX > 0)
 	{
-		directionX = deltaX / distance;
-		directionY = deltaY / distance;
+		x += speed * deltaTime;
 	}
 
-	float deltaTime = 1.0f / 60.0f; // Assuming 60 FPS
-	x += directionX * speed * deltaTime;
-	y += directionY * speed * deltaTime;
+	else if (distanceX < 0)
+	{
+		x -= speed * deltaTime;
+	}
+
+	if (distanceY > 0)
+	{
+		y += speed * deltaTime;
+	}
+
+	else if (distanceY < 0)
+	{
+		y -= speed * deltaTime;
+	}
+	UpdateAnimation();
 }
 
 void Enemy::SetVelocity(float x, float y)

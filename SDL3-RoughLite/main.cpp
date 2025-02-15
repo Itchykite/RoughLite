@@ -3,20 +3,26 @@
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
 
-#include "WindowSettings.hpp"
+#include "Settings.hpp"
 #include "Player.hpp"
 #include "PlayerEventHandling.hpp"
 #include "Map.hpp"
 #include "Camera.hpp"
 #include "Enemy.hpp"
+#include "EnemyManager.hpp"
+
+#include <vector>
+#include <memory>
 
 static SDL_Window* window = nullptr;
 static SDL_Renderer* renderer = nullptr;
 
 Map* map = nullptr;
 Camera* camera = nullptr;
-Enemy* enemy = nullptr;
 Player* player = nullptr;
+EnemyManager* enemyManager = nullptr;
+
+Uint32 lastTime = 0;
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
@@ -36,7 +42,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     }
 
     SDL_Log("Creating map...");
-    map = new Map(2000, 2000);
+    map = new Map(mapWidth, mapHeight);
     if (!map->LoadTexture(renderer, "Images/background.jpeg"))
     {
         SDL_Log("Couldn't load map texture: %s", SDL_GetError());
@@ -59,15 +65,22 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
-    SDL_Log("Creating enemy...");
-    enemy = new Enemy(player, renderer);
-    if (!enemy)
+    SDL_Log("Creating enemies...");
+    enemyManager = new EnemyManager(player, renderer);
+    if (!enemyManager)
     {
-        SDL_Log("Couldn't create enemy");
+        SDL_Log("Couldn't create enemy manager");
         return SDL_APP_FAILURE;
     }
 
+    for (int i = 0; i < 15; ++i)
+    {
+        enemyManager->AddEnemy();
+    }
+
     SDL_Log("Initialization complete");
+
+    lastTime = SDL_GetTicks();
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
@@ -96,16 +109,20 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
+    Uint32 currentTime = SDL_GetTicks();
+    float deltaTime = (currentTime - lastTime) / 1000.0f;
+    lastTime = currentTime;
+
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-    player->Update();
-    enemy->Update();
-
     map->Render(renderer, camera->GetX(), camera->GetY());
-    
+
+    player->Update(deltaTime);
     player->Render(renderer);
-    enemy->Render(renderer);
+
+    enemyManager->Update(deltaTime);
+    enemyManager->Render(renderer);
 
 	SDL_RenderPresent(renderer);
 
@@ -119,5 +136,5 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result)
     delete player;
     delete map;
     delete camera;
-    delete enemy;
+    delete enemyManager;
 }

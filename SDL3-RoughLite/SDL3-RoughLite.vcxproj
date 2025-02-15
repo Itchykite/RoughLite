@@ -76,13 +76,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\lib\x64;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\lib\x64;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\lib\x64;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalDependencies>SDL3.lib;SDL3_test.lib;SDL3_image.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -95,7 +95,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -103,7 +103,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\lib\x64;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\lib\x64;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\lib\x64;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalDependencies>SDL3.lib;SDL3_test.lib;SDL3_image.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -114,13 +114,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\lib\SDL3_image-3.2.0\include;C:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;C:\lib\SDL3_image-3.2.0\include;C:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\lib\SDL3_image-3.2.0\lib\x64;C:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\lib\x64;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;C:\lib\SDL3_image-3.2.0\lib\x64;C:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalDependencies>SDL3.lib;SDL3_test.lib;SDL3_image.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\include;F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -141,7 +141,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\lib\x64;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\lib\x64;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\lib\x64;F:\lib\SDL3-devel-3.2.0-VC\SDL3-3.2.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalDependencies>SDL3.lib;SDL3_test.lib;SDL3_image.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -157,10 +158,11 @@
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Enemy.hpp" />
+    <ClInclude Include="EnemyManager.hpp" />
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="PlayerEventHandling.hpp" />
-    <ClInclude Include="WindowSettings.hpp" />
+    <ClInclude Include="Settings.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
