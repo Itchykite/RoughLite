@@ -66,14 +66,14 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     }
 
     SDL_Log("Creating enemies...");
-    enemyManager = new EnemyManager(player, renderer);
+    enemyManager = new EnemyManager(player, map, camera, renderer);
     if (!enemyManager)
     {
         SDL_Log("Couldn't create enemy manager");
         return SDL_APP_FAILURE;
     }
 
-    for (int i = 0; i < 15; ++i)
+    for (int i = 0; i < 50; ++i)
     {
         enemyManager->AddEnemy();
     }

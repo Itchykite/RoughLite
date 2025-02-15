@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Map.hpp"
 #include "Player.hpp"
+#include "Map.hpp"
+#include "Camera.hpp"
+#include "Map.hpp"
 #include <SDL3/SDL.h>
 #include <vector>
 
 class Enemy
 {
 public:
-	Enemy(Player* player ,SDL_Renderer* renderer);
+	Enemy(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer);
 	~Enemy();
 
 	void LoadTexture(SDL_Renderer* renderer, const char* pathFile);
@@ -22,14 +24,20 @@ public:
 	float GetVelocityY() const;
 	void SetCurrentRow(int row);
 
+	SDL_FRect GetCollisionRect() const;
+
 	static float playerW;
 	static float playerH;
 
+	static float enemyW;
+	static float enemyH;
+
 private:
 	Player* player;
+	Map* map;
+	Camera* camera;
 
 	void UpdateAnimation();
-	void FollowPath(float deltaTime);
 
 	float x;
 	float y;
@@ -37,7 +45,7 @@ private:
 	float velocityY;
 	float directionX;
 	float directionY;
-	float speed = 400.0f;
+	float speed;
 	SDL_Texture* playerTexture;
 	int frameWidth;
 	int frameHeight;

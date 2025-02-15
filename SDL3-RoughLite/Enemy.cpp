@@ -1,15 +1,20 @@
 #include "Enemy.hpp"
+#include "Map.hpp"
 #include "Player.hpp"
+#include "Camera.hpp"
 #include <SDL3_image/SDL_image.h>
 #include <cmath>
 
 float Enemy::playerW = 128.0f;
 float Enemy::playerH = 128.0f;
 
-Enemy::Enemy(Player* player, SDL_Renderer* renderer)
-	: x(0), y(0), velocityX(0), velocityY(0), playerTexture(nullptr),
+float Enemy::enemyW = 64.0f;
+float Enemy::enemyH = 64.0f;
+
+Enemy::Enemy(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer)
+	: x(0), y(0), velocityX(0), velocityY(0), speed(150.0f), playerTexture(nullptr),
 	frameWidth(0), frameHeight(0), currentFrame(0), currentRow(0),
-	totalFrames(0), lastFrameTime(0), frameDuration(100), health(100), player(player)
+	totalFrames(9), lastFrameTime(0), frameDuration(100), health(100), player(player), map(map), camera(camera)
 {
 	LoadTexture(renderer, "spritesheet.png");
 }
@@ -26,29 +31,30 @@ Enemy::~Enemy()
 void Enemy::LoadTexture(SDL_Renderer* renderer, const char* pathFile)
 {
 	SDL_Surface* surface = IMG_Load(pathFile);
-	if (surface == nullptr)
+	if (!surface)
 	{
-		SDL_Log("Failed to load player texture: %s", SDL_GetError());
+		SDL_Log("Couldn't load enemy texture: %s", SDL_GetError());
 		return;
 	}
 
 	playerTexture = SDL_CreateTextureFromSurface(renderer, surface);
-	if (playerTexture == nullptr)
-	{
-		SDL_Log("Failed to create player texture: %s", SDL_GetError());
-		SDL_DestroySurface(surface);
-		return;
-	}
-
 	frameWidth = surface->w / 9;
 	frameHeight = surface->h / 4;
+	totalFrames = 4;
+
 	SDL_DestroySurface(surface);
 }
 
 void Enemy::Render(SDL_Renderer* renderer)
 {
+	if (camera == nullptr)
+	{
+		SDL_Log("Enemy::Render() - camera is nullptr");
+		return;
+	}
+
 	SDL_FRect srcRect = { currentFrame * frameWidth, currentRow * frameHeight, frameWidth, frameHeight };
-	SDL_FRect dstRect = { static_cast<int>(x), static_cast<int>(y), frameWidth, frameHeight };
+	SDL_FRect dstRect = { x - camera->GetX(), y - camera->GetY(), enemyW, enemyH };
 	SDL_RenderTexture(renderer, playerTexture, &srcRect, &dstRect);
 }
 
@@ -66,28 +72,63 @@ void Enemy::Update(float deltaTime)
 		return;
 	}
 
-	double distanceX = player->GetX() - x;
-	double distanceY = player->GetY() - y;
-
-	if (distanceX > 0)
+	if (map == nullptr)
 	{
-		x += speed * deltaTime;
+		SDL_Log("Enemy::Update() - map is nullptr");
+		return;
 	}
 
-	else if (distanceX < 0)
+	float targetX = player->GetX();
+	float targetY = player->GetY();
+
+	float directionX = targetX - x;
+	float directionY = targetY - y;
+	float length = std::sqrt(directionX * directionX + directionY * directionY);
+
+	if (length != 0)
 	{
-		x -= speed * deltaTime;
+		directionX /= length;
+		directionY /= length;
 	}
 
-	if (distanceY > 0)
+	float velocityX = directionX * speed;
+	float velocityY = directionY * speed;
+
+	float newX = x + velocityX * deltaTime;
+	float newY = y + velocityY * deltaTime;
+
+	if (velocityX == 0 && velocityY == 0)
 	{
-		y += speed * deltaTime;
+		currentFrame = 0;
+	}
+	else if (velocityX > 0) // Right
+	{
+		currentRow = 3;
+	}
+	else if (velocityX < 0) // Left
+	{
+		currentRow = 1;
+	}
+	else if (velocityY > 0) // Up
+	{
+		currentRow = 2;
+	}
+	else if (velocityY < 0) // Down
+	{
+		currentRow = 0;
 	}
 
-	else if (distanceY < 0)
+	if (map->IsWithinBounds(newX, newY, enemyW, enemyH))
 	{
-		y -= speed * deltaTime;
+		x = newX;
+		y = newY;
 	}
+	else
+	{
+		velocityX = 0.0f;
+		velocityY = 0.0f;
+	}
+
 	UpdateAnimation();
 }
 
@@ -135,4 +176,15 @@ void Enemy::UpdateAnimation()
 		currentFrame = (currentFrame + 1) % totalFrames;
 		lastFrameTime = currentTime;
 	}
+}
+
+SDL_FRect Enemy::GetCollisionRect() const
+{
+	return SDL_FRect
+	{
+		x,
+		y,
+		enemyW,
+		enemyH
+	};
 }
