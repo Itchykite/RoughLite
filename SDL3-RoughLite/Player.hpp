@@ -6,9 +6,10 @@
 class Player
 {
 public:
-	Player(Map* map, Camera* camera);
+	Player(Map* map, Camera* camera, SDL_Renderer* renderer);
 	~Player();
 
+	void LoadTexture(SDL_Renderer* renderer, const char* pathFile);
 	void Render(SDL_Renderer* renderer);
 	void SetPosition(float x, float y);
 	void Update();
@@ -17,15 +18,29 @@ public:
 	float GetY() const;
 	float GetVelocityX() const;
 	float GetVelocityY() const;
+	void SetCurrentRow(int row);
 
 	static float playerW;
 	static float playerH;
 
 private:
+	void UpdateAnimation();
+
 	float x;
 	float y;
 	float velocityX;
 	float velocityY;
 	Map* map;
 	Camera* camera;
+
+	SDL_Texture* playerTexture;
+	int frameWidth;
+	int frameHeight;
+	int currentFrame;
+	int currentRow;
+	int totalFrames;
+	Uint32 lastFrameTime;
+	Uint32 frameDuration;
+
+	double health;
 };

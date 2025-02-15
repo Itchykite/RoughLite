@@ -8,13 +8,15 @@
 #include "PlayerEventHandling.hpp"
 #include "Map.hpp"
 #include "Camera.hpp"
+#include "Enemy.hpp"
 
 static SDL_Window* window = nullptr;
 static SDL_Renderer* renderer = nullptr;
 
-Player* player = nullptr;
 Map* map = nullptr;
 Camera* camera = nullptr;
+Enemy* enemy = nullptr;
+Player* player = nullptr;
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
@@ -33,15 +35,39 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
+    SDL_Log("Creating map...");
     map = new Map(2000, 2000);
     if (!map->LoadTexture(renderer, "Images/background.jpeg"))
     {
         SDL_Log("Couldn't load map texture: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-
+    
+    SDL_Log("Creating camera...");
     camera = new Camera(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    player = new Player(map, camera);
+    if (!camera)
+    {
+        SDL_Log("Couldn't create camera");
+        return SDL_APP_FAILURE;
+    }
+    SDL_Log("Creating player...");
+
+    player = new Player(map, camera, renderer);
+    if (!player)
+    {
+        SDL_Log("Couldn't create player");
+        return SDL_APP_FAILURE;
+    }
+
+    SDL_Log("Creating enemy...");
+    enemy = new Enemy(player, renderer);
+    if (!enemy)
+    {
+        SDL_Log("Couldn't create enemy");
+        return SDL_APP_FAILURE;
+    }
+
+    SDL_Log("Initialization complete");
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
@@ -70,12 +96,16 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+
+    player->Update();
+    enemy->Update();
 
     map->Render(renderer, camera->GetX(), camera->GetY());
-    player->Update();
+    
     player->Render(renderer);
+    enemy->Render(renderer);
 
 	SDL_RenderPresent(renderer);
 
@@ -85,7 +115,9 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 /* This function runs once at shutdown. */
 void SDL_AppQuit(void* appstate, SDL_AppResult result)
 {
+    SDL_Log("Cleaning up...");
     delete player;
     delete map;
     delete camera;
+    delete enemy;
 }
