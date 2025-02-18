@@ -23,13 +23,19 @@ Player::~Player()
     }
 }
 
+void Player::HandleCollision()
+{
+    if (!map->IsWithinBounds(x, y, 64, 64))
+    {
+        x -= velocityX;
+        y -= velocityY;
+    }
+}
+
 void Player::Update(float deltaTime)
 {
-    SDL_Log("Updating player position...");
     float newX = x + velocityX * deltaTime;
     float newY = y + velocityY * deltaTime;
-
-    SDL_Log("Player position: (%f, %f)", x, y);
 
     if (map->IsWithinBounds(newX, newY, playerW, playerH))
     {
@@ -109,7 +115,6 @@ void Player::UpdateAnimation()
 
 void Player::Render(SDL_Renderer* renderer)
 {
-    SDL_Log("Rendering player...");
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_FRect player = { x - camera->GetX(), y - camera->GetY(), playerW, playerH };
     SDL_FRect srcRect = { static_cast<int>(currentFrame * frameWidth), static_cast<int>(currentRow * frameHeight), static_cast<int>(frameWidth), static_cast<int>(frameHeight) };

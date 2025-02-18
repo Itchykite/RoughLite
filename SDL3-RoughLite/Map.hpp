@@ -13,6 +13,12 @@ public:
     void Render(SDL_Renderer* renderer, float cameraX, float cameraY) const;
 	bool IsNodeWalkable(int x, int y) const;
 	void CreateGrid(int nodeSize);
+    void AddCollisionRect(const SDL_FRect& rect);
+    bool LoadCollisionSurface(const char* pathFile);
+    bool IsPixelTransparent(int x, int y) const;
+    void CreateCollisionSurface();
+
+    SDL_Surface* collisionSurface;
 
 private:
     int width;
@@ -20,4 +26,7 @@ private:
     int nodeSize;
     SDL_Texture* backgroundTexture;
     std::vector<std::vector<bool>> grid;
+    std::vector<SDL_FRect> collisionRects;
 };
+
+void mapCollisions(Map* map);

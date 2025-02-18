@@ -15,7 +15,6 @@ void PlayerEventHandling(SDL_Event* event, Player* player)
         return;
     }
 
-    SDL_Log("Handling player event...");
     if (event->type == SDL_EVENT_KEY_DOWN)
     {
         switch (event->key.scancode)
@@ -59,7 +58,7 @@ void PlayerEventHandling(SDL_Event* event, Player* player)
 
     float velocityX = 0;
     float velocityY = 0;
-    const float speed = 200;
+    const float speed = 500;
 
     if (upPressed && leftPressed)
     {

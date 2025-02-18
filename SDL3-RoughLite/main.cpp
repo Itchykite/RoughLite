@@ -10,9 +10,11 @@
 #include "Camera.hpp"
 #include "Enemy.hpp"
 #include "EnemyManager.hpp"
+#include "RangeRover.hpp"
 
 #include <vector>
 #include <memory>
+#include <iostream>
 
 static SDL_Window* window = nullptr;
 static SDL_Renderer* renderer = nullptr;
@@ -21,6 +23,7 @@ Map* map = nullptr;
 Camera* camera = nullptr;
 Player* player = nullptr;
 EnemyManager* enemyManager = nullptr;
+EnemyManager* rangeRover = nullptr;
 
 Uint32 lastTime = 0;
 
@@ -43,11 +46,19 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 
     SDL_Log("Creating map...");
     map = new Map(mapWidth, mapHeight);
-    if (!map->LoadTexture(renderer, "Images/background.jpeg"))
+    if (!map->LoadTexture(renderer, "Images/mapa.png"))
     {
         SDL_Log("Couldn't load map texture: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+
+    if (!map->LoadCollisionSurface("Images/mapa_.png"))
+    {
+        SDL_Log("Couldn't load collision surface");
+        return SDL_APP_FAILURE;
+    }
+
+    mapCollisions(map);
     
     SDL_Log("Creating camera...");
     camera = new Camera(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -65,6 +76,22 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
+    player->SetPosition(512.0f, 1024.0f);
+
+    SDL_Log("Creating rangeRovers...");
+    rangeRover = new EnemyManager(player, map, camera, renderer);
+    if (!rangeRover)
+    {
+        SDL_Log("Couldn't create enemy manager");
+        return SDL_APP_FAILURE;
+    }
+
+    for (int i = 0; i < RangeRover::numOfRangeRovers; ++i)
+    {
+        rangeRover->AddRangeRover();
+        std::cout << "Added RangeRover " << i << std::endl;
+    }
+
     SDL_Log("Creating enemies...");
     enemyManager = new EnemyManager(player, map, camera, renderer);
     if (!enemyManager)
@@ -73,9 +100,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
-    for (int i = 0; i < 50; ++i)
+    for (int i = 0; i < 0; ++i)
     {
         enemyManager->AddEnemy();
+		std::cout << "Added enemy " << i << std::endl;
     }
 
     SDL_Log("Initialization complete");
@@ -121,8 +149,20 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     player->Update(deltaTime);
     player->Render(renderer);
 
+	rangeRover->UpdateRangeRover(deltaTime);
+	rangeRover->RenderRangeRover(renderer);
+
     enemyManager->Update(deltaTime);
     enemyManager->Render(renderer);
+
+    SDL_FPoint playerPosition = { player->GetX(), player->GetY() };
+    int playerX = static_cast<int>(playerPosition.x);
+    int playerY = static_cast<int>(playerPosition.y);
+
+    if (!map->IsPixelTransparent(playerX, playerY))
+    {
+        player->Update(-deltaTime);
+    }
 
 	SDL_RenderPresent(renderer);
 
@@ -137,4 +177,5 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result)
     delete map;
     delete camera;
     delete enemyManager;
+    delete rangeRover;
 }

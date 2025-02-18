@@ -5,11 +5,11 @@
 #include <SDL3_image/SDL_image.h>
 #include <cmath>
 
-float Enemy::playerW = 128.0f;
-float Enemy::playerH = 128.0f;
+float Enemy::playerW = 256.0f;
+float Enemy::playerH = 256.0f;
 
-float Enemy::enemyW = 64.0f;
-float Enemy::enemyH = 64.0f;
+float Enemy::enemyW = 128.0f;
+float Enemy::enemyH = 128.0f;
 
 Enemy::Enemy(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer)
 	: x(0), y(0), velocityX(0), velocityY(0), speed(150.0f), playerTexture(nullptr),
@@ -54,7 +54,7 @@ void Enemy::Render(SDL_Renderer* renderer)
 	}
 
 	SDL_FRect srcRect = { currentFrame * frameWidth, currentRow * frameHeight, frameWidth, frameHeight };
-	SDL_FRect dstRect = { x - camera->GetX(), y - camera->GetY(), enemyW, enemyH };
+	SDL_FRect dstRect = { x - camera->GetX() + (playerW / 2), y - camera->GetY() + (playerH / 2), enemyW, enemyH };
 	SDL_RenderTexture(renderer, playerTexture, &srcRect, &dstRect);
 }
 
@@ -118,16 +118,8 @@ void Enemy::Update(float deltaTime)
 		currentRow = 0;
 	}
 
-	if (map->IsWithinBounds(newX, newY, enemyW, enemyH))
-	{
-		x = newX;
-		y = newY;
-	}
-	else
-	{
-		velocityX = 0.0f;
-		velocityY = 0.0f;
-	}
+	x = newX;
+	y = newY;
 
 	UpdateAnimation();
 }
@@ -184,7 +176,7 @@ SDL_FRect Enemy::GetCollisionRect() const
 	{
 		x,
 		y,
-		enemyW,
-		enemyH
+		enemyW / 2,
+		enemyH / 2
 	};
 }

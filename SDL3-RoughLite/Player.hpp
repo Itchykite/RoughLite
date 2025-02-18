@@ -19,6 +19,7 @@ public:
 	float GetVelocityX() const;
 	float GetVelocityY() const;
 	void SetCurrentRow(int row);
+	void HandleCollision();
 
 	static float playerW;
 	static float playerH;
