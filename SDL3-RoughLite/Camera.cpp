@@ -1,6 +1,7 @@
 // Camaera odopawiada za poruszanie siê ekranu za graczem, w odpowiednim zakresie
 
 #include "Camera.hpp"
+#include "Settings.hpp"
 
 Camera::Camera(float x, float y, float width, float height) // Konstruktor kamery, pozycja x,y oraz d³ugoœæ i szerokoœæ
     : x(x), y(y), width(width), height(height), thresholdX(width / 4), thresholdY(height / 4) 
@@ -9,18 +10,18 @@ Camera::Camera(float x, float y, float width, float height) // Konstruktor kamer
 
 void Camera::Update(float playerX, float playerY)
 {
-	if (playerX > x + width - thresholdX) // Jeœli gracz przekroczy prawy próg kamery
+	if (playerX > x + width - thresholdX - playerW / 2) // Jeœli gracz przekroczy prawy próg kamery
     {
-		x = playerX - (width - thresholdX); // Przesuñ kamerê w prawo
+		x = playerX - (width - thresholdX - playerW / 2); // Przesuñ kamerê w prawo
     }
 	else if (playerX < x + thresholdX) // Jeœli gracz przekroczy lewy próg kamery
     {
 		x = playerX - thresholdX; // Przesuñ kamerê w lewo
     }
 
-	if (playerY > y + height - thresholdY) // Jeœli gracz przekroczy dolny próg kamery
+	if (playerY > y + height - thresholdY - playerH / 2) // Jeœli gracz przekroczy dolny próg kamery
     {
-		y = playerY - (height - thresholdY); // Przesuñ kamerê w dó³
+		y = playerY - (height - thresholdY - playerH / 2); // Przesuñ kamerê w dó³
     }
 	else if (playerY < y + thresholdY) // Jeœli gracz przekroczy górny próg kamery
     {

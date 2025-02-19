@@ -149,7 +149,7 @@ SDL_FRect RangeRover::GetCollisionRect() const
 	{
 		x,
 		y,
-		Enemy::enemyW / 2,
-		Enemy::enemyH / 2
+		enemyW / 2,
+		enemyH / 2
 	}; // Zwróæ prostok¹t kolizji
 }

@@ -6,6 +6,7 @@
 #include "Player.hpp"
 #include "Map.hpp"
 #include "Camera.hpp"
+#include "Settings.hpp"
 #include <SDL3/SDL.h>
 #include <vector>
 

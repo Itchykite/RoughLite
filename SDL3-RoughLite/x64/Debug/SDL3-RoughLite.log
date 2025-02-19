@@ -1,11 +1,10 @@
-﻿  RangeRover.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(59,37): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(59,37): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(59,62): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(59,62): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(59,77): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(59,77): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(59,89): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(59,89): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(137,21): warning C4244: "inicjowanie": konwersja z "Uint64" do "Uint32", możliwa utrata danych
+﻿  Map.cpp
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(47,31): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(47,31): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(47,38): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(47,38): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(48,45): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(48,45): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(48,52): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(48,52): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
   SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\SDL3-RoughLite\x64\Debug\SDL3-RoughLite.exe
