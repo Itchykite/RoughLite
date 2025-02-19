@@ -105,7 +105,7 @@ bool Map::LoadCollisionSurface(const char* pathFile) // Wczytanie powierzchni ko
 bool Map::IsPixelTransparent(int x, int y) const // Sprawdzenie czy pixel jest przezroczysty
 {
     y += 128;
-    x += 0;
+    x += 64;
 
 	if (!collisionSurface || x < 0 || x >= collisionSurface->w || y < 0 || y >= collisionSurface->h) // Jeœli powierzchnia kolizji nie istnieje, x jest mniejsze od 0, x jest wiêksze od szerokoœci powierzchni kolizji, y jest mniejsze od 0, y jest wiêksze od wysokoœci powierzchni kolizji
     {
