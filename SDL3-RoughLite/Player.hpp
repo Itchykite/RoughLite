@@ -1,4 +1,7 @@
 #pragma once
+
+// Player odpowiada za gracza, jego zachowanie, wygl¹d, kolizje
+
 #include <SDL3/SDL.h>
 #include "Map.hpp"
 #include "Camera.hpp"
@@ -6,42 +9,43 @@
 class Player
 {
 public:
-	Player(Map* map, Camera* camera, SDL_Renderer* renderer);
-	~Player();
+	Player(Map* map, Camera* camera, SDL_Renderer* renderer); // Konstruktor gracza, mapa, kamera, renderer
+	~Player(); // Destruktor
 
-	void LoadTexture(SDL_Renderer* renderer, const char* pathFile);
-	void Render(SDL_Renderer* renderer);
-	void SetPosition(float x, float y);
-	void Update(float deltaTime);
-	void SetVelocity(float x, float y);
-	float GetX() const;
-	float GetY() const;
-	float GetVelocityX() const;
-	float GetVelocityY() const;
-	void SetCurrentRow(int row);
+	void LoadTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury gracza
+	void Render(SDL_Renderer* renderer); // Renderowanie gracza
+	void SetPosition(float x, float y); // Ustwienie pozycji gracza
+	void Update(float deltaTime); // Aktualizacja gracza
+	void SetVelocity(float x, float y); // Ustwienie prêdkoœci gracza
+	float GetX() const; // Pobranie pozycji x 
+	float GetY() const;	// Pobranie pozycji y
+	float GetVelocityX() const; // Pobranie prêdkoœci x
+	float GetVelocityY() const; // Pobranie prêdkoœci y
+	void SetCurrentRow(int row); // Ustwienie aktualnego wiersza dla animacji
+	void HandleCollision(); // Obs³uga kolizji
 
-	static float playerW;
-	static float playerH;
+	static float playerW; // Szerokoœæ gracza
+	static float playerH; // Wysokoœæ gracza
 
 	Map* map;
 
 private:
-	void UpdateAnimation();
+	void UpdateAnimation(); // Aktualizacja animacji
 
-	float x;
-	float y;
-	float velocityX;
-	float velocityY;
-	Camera* camera;
+	float x; // Pozycja x
+	float y; // Pozycja y
+	float velocityX; // Prêdkoœæ x
+	float velocityY; // Prêdkoœæ y
+	Camera* camera; // Kamera
 
-	SDL_Texture* playerTexture;
-	int frameWidth;
-	int frameHeight;
-	int currentFrame;
-	int currentRow;
-	int totalFrames;
-	Uint32 lastFrameTime;
-	Uint32 frameDuration;
+	SDL_Texture* playerTexture; // Tekstura gracza
+	int frameWidth; // Szerokoœæ klatki
+	int frameHeight; // Wysokoœæ klatki
+	int currentFrame; // Aktualna klatka
+	int currentRow; // Aktualny wiersz
+	int totalFrames; // Ca³kowita liczba klatek
+	Uint32 lastFrameTime; // Ostatni czas klatki
+	Uint32 frameDuration; // Czas trwania klatki
 
-	double health;
+	double health; // Zdrowie
 };

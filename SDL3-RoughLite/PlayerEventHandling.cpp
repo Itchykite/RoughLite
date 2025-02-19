@@ -2,54 +2,53 @@
 #include <SDL3/SDL.h>
 #include "Player.hpp"
 
-void PlayerEventHandling(SDL_Event* event, Player* player)
+void PlayerEventHandling(SDL_Event* event, Player* player) // Obs³uga zdarzeñ gracza
 {
-    static bool upPressed = false;
-    static bool downPressed = false;
-    static bool leftPressed = false;
-    static bool rightPressed = false;
+	static bool upPressed = false; // Czy wciœniêto górê
+	static bool downPressed = false; // Czy wciœniêto dó³
+	static bool leftPressed = false; // Czy wciœniêto lewo
+	static bool rightPressed = false; // Czy wciœniêto prawo
 
-    if (event == nullptr || player == nullptr)
+	if (event == nullptr || player == nullptr) // Jeœli zdarzenie lub wskaŸnik gracza jest nieprawid³owy
     {
         SDL_Log("Invalid event or player pointer.");
         return;
     }
 
-    SDL_Log("Handling player event...");
-    if (event->type == SDL_EVENT_KEY_DOWN)
+    if (event->type == SDL_EVENT_KEY_DOWN) // Sprawdzenie naciœniêcia przycisku
     {
-        switch (event->key.scancode)
+		switch (event->key.scancode) // Sprawdzenie skanu klawisza
         {
-        case SDL_SCANCODE_UP:
+		case SDL_SCANCODE_UP: // Jeœli wciœniêto górê
             upPressed = true;
             break;
-        case SDL_SCANCODE_DOWN:
+		case SDL_SCANCODE_DOWN: // Jeœli wciœniêto dó³
             downPressed = true;
             break;
-        case SDL_SCANCODE_LEFT:
+		case SDL_SCANCODE_LEFT: // Jeœli wciœniêto lewo
             leftPressed = true;
-            break;
-        case SDL_SCANCODE_RIGHT:
+            break; 
+		case SDL_SCANCODE_RIGHT: // Jeœli wciœniêto prawo
             rightPressed = true;
             break;
         default:
             break;
         }
     }
-    else if (event->type == SDL_EVENT_KEY_UP)
+	else if (event->type == SDL_EVENT_KEY_UP) // Sprawdzenie puszczenia przycisku
     {
-        switch (event->key.scancode)
+		switch (event->key.scancode) // Sprawdzenie skanu klawisza
         {
-        case SDL_SCANCODE_UP:
+		case SDL_SCANCODE_UP: // Jeœli wciœniêto górê
             upPressed = false;
             break;
-        case SDL_SCANCODE_DOWN:
+		case SDL_SCANCODE_DOWN: // Jeœli wciœniêto dó³
             downPressed = false;
             break;
-        case SDL_SCANCODE_LEFT:
+		case SDL_SCANCODE_LEFT: // Jeœli wciœniêto lewo
             leftPressed = false;
-            break;
-        case SDL_SCANCODE_RIGHT:
+            break; 
+		case SDL_SCANCODE_RIGHT: // Jeœli wciœniêto prawo
             rightPressed = false;
             break;
         default:
@@ -57,13 +56,15 @@ void PlayerEventHandling(SDL_Event* event, Player* player)
         }
     }
 
-    float velocityX = 0;
-    float velocityY = 0;
-    const float speed = 200;
+	float velocityX = 0; // Prêdkoœæ x
+	float velocityY = 0; // Prêdkoœæ y
+	const float speed = 500; // Prêdkoœæ
 
-    if (upPressed && leftPressed)
+
+    //Obs³uga ruchu gracza
+	if (upPressed && leftPressed) 
     {
-        velocityX = -speed;
+        velocityX = -speed; 
         velocityY = -speed;
     }
     else if (upPressed && rightPressed)
@@ -103,5 +104,5 @@ void PlayerEventHandling(SDL_Event* event, Player* player)
         velocityY = 0;
     }
 
-    player->SetVelocity(velocityX, velocityY);
+	player->SetVelocity(velocityX, velocityY); // Ustawienie prêdkoœci gracza w podanym kierunku
 }

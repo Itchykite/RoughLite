@@ -3,13 +3,13 @@
 class Camera
 {
 public:
-    Camera(float x, float y, float width, float height);
-    void Update(float playerX, float playerY);
-    float GetX() const;
-    float GetY() const;
+    Camera(float x, float y, float width, float height); // Konstruktor
+    void Update(float playerX, float playerY); // Aktualizacja pozycji kamery
+    float GetX() const; // pobierz x
+    float GetY() const; // pobierz y
 
 private:
-    float x, y;
-    float width, height;
-    float thresholdX, thresholdY;
+    float x, y; // x y
+    float width, height; // szerokoœæ i wysokoœæ ekranu
+    float thresholdX, thresholdY; // próg zakresu kamery
 };
