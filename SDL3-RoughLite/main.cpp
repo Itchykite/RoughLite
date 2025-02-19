@@ -73,7 +73,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
-    for (int i = 0; i < 50; ++i)
+    for (int i = 0; i < 200; ++i)
     {
         enemyManager->AddEnemy();
     }
