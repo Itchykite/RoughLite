@@ -1,6 +1,9 @@
 #define _USE_MATH_DEFINES
 
 #include "EnemyManager.hpp"
+#include <iostream>
+
+long int i = 1;
 
 EnemyManager::EnemyManager(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor przeciwnika, gracz, mapa, kamera, renderer
     : player(player), map(map), camera(camera), renderer(renderer)
@@ -14,11 +17,11 @@ void EnemyManager::AddEnemy() // Dodanie przeciwnika
 
 	while (!validPosition) // Dopóki pozycja nie jest poprawna
     {
-		enemyX = GetRandomFloat(0, mapWidth - Enemy::enemyW); // Ustawienie losowej pozycji x przeciwnika
-		enemyY = GetRandomFloat(0, mapHeight - Enemy::enemyH); // Ustawienie losowej pozycji y przeciwnika
+		enemyX = GetRandomFloat(0, mapWidth - enemyW); // Ustawienie losowej pozycji x przeciwnika
+		enemyY = GetRandomFloat(0, mapHeight - enemyH); // Ustawienie losowej pozycji y przeciwnika
 
 		validPosition = true; // Ustawienie pozycji na poprawn¹
-		SDL_FRect newEnemyRect = { enemyX, enemyY, Enemy::enemyW, Enemy::enemyH }; // Utworzenie nowego prostok¹ta kolizji
+		SDL_FRect newEnemyRect = { enemyX, enemyY, enemyW, enemyH }; // Utworzenie nowego prostok¹ta kolizji
 
 		for (const auto& enemy : enemies) // Dla ka¿dego przeciwnika
 		{
@@ -54,6 +57,14 @@ void EnemyManager::AddRangeRover() // Dodanie RangeRovera
 
 void EnemyManager::Update(float deltaTime) // Aktualizacja przeciwnika
 {
+	Uint32 currentTime = SDL_GetTicks(); // Aktualny czas
+
+	if (currentTime > lastSpawnTime + 5000) // Jeœli aktualny czas jest wiêkszy od ostatniego czasu + 1000
+	{
+		AddEnemy(); // Dodanie przeciwnika
+		lastSpawnTime = currentTime; // Ustawienie ostatniego czasu
+	}
+
 	for (auto& enemy : enemies) // Dla ka¿dego przeciwnika
 	{
 		enemy->Update(deltaTime); // Aktualizacja

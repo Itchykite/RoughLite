@@ -2,14 +2,9 @@
 #include "Map.hpp"
 #include "Player.hpp"
 #include "Camera.hpp"
+#include "Settings.hpp"
 #include <SDL3_image/SDL_image.h>
 #include <cmath>
-
-float Enemy::playerW = 256.0f; // Ustawienie szerokoœci gracza
-float Enemy::playerH = 256.0f; // Ustawienie wysokoœci gracza
-
-float Enemy::enemyW = 128.0f; // Ustawienie szerokoœci przeciwnika
-float Enemy::enemyH = 128.0f; // Ustawienie wysokoœci przeciwnika
 
 Enemy::Enemy(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer) // Konstrutkor przeciwnika, gracz, mapa, kamera, renderer
 	: x(0), y(0), velocityX(0), velocityY(0), speed(150.0f), playerTexture(nullptr),

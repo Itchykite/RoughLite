@@ -57,7 +57,7 @@ void RangeRover::Render(SDL_Renderer* renderer) // Renderowanie RangeRovera
 	}
 
 	SDL_FRect srcRect = { currentFrame * frameWidth, currentRow * frameHeight, frameWidth, frameHeight }; // Ustawienie klatki
-	SDL_FRect dstRect = { x - camera->GetX() + (Enemy::playerW / 2), y - camera->GetY() + (Enemy::playerH / 2), Enemy::enemyW, Enemy::enemyH }; // Ustawienie pozycji
+	SDL_FRect dstRect = { x - camera->GetX() + (playerW / 2), y - camera->GetY() + (playerH / 2), enemyW, enemyH }; // Ustawienie pozycji
 	SDL_RenderTexture(renderer, playerTexture, &srcRect, &dstRect); // Renderowanie tekstury
 }
 
@@ -148,7 +148,7 @@ SDL_FRect RangeRover::GetCollisionRect() const
 	{
 		x,
 		y,
-		Enemy::enemyW / 2,
-		Enemy::enemyH / 2
+		enemyW / 2,
+		enemyH / 2
 	}; // Zwróæ prostok¹t kolizji
 }

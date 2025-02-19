@@ -36,4 +36,6 @@ private:
 	SDL_Renderer* renderer; // Renderer
 
 	float GetRandomFloat(float min, float max); // Pobranie losowej liczby zmiennoprzecinkowej
+
+	Uint32 lastSpawnTime = 0; // Ostatni czas spawnu przeciwnika
 };

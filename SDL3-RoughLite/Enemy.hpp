@@ -29,12 +29,6 @@ public:
 
 	SDL_FRect GetCollisionRect() const; // Pobranie prostok¹ta kolizji
 
-	static float playerW; // Szerokoœæ gracza
-	static float playerH; // Wysokoœæ gracza
-
-	static float enemyW; // Szerokoœæ przeciwnika
-	static float enemyH; // Wysokoœæ przeciwnika
-
 private:
 	Player* player; // Gracz
 	Map* map; // Mapa

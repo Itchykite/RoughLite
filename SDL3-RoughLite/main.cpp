@@ -99,13 +99,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         SDL_Log("Couldn't create enemy manager");
         return SDL_APP_FAILURE;
     }
-
-    for (int i = 0; i < 0; ++i) // Tworzenie konkretnej iloœci wrogów
-    {
-        enemyManager->AddEnemy();
-		std::cout << "Added enemy " << i << std::endl;
-    }
-
+    
     SDL_Log("Initialization complete");
 
     lastTime = SDL_GetTicks(); // Pobranie ostatniego czasu
