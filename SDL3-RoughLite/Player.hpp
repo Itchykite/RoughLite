@@ -3,49 +3,65 @@
 // Player odpowiada za gracza, jego zachowanie, wygl¹d, kolizje
 
 #include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include "Map.hpp"
 #include "Camera.hpp"
+#include <memory>
+#include <vector>
+
+class Enemy;
 
 class Player
 {
 public:
-	Player(Map* map, Camera* camera, SDL_Renderer* renderer); // Konstruktor gracza, mapa, kamera, renderer
-	~Player(); // Destruktor
+    Player(Map* map, Camera* camera, SDL_Renderer* renderer); // Konstruktor gracza, mapa, kamera, renderer
+    ~Player(); // Destruktor
 
-	void LoadTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury gracza
-	void Render(SDL_Renderer* renderer); // Renderowanie gracza
-	void SetPosition(float x, float y); // Ustwienie pozycji gracza
-	void Update(float deltaTime); // Aktualizacja gracza
-	void SetVelocity(float x, float y); // Ustwienie prêdkoœci gracza
-	float GetX() const; // Pobranie pozycji x 
-	float GetY() const;	// Pobranie pozycji y
-	float GetVelocityX() const; // Pobranie prêdkoœci x
-	float GetVelocityY() const; // Pobranie prêdkoœci y
-	void SetCurrentRow(int row); // Ustwienie aktualnego wiersza dla animacji
-	void HandleCollision(); // Obs³uga kolizji
+    void LoadTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury gracza
+    void LoadAttackTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury ataku
+    void Render(SDL_Renderer* renderer); // Renderowanie gracza
+    void SetPosition(float x, float y); // Ustwienie pozycji gracza
+    void Update(float deltaTime); // Aktualizacja gracza
+    void SetVelocity(float x, float y); // Ustwienie prêdkoœci gracza
+    float GetX() const; // Pobranie pozycji x 
+    float GetY() const; // Pobranie pozycji y
+    float GetVelocityX() const; // Pobranie prêdkoœci x
+    float GetVelocityY() const; // Pobranie prêdkoœci y
+    void SetCurrentRow(int row); // Ustwienie aktualnego wiersza dla animacji
+    void HandleCollision(); // Obs³uga kolizji
+    void attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY); // Atak
 
-	static float playerW; // Szerokoœæ gracza
-	static float playerH; // Wysokoœæ gracza
+    long int kills; // Wynik
+    SDL_Texture* texture; // Tekstura
 
-	Map* map;
+    Map* map;
 
 private:
-	void UpdateAnimation(); // Aktualizacja animacji
+    void UpdateAnimation(); // Aktualizacja animacji
+    void renderHealthBar(double healthValue, SDL_Renderer* renderer); // Renderowanie paska zdrowia
+    void UpdateKillsTexture(SDL_Renderer* renderer);
 
-	float x; // Pozycja x
-	float y; // Pozycja y
-	float velocityX; // Prêdkoœæ x
-	float velocityY; // Prêdkoœæ y
-	Camera* camera; // Kamera
+    float x; // Pozycja x
+    float y; // Pozycja y
+    float velocityX; // Prêdkoœæ x
+    float velocityY; // Prêdkoœæ y
+    Camera* camera; // Kamera
 
-	SDL_Texture* playerTexture; // Tekstura gracza
-	int frameWidth; // Szerokoœæ klatki
-	int frameHeight; // Wysokoœæ klatki
-	int currentFrame; // Aktualna klatka
-	int currentRow; // Aktualny wiersz
-	int totalFrames; // Ca³kowita liczba klatek
-	Uint32 lastFrameTime; // Ostatni czas klatki
-	Uint32 frameDuration; // Czas trwania klatki
+    SDL_Texture* playerTexture; // Tekstura gracza
+    SDL_Texture* attackTexture; // Tekstura ataku
+	TTF_Font* font; // Czcionka
+    int frameWidth; // Szerokoœæ klatki
+    int frameHeight; // Wysokoœæ klatki
+    int currentFrame; // Aktualna klatka
+    int currentRow; // Aktualny wiersz
+    int totalFrames; // Ca³kowita liczba klatek
+    Uint32 lastFrameTime; // Ostatni czas klatki
+    Uint32 frameDuration; // Czas trwania klatki
+    Uint32 attackFrameDuration; // Czas trwania ataku
 
-	double health; // Zdrowie
+    double health; // Zdrowie
+
+    bool isAttacking; // Czy gracz atakuje
+    int attackFrame; // Aktualna klatka ataku
+    int attackRow; // Aktualny wiersz ataku
 };

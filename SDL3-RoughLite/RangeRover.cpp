@@ -58,7 +58,11 @@ void RangeRover::Render(SDL_Renderer* renderer) // Renderowanie RangeRovera
 	}
 
 	SDL_FRect srcRect = { currentFrame * frameWidth, currentRow * frameHeight, frameWidth, frameHeight }; // Ustawienie klatki
+<<<<<<< HEAD
 	SDL_FRect dstRect = { x - camera->GetX() + (playerW / 4), y - camera->GetY() + (playerH / 4), (enemyW / 2), (enemyH / 2) }; // Ustawienie pozycji
+=======
+	SDL_FRect dstRect = { x - camera->GetX() + (playerW / 16), y - camera->GetY() + (playerH / 16), enemyW / 2, enemyH / 2 }; // Ustawienie pozycji
+>>>>>>> 3f19af81b1eebf3e21cdf7937d2e972d756ede91
 	SDL_RenderTexture(renderer, playerTexture, &srcRect, &dstRect); // Renderowanie tekstury
 }
 

@@ -9,7 +9,7 @@
 Enemy::Enemy(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer) // Konstrutkor przeciwnika, gracz, mapa, kamera, renderer
 	: x(0), y(0), velocityX(0), velocityY(0), speed(150.0f), playerTexture(nullptr),
 	frameWidth(0), frameHeight(0), currentFrame(0), currentRow(0),
-	totalFrames(9), lastFrameTime(0), frameDuration(100), health(100), player(player), map(map), camera(camera)
+	totalFrames(9), lastFrameTime(0), frameDuration(100), health(100), isAlive(true), player(player), map(map), camera(camera)
 {
 	LoadTexture(renderer, "spritesheet.png");
 } // Przekazywanie prêdkoœci, tekstury, klatek, czasu trwania klatki, zdrowia
@@ -21,6 +21,8 @@ Enemy::~Enemy() // Destruktor
 		SDL_DestroyTexture(playerTexture); // Usuñ teksturê gracza
 		playerTexture = nullptr; // Ustaw teksturê gracza na nullptr
 	}
+
+	isAlive = false; // Ustawienie na false
 }
 
 void Enemy::LoadTexture(SDL_Renderer* renderer, const char* pathFile) // Za³adowanie tekstury przeciwnika
@@ -42,11 +44,15 @@ void Enemy::LoadTexture(SDL_Renderer* renderer, const char* pathFile) // Za³adow
 
 void Enemy::Render(SDL_Renderer* renderer) // Renderowanie przeciwnika
 {
+	if (!isAlive) return; // Jeœli nie ¿yje
+
 	if (camera == nullptr) // Jeœli kamera nie istnieje
 	{
 		SDL_Log("Enemy::Render() - camera is nullptr");
 		return;
 	}
+
+	renderHealthBar(health, renderer); // Renderowanie paska zdrowia
 
 	SDL_FRect srcRect = { currentFrame * frameWidth, currentRow * frameHeight, frameWidth, frameHeight }; // Ustawienie klatki
 	SDL_FRect dstRect = { x - camera->GetX() + (playerW / 16), y - camera->GetY() + (playerH / 16), enemyW, enemyH }; // Ustawienie pozycji
@@ -73,8 +79,8 @@ void Enemy::Update(float deltaTime) // Aktualizacja przeciwnika
 		return;
 	}
 
-	float targetX = player->GetX();	// Pozycja x gracza
-	float targetY = player->GetY(); // Pozycja y gracza
+	float targetX = player->GetX() - playerW / 2;	// Pozycja x gracza
+	float targetY = player->GetY() - playerH / 2; // Pozycja y gracza
 
 	float directionX = targetX - x; // Kierunek x
 	float directionY = targetY - y; // Kierunek y
@@ -118,6 +124,27 @@ void Enemy::Update(float deltaTime) // Aktualizacja przeciwnika
 
 	UpdateAnimation(); // Aktualizacja animacji
 }
+
+void Enemy::renderHealthBar(double healthValue, SDL_Renderer* renderer) // Renderowanie paska 
+{
+	float barHeight = 5.0f; // Wysokoœæ paska
+	float barWidth = enemyW / 2; // Szerokoœæ paska
+
+	float healthPercentage = healthValue / 100.0f; // Procent zdrowia
+	float currentBarWidth = barWidth * healthPercentage; // Aktualna szerokoœæ paska
+
+	float renderX = x - camera->GetX() + (playerW - 32.0f);
+	float renderY = y - camera->GetY() + (playerH / 2);
+
+	SDL_FRect backgroundBar = { renderX, renderY, barWidth, barHeight }; // Prostok¹t t³a
+	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255); // kolor szary
+	SDL_RenderFillRect(renderer, &backgroundBar); // Wype³nienie prostok¹ta
+
+	SDL_FRect foregroundBar = { renderX, renderY, currentBarWidth, barHeight }; // Prostok¹t paska
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Kolor czerwony
+	SDL_RenderFillRect(renderer, &foregroundBar); // Wype³nienie prostok¹ta
+}
+
 
 void Enemy::SetVelocity(float x, float y) // Ustawienie prêdkoœci przeciwnika
 {
@@ -167,11 +194,19 @@ void Enemy::UpdateAnimation() // Aktualizacja animacji
 
 SDL_FRect Enemy::GetCollisionRect() const // Pobranie prostok¹ta kolizji
 {
-	return SDL_FRect 
+	if (!isAlive)
 	{
-		x,
-		y,
-		enemyW / 2,
-		enemyH / 2
-	}; // Zwróæ prostok¹t kolizji
+		return { 0,0,0,0 };
+	}
+
+	else
+	{
+		return SDL_FRect
+		{
+			x,
+			y,
+			enemyW / 2,
+			enemyH / 2
+		}; // Zwróæ prostok¹t kolizji
+	}
 }

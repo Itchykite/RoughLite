@@ -1,108 +1,150 @@
 #include "PlayerEventHandling.hpp"
 #include <SDL3/SDL.h>
 #include "Player.hpp"
+#include "Enemy.hpp"
+#include <vector>
+#include <memory>
+#include <cmath>
 
-void PlayerEventHandling(SDL_Event* event, Player* player) // Obs³uga zdarzeñ gracza
+#include <iostream> // Dodaj, aby zobaczyæ wyjœcie
+
+void PlayerEventHandling(SDL_Event* event, Player* player, std::vector<std::unique_ptr<Enemy>>& enemies)
 {
-	static bool upPressed = false; // Czy wciœniêto górê
-	static bool downPressed = false; // Czy wciœniêto dó³
-	static bool leftPressed = false; // Czy wciœniêto lewo
-	static bool rightPressed = false; // Czy wciœniêto prawo
+    static bool upPressed = false;
+    static bool downPressed = false;
+    static bool leftPressed = false;
+    static bool rightPressed = false;
+    static float lastDirX = 1.0f;
+    static float lastDirY = 0.0f;
+    static bool isAttacking = false;
 
-	if (event == nullptr || player == nullptr) // Jeœli zdarzenie lub wskaŸnik gracza jest nieprawid³owy
+    if (event == nullptr || player == nullptr)
     {
         SDL_Log("Invalid event or player pointer.");
         return;
     }
 
-    if (event->type == SDL_EVENT_KEY_DOWN) // Sprawdzenie naciœniêcia przycisku
+    if (event->type == SDL_EVENT_KEY_DOWN)
     {
-		switch (event->key.scancode) // Sprawdzenie skanu klawisza
+        switch (event->key.scancode)
         {
-		case SDL_SCANCODE_UP: // Jeœli wciœniêto górê
+        case SDL_SCANCODE_UP:
+		case SDL_SCANCODE_W:
             upPressed = true;
             break;
-		case SDL_SCANCODE_DOWN: // Jeœli wciœniêto dó³
+        case SDL_SCANCODE_DOWN:
+		case SDL_SCANCODE_S:
             downPressed = true;
             break;
-		case SDL_SCANCODE_LEFT: // Jeœli wciœniêto lewo
+        case SDL_SCANCODE_LEFT:
+		case SDL_SCANCODE_A:
             leftPressed = true;
-            break; 
-		case SDL_SCANCODE_RIGHT: // Jeœli wciœniêto prawo
+            break;
+        case SDL_SCANCODE_RIGHT:
+		case SDL_SCANCODE_D:
             rightPressed = true;
             break;
+        case SDL_SCANCODE_Z:
+        case SDL_SCANCODE_SPACE:
+            if (!isAttacking)
+            {
+                isAttacking = true;
+                float dirX = 0.0f;
+                float dirY = 0.0f;
+
+                if (upPressed && leftPressed)
+                {
+                    dirX = -1.0f;
+                    dirY = -1.0f;
+                }
+                else if (upPressed && rightPressed)
+                {
+                    dirX = 1.0f;
+                    dirY = -1.0f;
+                }
+                else if (downPressed && leftPressed)
+                {
+                    dirX = -1.0f;
+                    dirY = 1.0f;
+                }
+                else if (downPressed && rightPressed)
+                {
+                    dirX = 1.0f;
+                    dirY = 1.0f;
+                }
+                else if (upPressed)
+                {
+                    dirY = -1.0f;
+                }
+                else if (downPressed)
+                {
+                    dirY = 1.0f;
+                }
+                else if (leftPressed)
+                {
+                    dirX = -1.0f;
+                }
+                else if (rightPressed)
+                {
+                    dirX = 1.0f;
+                }
+                else
+                {
+                    dirX = lastDirX;
+                    dirY = lastDirY;
+                }
+
+                if (dirX == 0.0f && dirY == 0.0f)
+                {
+                    dirX = -1.0f;
+                    dirY = -1.0f;
+                }
+
+                player->attack(enemies, dirX, dirY);
+            }
+            break;
         default:
             break;
         }
     }
-	else if (event->type == SDL_EVENT_KEY_UP) // Sprawdzenie puszczenia przycisku
+    else if (event->type == SDL_EVENT_KEY_UP)
     {
-		switch (event->key.scancode) // Sprawdzenie skanu klawisza
+        switch (event->key.scancode)
         {
-		case SDL_SCANCODE_UP: // Jeœli wciœniêto górê
+        case SDL_SCANCODE_UP:
+        case SDL_SCANCODE_W:
             upPressed = false;
             break;
-		case SDL_SCANCODE_DOWN: // Jeœli wciœniêto dó³
+        case SDL_SCANCODE_DOWN:
+        case SDL_SCANCODE_S:
             downPressed = false;
             break;
-		case SDL_SCANCODE_LEFT: // Jeœli wciœniêto lewo
+        case SDL_SCANCODE_LEFT:
+		case SDL_SCANCODE_A:
             leftPressed = false;
-            break; 
-		case SDL_SCANCODE_RIGHT: // Jeœli wciœniêto prawo
+            break;
+        case SDL_SCANCODE_RIGHT:
+		case SDL_SCANCODE_D:
             rightPressed = false;
+            break;
+        case SDL_SCANCODE_Z:
+        case SDL_SCANCODE_SPACE:
+            isAttacking = false;
             break;
         default:
             break;
         }
     }
 
-	float velocityX = 0; // Prêdkoœæ x
-	float velocityY = 0; // Prêdkoœæ y
-	const float speed = 500; // Prêdkoœæ
+    float velocityX = (rightPressed - leftPressed) * 500.0f;
+    float velocityY = (downPressed - upPressed) * 500.0f;
 
-
-    //Obs³uga ruchu gracza
-	if (upPressed && leftPressed) 
+    if (velocityX != 0 || velocityY != 0)
     {
-        velocityX = -speed; 
-        velocityY = -speed;
-    }
-    else if (upPressed && rightPressed)
-    {
-        velocityX = speed;
-        velocityY = -speed;
-    }
-    else if (downPressed && leftPressed)
-    {
-        velocityX = -speed;
-        velocityY = speed;
-    }
-    else if (downPressed && rightPressed)
-    {
-        velocityX = speed;
-        velocityY = speed;
-    }
-    else if (upPressed)
-    {
-        velocityY = -speed;
-    }
-    else if (downPressed)
-    {
-        velocityY = speed;
-    }
-    else if (leftPressed)
-    {
-        velocityX = -speed;
-    }
-    else if (rightPressed)
-    {
-        velocityX = speed;
-    }
-    else
-    {
-        velocityX = 0;
-        velocityY = 0;
+        float length = std::sqrt(velocityX * velocityX + velocityY * velocityY);
+        lastDirX = velocityX / length;
+        lastDirY = velocityY / length;
     }
 
-	player->SetVelocity(velocityX, velocityY); // Ustawienie prêdkoœci gracza w podanym kierunku
+    player->SetVelocity(velocityX, velocityY);
 }

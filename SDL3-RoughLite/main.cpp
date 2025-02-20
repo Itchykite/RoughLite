@@ -123,7 +123,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 		}
 	}
     
-    PlayerEventHandling(event, player); // Funkcja zawieraj¹ca przechwytywanie WASD do poruszania siê gracza
+    PlayerEventHandling(event, player, enemyManager->enemies); // Funkcja zawieraj¹ca przechwytywanie WASD do poruszania siê gracza
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
@@ -138,16 +138,16 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Koloruje ekran na czarno
 	SDL_RenderClear(renderer); // i go renderuje 
 
-    map->Render(renderer, camera->GetX(), camera->GetY()); // Renderowanie mapy
-
-    player->Update(deltaTime); // Aktulizacja gracza co sekunde
-    player->Render(renderer); // Renderowanie gracza
+    map->Render(renderer, camera->GetX(), camera->GetY()); // Renderowanie 
 
 	rangeRover->UpdateRangeRover(deltaTime); // Aktualizacja rangeRovera co sekunde
 	rangeRover->RenderRangeRover(renderer); // Renderowanie rangeRovera
 
     enemyManager->Update(deltaTime); // Aktualizacja przeciwnika co sekunde
     enemyManager->Render(renderer); // Renerowanie przeciwników
+
+    player->Update(deltaTime); // Aktulizacja gracza co sekunde
+    player->Render(renderer); // Renderowanie gracza
 
     SDL_FPoint playerPosition = { player->GetX(), player->GetY() }; // Pobieranie aktualnej pozycji gracza jako punkt
     int playerX = static_cast<int>(playerPosition.x); // przechowanie aktualnego x dla gracza, int
@@ -156,6 +156,15 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     if (!map->IsPixelTransparent(playerX, playerY)) // sprawdzenie przezroczystoœci
     {
         player->Update(-deltaTime); // Cofniêcie gracza o delta time, tak aby nie móg³ siê ruszaæ
+    }
+
+    for (auto& enemy : enemyManager->enemies)
+    {
+        if (enemy->health <= 0)
+        {
+			enemy->~Enemy(); // Usuniêcie przeciwnika
+			player->kills++; // Zwiêkszenie wyniku
+        }
     }
 
 	SDL_RenderPresent(renderer); // Renderowanie ca³oœci

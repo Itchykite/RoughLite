@@ -25,9 +25,10 @@ public:
 	void Render(SDL_Renderer* renderer); // Renderowanie przeciwnika
 	void RenderRangeRover(SDL_Renderer* renderer); // Renderowanie RangeRovera
 
+	std::vector<std::unique_ptr<Enemy>> enemies; // Przeciwnicy
+
 private:
 	bool CheckCollision(const SDL_FRect& rect1, const SDL_FRect& rect2) const; // Sprawdzenie kolizji
-	std::vector<std::unique_ptr<Enemy>> enemies; // Przeciwnicy
 	std::vector<std::unique_ptr<RangeRover>> rangeRovers; // RangeRover
 	Player* player; // Gracz
 	Map* map; // Mapa
