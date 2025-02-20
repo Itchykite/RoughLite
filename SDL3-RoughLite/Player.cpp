@@ -1,4 +1,7 @@
 #include "Player.hpp"
+#include "Enemy.hpp"
+#include "Settings.hpp"
+#include <cmath>
 #include <SDL3_image/SDL_image.h>
 
 float Player::playerW = 128.0f;
@@ -113,12 +116,34 @@ void Player::UpdateAnimation() // Aktualizacja animacji
     }
 }
 
+void Player::renderHealthBar(double healthValue, SDL_Renderer* renderer) // Renderowanie paska zdrowia
+{
+	float barHeight = 50.0f; // Wysokoœæ paska
+	float barWidth = WINDOW_WIDTH; // Szerokoœæ paska
+
+	float healthPercentage = healthValue / 100.0f; // Procent zdrowia
+	float currentBarWidth = barWidth * healthPercentage; // Aktualna szerokoœæ paska
+
+	float x = (WINDOW_WIDTH - barWidth); // Pozycja x
+	float y = (WINDOW_HEIGHT - barHeight); // Pozycja y
+
+	SDL_FRect backgroundBar = { x, y, barWidth, barHeight };
+	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+	SDL_RenderFillRect(renderer, &backgroundBar);
+
+	SDL_FRect foregroundBar = { x, y, currentBarWidth, barHeight };
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &foregroundBar);
+}
+
 void Player::Render(SDL_Renderer* renderer) // Renderowanie gracza
 {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // Ustaw kolor renderowania
 	SDL_FRect player = { x - camera->GetX(), y - camera->GetY(), playerW, playerH }; // Ustawienie pozycji gracza
 	SDL_FRect srcRect = { static_cast<int>(currentFrame * frameWidth), static_cast<int>(currentRow * frameHeight), static_cast<int>(frameWidth), static_cast<int>(frameHeight) }; // Ustawienie klatki
 	SDL_RenderTexture(renderer, playerTexture, &srcRect, &player); // Renderowanie tekstury
+
+	renderHealthBar(100, renderer); // Renderowanie paska zdrowia
 }
 
 void Player::SetPosition(float x, float y) 
@@ -151,4 +176,43 @@ float Player::GetVelocityX() const
 float Player::GetVelocityY() const
 {
     return velocityY;
+}
+
+// Funkcja sprawdzaj¹ca, czy wróg zosta³ trafiony
+bool isEnemyHit(float playerX, float playerY, float dirX, float dirY, Enemy& enemy, float attackRange, float attackAngle) 
+{
+    float enemyVecX = enemy.GetX() - playerX;
+    float enemyVecY = enemy.GetY() - playerY;
+    float distance = std::sqrt(enemyVecX * enemyVecX + enemyVecY * enemyVecY);
+
+    if (distance > attackRange) return false;
+
+    // Normalizacja kierunku ataku i wektora do wroga
+    float length = std::sqrt(dirX * dirX + dirY * dirY);
+    dirX /= length;
+    dirY /= length;
+
+    float enemyDirX = enemyVecX / distance;
+    float enemyDirY = enemyVecY / distance;
+
+    // Iloczyn skalarny
+    float dot = dirX * enemyDirX + dirY * enemyDirY;
+    float angle = std::acos(dot) * 180.f / 3.14159f;
+
+    return angle < attackAngle / 2.f;
+}
+
+// Funkcja ataku
+void Player::attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY) 
+{
+    float attackRange = 100.f;
+    float attackAngle = 60.f;
+
+    for (auto& enemy : enemies) 
+    {
+        if (isEnemyHit(x, y, dirX, dirY, *enemy, attackRange, attackAngle))
+        {
+            enemy->health -= 10;
+        }
+    }
 }

@@ -1,15 +1,18 @@
 #include "PlayerEventHandling.hpp"
 #include <SDL3/SDL.h>
 #include "Player.hpp"
+#include "Enemy.hpp"
+#include <vector>
+#include <memory>
 
-void PlayerEventHandling(SDL_Event* event, Player* player) // Obs³uga zdarzeñ gracza
+void PlayerEventHandling(SDL_Event* event, Player* player, std::vector<std::unique_ptr<Enemy>>& enemies) // Obs³uga zdarzeñ gracza
 {
-	static bool upPressed = false; // Czy wciœniêto górê
-	static bool downPressed = false; // Czy wciœniêto dó³
-	static bool leftPressed = false; // Czy wciœniêto lewo
-	static bool rightPressed = false; // Czy wciœniêto prawo
+    static bool upPressed = false; // Czy wciœniêto górê
+    static bool downPressed = false; // Czy wciœniêto dó³
+    static bool leftPressed = false; // Czy wciœniêto lewo
+    static bool rightPressed = false; // Czy wciœniêto prawo
 
-	if (event == nullptr || player == nullptr) // Jeœli zdarzenie lub wskaŸnik gracza jest nieprawid³owy
+    if (event == nullptr || player == nullptr) // Jeœli zdarzenie lub wskaŸnik gracza jest nieprawid³owy
     {
         SDL_Log("Invalid event or player pointer.");
         return;
@@ -17,38 +20,95 @@ void PlayerEventHandling(SDL_Event* event, Player* player) // Obs³uga zdarzeñ gr
 
     if (event->type == SDL_EVENT_KEY_DOWN) // Sprawdzenie naciœniêcia przycisku
     {
-		switch (event->key.scancode) // Sprawdzenie skanu klawisza
+        switch (event->key.scancode) // Sprawdzenie skanu klawisza
         {
-		case SDL_SCANCODE_UP: // Jeœli wciœniêto górê
+        case SDL_SCANCODE_UP: // Jeœli wciœniêto górê
             upPressed = true;
             break;
-		case SDL_SCANCODE_DOWN: // Jeœli wciœniêto dó³
+        case SDL_SCANCODE_DOWN: // Jeœli wciœniêto dó³
             downPressed = true;
             break;
-		case SDL_SCANCODE_LEFT: // Jeœli wciœniêto lewo
+        case SDL_SCANCODE_LEFT: // Jeœli wciœniêto lewo
             leftPressed = true;
-            break; 
-		case SDL_SCANCODE_RIGHT: // Jeœli wciœniêto prawo
+            break;
+        case SDL_SCANCODE_RIGHT: // Jeœli wciœniêto prawo
             rightPressed = true;
             break;
+        case SDL_SCANCODE_SPACE: // Jeœli wciœniêto spacjê (atak)
+        {
+            float dirX = 0.0f;
+            float dirY = 0.0f;
+
+            if (upPressed && leftPressed)
+            {
+                dirX = -1.0f;
+                dirY = -1.0f;
+            }
+            else if (upPressed && rightPressed)
+            {
+                dirX = 1.0f;
+                dirY = -1.0f;
+            }
+            else if (downPressed && leftPressed)
+            {
+                dirX = -1.0f;
+                dirY = 1.0f;
+            }
+            else if (downPressed && rightPressed)
+            {
+                dirX = 1.0f;
+                dirY = 1.0f;
+            }
+            else if (upPressed)
+            {
+                dirY = -1.0f;
+            }
+            else if (downPressed)
+            {
+                dirY = 1.0f;
+            }
+            else if (leftPressed)
+            {
+                dirX = -1.0f;
+            }
+            else if (rightPressed)
+            {
+                dirX = 1.0f;
+            }
+
+            player->attack(enemies, dirX, dirY); // Wywo³anie ataku
+
+            //SDL_FRect attackRect = { player->GetX() + dirX * 10, player->GetY() + dirY * 10, Player::playerW, Player::playerH };
+
+            //for (const auto& enemy : enemies)
+            //{
+            //    SDL_FRect enemyRect = enemy->GetCollisionRect(); // Przechowujemy wartoœæ w zmiennej
+            //    if (SDL_HasRectIntersectionFloat(&attackRect, &enemyRect)) // Teraz mamy wskaŸnik na trwa³y obiekt
+            //    {
+            //        SDL_Log("Enemy hit at position (%f, %f)", enemy->GetX(), enemy->GetY());
+            //    }
+            //}
+
+        }
+        break;
         default:
             break;
         }
     }
-	else if (event->type == SDL_EVENT_KEY_UP) // Sprawdzenie puszczenia przycisku
+    else if (event->type == SDL_EVENT_KEY_UP) // Sprawdzenie puszczenia przycisku
     {
-		switch (event->key.scancode) // Sprawdzenie skanu klawisza
+        switch (event->key.scancode) // Sprawdzenie skanu klawisza
         {
-		case SDL_SCANCODE_UP: // Jeœli wciœniêto górê
+        case SDL_SCANCODE_UP: // Jeœli wciœniêto górê
             upPressed = false;
             break;
-		case SDL_SCANCODE_DOWN: // Jeœli wciœniêto dó³
+        case SDL_SCANCODE_DOWN: // Jeœli wciœniêto dó³
             downPressed = false;
             break;
-		case SDL_SCANCODE_LEFT: // Jeœli wciœniêto lewo
+        case SDL_SCANCODE_LEFT: // Jeœli wciœniêto lewo
             leftPressed = false;
-            break; 
-		case SDL_SCANCODE_RIGHT: // Jeœli wciœniêto prawo
+            break;
+        case SDL_SCANCODE_RIGHT: // Jeœli wciœniêto prawo
             rightPressed = false;
             break;
         default:
@@ -56,15 +116,14 @@ void PlayerEventHandling(SDL_Event* event, Player* player) // Obs³uga zdarzeñ gr
         }
     }
 
-	float velocityX = 0; // Prêdkoœæ x
-	float velocityY = 0; // Prêdkoœæ y
-	const float speed = 500; // Prêdkoœæ
+    float velocityX = 0; // Prêdkoœæ x
+    float velocityY = 0; // Prêdkoœæ y
+    const float speed = 500; // Prêdkoœæ
 
-
-    //Obs³uga ruchu gracza
-	if (upPressed && leftPressed) 
+    // Obs³uga ruchu gracza
+    if (upPressed && leftPressed)
     {
-        velocityX = -speed; 
+        velocityX = -speed;
         velocityY = -speed;
     }
     else if (upPressed && rightPressed)
@@ -104,5 +163,5 @@ void PlayerEventHandling(SDL_Event* event, Player* player) // Obs³uga zdarzeñ gr
         velocityY = 0;
     }
 
-	player->SetVelocity(velocityX, velocityY); // Ustawienie prêdkoœci gracza w podanym kierunku
+    player->SetVelocity(velocityX, velocityY); // Ustawienie prêdkoœci gracza w podanym kierunku
 }

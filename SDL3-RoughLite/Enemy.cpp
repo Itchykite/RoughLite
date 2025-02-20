@@ -48,6 +48,8 @@ void Enemy::Render(SDL_Renderer* renderer) // Renderowanie przeciwnika
 		return;
 	}
 
+	renderHealthBar(health, renderer); // Renderowanie paska zdrowia
+
 	SDL_FRect srcRect = { currentFrame * frameWidth, currentRow * frameHeight, frameWidth, frameHeight }; // Ustawienie klatki
 	SDL_FRect dstRect = { x - camera->GetX() + (playerW / 2), y - camera->GetY() + (playerH / 2), enemyW, enemyH }; // Ustawienie pozycji
 	SDL_RenderTexture(renderer, playerTexture, &srcRect, &dstRect); // Renderowanie tekstury
@@ -118,6 +120,27 @@ void Enemy::Update(float deltaTime) // Aktualizacja przeciwnika
 
 	UpdateAnimation(); // Aktualizacja animacji
 }
+
+void Enemy::renderHealthBar(double healthValue, SDL_Renderer* renderer) // Renderowanie paska 
+{
+	float barHeight = 5.0f; // Wysokoœæ paska
+	float barWidth = enemyW / 2; // Szerokoœæ paska
+
+	float healthPercentage = healthValue / 100.0f; // Procent zdrowia
+	float currentBarWidth = barWidth * healthPercentage; // Aktualna szerokoœæ paska
+
+	float renderX = x - camera->GetX() + (playerW - 96.0f);
+	float renderY = y - camera->GetY() + (playerH / 2);
+
+	SDL_FRect backgroundBar = { renderX, renderY, barWidth, barHeight }; // Prostok¹t t³a
+	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255); // kolor szary
+	SDL_RenderFillRect(renderer, &backgroundBar); // Wype³nienie prostok¹ta
+
+	SDL_FRect foregroundBar = { renderX, renderY, currentBarWidth, barHeight }; // Prostok¹t paska
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Kolor czerwony
+	SDL_RenderFillRect(renderer, &foregroundBar); // Wype³nienie prostok¹ta
+}
+
 
 void Enemy::SetVelocity(float x, float y) // Ustawienie prêdkoœci przeciwnika
 {

@@ -4,5 +4,8 @@
 
 #include <SDL3/SDL.h>
 #include "Player.hpp"
+#include "Enemy.hpp"
+#include <vector>
+#include <memory>
 
-void PlayerEventHandling(SDL_Event* event, Player* player); // Obs³uga zdarzeñ gracza
+void PlayerEventHandling(SDL_Event* event, Player* player, std::vector<std::unique_ptr<Enemy>>& enemies);
