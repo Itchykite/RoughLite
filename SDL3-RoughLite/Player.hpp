@@ -3,6 +3,7 @@
 // Player odpowiada za gracza, jego zachowanie, wygl¹d, kolizje
 
 #include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include "Map.hpp"
 #include "Camera.hpp"
 #include <memory>
@@ -31,12 +32,14 @@ public:
     void attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY); // Atak
 
     long int kills; // Wynik
+    SDL_Texture* texture; // Tekstura
 
     Map* map;
 
 private:
     void UpdateAnimation(); // Aktualizacja animacji
     void renderHealthBar(double healthValue, SDL_Renderer* renderer); // Renderowanie paska zdrowia
+    void UpdateKillsTexture(SDL_Renderer* renderer);
 
     float x; // Pozycja x
     float y; // Pozycja y
@@ -46,6 +49,7 @@ private:
 
     SDL_Texture* playerTexture; // Tekstura gracza
     SDL_Texture* attackTexture; // Tekstura ataku
+	TTF_Font* font; // Czcionka
     int frameWidth; // Szerokoœæ klatki
     int frameHeight; // Wysokoœæ klatki
     int currentFrame; // Aktualna klatka

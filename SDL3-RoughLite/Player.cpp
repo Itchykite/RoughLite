@@ -3,6 +3,7 @@
 #include "Settings.hpp"
 #include <cmath>
 #include <iostream>
+#include <string>
 #include <SDL3_image/SDL_image.h>
 
 Player::Player(Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor gracza, mapa, kamera, renderer
@@ -10,12 +11,19 @@ Player::Player(Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor 
     playerTexture(nullptr), attackTexture(nullptr), frameWidth(0), frameHeight(0),
     currentFrame(0), totalFrames(0), lastFrameTime(0), frameDuration(100),
     attackFrameDuration(50), // Inicjalizacja zmiennej attackFrameDuration
-    currentRow(0), isAttacking(false), attackFrame(0), attackRow(0)
+	currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr)
 {
     SDL_Log("Loading player texture...");
     LoadTexture(renderer, "spritesheet.png"); // Wczytanie tekstury gracza
     SDL_Log("Loading attack texture...");
     LoadAttackTexture(renderer, "Images/attack.png"); // Wczytanie tekstury ataku
+
+    // Za³adowanie czcionki
+    font = TTF_OpenFont("Poppins-Bold.ttf", 24);
+    if (!font) 
+    {
+        SDL_Log("Failed to load font: %s", SDL_GetError());
+    }
 }
 
 Player::~Player() // Destruktor
@@ -32,6 +40,17 @@ Player::~Player() // Destruktor
         SDL_DestroyTexture(attackTexture); // Usuniêcie tekstury ataku
         attackTexture = nullptr; // Ustawienie tekstury ataku na nullptr
     }
+    if (font)
+    {
+        TTF_CloseFont(font);
+        font = nullptr;
+    }
+    if (texture) 
+    {
+        SDL_DestroyTexture(texture);
+        texture = nullptr;
+    }
+    TTF_Quit();
 }
 
 void Player::HandleCollision() // Obs³uga kolizji
@@ -219,6 +238,20 @@ void Player::Render(SDL_Renderer* renderer) // Renderowanie gracza
     }
 
     renderHealthBar(100, renderer); // Renderowanie paska zdrowia
+
+    if (texture)
+    {
+        float w = 0, h = 0;
+        SDL_GetTextureSize(texture, &w, &h);
+
+        SDL_FRect dst;
+        dst.w = w;
+        dst.h = h;
+        dst.x = (WINDOW_WIDTH - w) / 2;
+        dst.y = (WINDOW_HEIGHT * 0.02f);
+
+        SDL_RenderTexture(renderer, texture, NULL, &dst);
+    }
 }
 
 void Player::SetPosition(float x, float y) 
@@ -259,8 +292,8 @@ bool isEnemyHit(float playerX, float playerY, float dirX, float dirY, Enemy& ene
     float playerCenterX = playerX + playerW / 16.0f;
     float playerCenterY = playerY + playerH / 16.0f;
 
-    float enemyVecX = (enemy.GetX() + enemyW / 2.0f - playerCenterX) + playerW / 16 + 48.0f;
-    float enemyVecY = (enemy.GetY() + enemyH / 2.0f - playerCenterY) + playerH / 16 + 48.0f;
+    float enemyVecX = (enemy.GetX() + enemyW / 2.0f - playerCenterX) + playerW / 16 - 32.0f;
+    float enemyVecY = (enemy.GetY() + enemyH / 2.0f - playerCenterY) + playerH / 16 - 32.0f;
 
     float distance = std::sqrt(enemyVecX * enemyVecX + enemyVecY * enemyVecY);
 
@@ -321,7 +354,6 @@ void Player::attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, fl
     {
         attackRow = 7;
     }
-
     float attackRange = 150.0f;
     float attackAngle = 100.0f;
 
@@ -332,4 +364,28 @@ void Player::attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, fl
             enemy->health -= 50;
         }
     }
+}
+
+void Player::UpdateKillsTexture(SDL_Renderer* renderer)
+{
+    if (texture) 
+    {
+        SDL_DestroyTexture(texture);
+        texture = nullptr;
+    }
+
+    std::string killsText = "Kills: " + std::to_string(kills);
+    SDL_Color textColor = { 255, 255, 255, 255 };
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, killsText.c_str(), 0, textColor);
+    if (!textSurface) {
+        SDL_Log("Unable to render text surface: %s", SDL_GetError());
+        return;
+    }
+
+    texture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    if (!texture) {
+        SDL_Log("Unable to create texture from rendered text: %s", SDL_GetError());
+    }
+
+    SDL_DestroySurface(textSurface);
 }

@@ -133,7 +133,7 @@ void Enemy::renderHealthBar(double healthValue, SDL_Renderer* renderer) // Rende
 	float healthPercentage = healthValue / 100.0f; // Procent zdrowia
 	float currentBarWidth = barWidth * healthPercentage; // Aktualna szerokoœæ paska
 
-	float renderX = x - camera->GetX() + (playerW - 96.0f);
+	float renderX = x - camera->GetX() + (playerW - 32.0f);
 	float renderY = y - camera->GetY() + (playerH / 2);
 
 	SDL_FRect backgroundBar = { renderX, renderY, barWidth, barHeight }; // Prostok¹t t³a
