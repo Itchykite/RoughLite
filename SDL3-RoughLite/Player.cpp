@@ -2,6 +2,7 @@
 #include "Enemy.hpp"
 #include "Settings.hpp"
 #include <cmath>
+#include <iostream>
 #include <SDL3_image/SDL_image.h>
 
 float Player::playerW = 128.0f;
@@ -181,16 +182,23 @@ float Player::GetVelocityY() const
 // Funkcja sprawdzaj¹ca, czy wróg zosta³ trafiony
 bool isEnemyHit(float playerX, float playerY, float dirX, float dirY, Enemy& enemy, float attackRange, float attackAngle) 
 {
-    float enemyVecX = enemy.GetX() - playerX;
-    float enemyVecY = enemy.GetY() - playerY;
+    float playerCenterX = playerX + playerW / 16.0f;
+    float playerCenterY = playerY + playerH / 16.0f;
+
+    float enemyVecX = (enemy.GetX() + enemyW / 2.0f - playerCenterX) + playerW / 16 + 48.0f;
+    float enemyVecY = (enemy.GetY() + enemyH / 2.0f - playerCenterY) + playerH / 16 + 48.0f;
+
     float distance = std::sqrt(enemyVecX * enemyVecX + enemyVecY * enemyVecY);
 
     if (distance > attackRange) return false;
 
     // Normalizacja kierunku ataku i wektora do wroga
     float length = std::sqrt(dirX * dirX + dirY * dirY);
-    dirX /= length;
-    dirY /= length;
+    if (length > 0.001f) // Unikamy dzielenia przez 0
+    {
+        dirX /= length;
+        dirY /= length;
+    }
 
     float enemyDirX = enemyVecX / distance;
     float enemyDirY = enemyVecY / distance;
@@ -205,14 +213,14 @@ bool isEnemyHit(float playerX, float playerY, float dirX, float dirY, Enemy& ene
 // Funkcja ataku
 void Player::attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY) 
 {
-    float attackRange = 100.f;
-    float attackAngle = 60.f;
+    float attackRange = 250.0f;
+    float attackAngle = 100.0f;
 
-    for (auto& enemy : enemies) 
+    for (auto& enemy : enemies)
     {
         if (isEnemyHit(x, y, dirX, dirY, *enemy, attackRange, attackAngle))
         {
-            enemy->health -= 10;
+            enemy->health -= 50;
         }
     }
 }

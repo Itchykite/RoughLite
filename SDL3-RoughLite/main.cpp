@@ -158,6 +158,15 @@ SDL_AppResult SDL_AppIterate(void* appstate)
         player->Update(-deltaTime); // Cofniêcie gracza o delta time, tak aby nie móg³ siê ruszaæ
     }
 
+    for (auto& enemy : enemyManager->enemies)
+    {
+        if (enemy->health <= 0)
+        {
+			enemy->~Enemy(); // Usuniêcie przeciwnika
+			player->kills++; // Zwiêkszenie wyniku
+        }
+    }
+
 	SDL_RenderPresent(renderer); // Renderowanie ca³oœci
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */

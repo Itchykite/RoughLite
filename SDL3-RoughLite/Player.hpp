@@ -31,6 +31,7 @@ public:
 
     static float playerW; // Szerokoœæ gracza
     static float playerH; // Wysokoœæ gracza
+    long int kills; // Wynik
 
     Map* map;
 

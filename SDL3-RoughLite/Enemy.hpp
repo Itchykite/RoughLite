@@ -44,11 +44,13 @@ private:
     float directionY; // Kierunek y
     float speed; // Prêdkoœæ
     SDL_Texture* playerTexture; // Tekstura przeciwnika
+	SDL_Renderer* renderer; // Renderer
     int frameWidth; // Szerokoœæ klatki
     int frameHeight; // Wysokoœæ klatki
     int currentFrame; // Aktualna klatka
     int currentRow; // Aktualny wiersz
     int totalFrames; // Ca³kowita liczba klatek
+	bool isAlive; // Czy ¿yje
     Uint32 lastFrameTime; // Ostatni czas klatki
     Uint32 frameDuration; // Czas trwania klatki
 };

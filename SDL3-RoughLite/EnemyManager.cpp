@@ -59,7 +59,7 @@ void EnemyManager::Update(float deltaTime) // Aktualizacja przeciwnika
 {
 	Uint32 currentTime = SDL_GetTicks(); // Aktualny czas
 
-	if (currentTime > lastSpawnTime + 1000) // Jeœli aktualny czas jest wiêkszy od ostatniego czasu + 1000
+	if (currentTime > lastSpawnTime + 100) // Jeœli aktualny czas jest wiêkszy od ostatniego czasu + 1000
 	{
 		AddEnemy(); // Dodanie przeciwnika
 		lastSpawnTime = currentTime; // Ustawienie ostatniego czasu
