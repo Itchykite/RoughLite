@@ -5,25 +5,32 @@
 #include <iostream>
 #include <SDL3_image/SDL_image.h>
 
-float Player::playerW = 128.0f;
-float Player::playerH = 128.0f;
-
 Player::Player(Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor gracza, mapa, kamera, renderer
     : map(map), camera(camera), x(0), y(0), velocityX(0), velocityY(0),
-    playerTexture(nullptr), frameWidth(0), frameHeight(0), currentFrame(0),
-    totalFrames(0), lastFrameTime(0), frameDuration(100), currentRow(0)
+    playerTexture(nullptr), attackTexture(nullptr), frameWidth(0), frameHeight(0),
+    currentFrame(0), totalFrames(0), lastFrameTime(0), frameDuration(100),
+    attackFrameDuration(50), // Inicjalizacja zmiennej attackFrameDuration
+    currentRow(0), isAttacking(false), attackFrame(0), attackRow(0)
 {
     SDL_Log("Loading player texture...");
-	LoadTexture(renderer, "spritesheet.png"); // Wczytanie tekstury gracza
+    LoadTexture(renderer, "spritesheet.png"); // Wczytanie tekstury gracza
+    SDL_Log("Loading attack texture...");
+    LoadAttackTexture(renderer, "Images/attack.png"); // Wczytanie tekstury ataku
 }
 
 Player::~Player() // Destruktor
 {
-	if (playerTexture) // Jeœli tekstura gracza istnieje
+    if (playerTexture) // Jeœli tekstura gracza istnieje
     {
         SDL_Log("Destroying player texture...");
-		SDL_DestroyTexture(playerTexture); // Usuniêcie tekstury gracza
-		playerTexture = nullptr; // Ustawienie tekstury gracza na nullptr
+        SDL_DestroyTexture(playerTexture); // Usuniêcie tekstury gracza
+        playerTexture = nullptr; // Ustawienie tekstury gracza na nullptr
+    }
+    if (attackTexture) // Jeœli tekstura ataku istnieje
+    {
+        SDL_Log("Destroying attack texture...");
+        SDL_DestroyTexture(attackTexture); // Usuniêcie tekstury ataku
+        attackTexture = nullptr; // Ustawienie tekstury ataku na nullptr
     }
 }
 
@@ -37,47 +44,47 @@ void Player::HandleCollision() // Obs³uga kolizji
 }
 
 void Player::Update(float deltaTime) // Aktualizacja gracza
-{ 
-	float newX = x + velocityX * deltaTime; // Nowa pozycja x
-	float newY = y + velocityY * deltaTime; // Nowa pozycja y
+{
+    float newX = x + velocityX * deltaTime; // Nowa pozycja x
+    float newY = y + velocityY * deltaTime; // Nowa pozycja y
 
-	if (map->IsWithinBounds(newX, newY, playerW, playerH)) // Jeœli gracz jest w granicach
+    if (map->IsWithinBounds(newX, newY, playerW, playerH)) // Jeœli gracz jest w granicach
     {
-		x = newX; // Ustaw pozycjê x
-		y = newY; // Ustaw pozycjê y
+        x = newX; // Ustaw pozycjê x
+        y = newY; // Ustaw pozycjê y
     }
 
-	if (velocityX == 0 && velocityY == 0) // Jeœli prêdkoœæ x i y s¹ równe 0
+    if (velocityX == 0 && velocityY == 0) // Jeœli prêdkoœæ x i y s¹ równe 0
     {
-		currentFrame = 0; // Ustaw klatkê na 0
+        currentFrame = 0; // Ustaw klatkê na 0
     }
-	else if (velocityX > 0) // Right
+    else if (velocityX > 0) // Right
     {
-		currentRow = 3; // Ustaw klatkê na 3
+        currentRow = 3; // Ustaw klatkê na 3
     }
-	else if (velocityX < 0) // Left
+    else if (velocityX < 0) // Left
     {
-		currentRow = 1; // Ustaw klatkê na 1
+        currentRow = 1; // Ustaw klatkê na 1
     }
-	else if (velocityY > 0) // Up
+    else if (velocityY > 0) // Up
     {
-		currentRow = 2; // Ustaw klatkê na 2
+        currentRow = 2; // Ustaw klatkê na 2
     }
     else if (velocityY < 0) // Down
     {
-		currentRow = 0; // Ustaw klatkê na 0
+        currentRow = 0; // Ustaw klatkê na 0
     }
 
-	if (camera != nullptr) // Jeœli kamera istnieje
+    if (camera != nullptr) // Jeœli kamera istnieje
     {
-		camera->Update(x, y); // Aktualizacja kamery
+        camera->Update(x, y); // Aktualizacja kamery
     }
     else
     {
         SDL_Log("Camera is not initialized!");
     }
 
-	UpdateAnimation(); // Aktualizacja animacji
+    UpdateAnimation(); // Aktualizacja animacji
 }
 
 void Player::SetCurrentRow(int row) // Ustawienie aktualnego wiersza dla animacji
@@ -87,33 +94,54 @@ void Player::SetCurrentRow(int row) // Ustawienie aktualnego wiersza dla animacj
 
 void Player::LoadTexture(SDL_Renderer* renderer, const char* pathFile) // Wczytanie tekstury gracza
 {
-	SDL_Surface* surface = IMG_Load(pathFile); // Wczytanie powierzchni gracza
-	if (!surface) // Jeœli powierzchnia gracza nie istnieje
+    SDL_Surface* surface = IMG_Load(pathFile); // Wczytanie powierzchni gracza
+    if (!surface) // Jeœli powierzchnia gracza nie istnieje
     {
         SDL_Log("Couldn't load player texture: %s", SDL_GetError());
         return;
     }
 
-	playerTexture = SDL_CreateTextureFromSurface(renderer, surface); // Utworzenie tekstury gracza
-	frameWidth = surface->w / 9; // Szerokoœæ klatki
-	frameHeight = surface->h / 4; // Wysokoœæ klatki
-	totalFrames = 4; // Ca³kowita liczba klatek
+    playerTexture = SDL_CreateTextureFromSurface(renderer, surface); // Utworzenie tekstury gracza
+    frameWidth = surface->w / 9; // Szerokoœæ klatki
+    frameHeight = surface->h / 4; // Wysokoœæ klatki
+    totalFrames = 4; // Ca³kowita liczba klatek
 
-	SDL_DestroySurface(surface); // Usuniêcie powierzchni
+    SDL_DestroySurface(surface); // Usuniêcie powierzchni
+}
+
+void Player::LoadAttackTexture(SDL_Renderer* renderer, const char* pathFile) // Wczytanie tekstury ataku
+{
+    SDL_Surface* surface = IMG_Load(pathFile); // Wczytanie powierzchni ataku
+    if (!surface) // Jeœli powierzchnia ataku nie istnieje
+    {
+        SDL_Log("Couldn't load attack texture: %s", SDL_GetError());
+        return;
+    }
+
+    attackTexture = SDL_CreateTextureFromSurface(renderer, surface); // Utworzenie tekstury ataku
+    SDL_DestroySurface(surface); // Usuniêcie powierzchni
 }
 
 void Player::UpdateAnimation() // Aktualizacja animacji
 {
-	if (velocityX == 0 && velocityY == 0) // Jeœli prêdkoœæ x i y s¹ równe 0
+    Uint32 currentTime = SDL_GetTicks(); // Aktualny czas
+    if (currentTime > lastFrameTime + frameDuration) // Je¿eli aktualny czas jest wiêkszy od ostatniego czasu klatki + czasu trwania klatki
     {
-        return;
+        currentFrame = (currentFrame + 1) % totalFrames; // Ustaw klatkê
+        lastFrameTime = currentTime; // Ustaw ostatni czas klatki
     }
 
-	Uint32 currentTime = SDL_GetTicks(); // Aktualny czas
-	if (currentTime > lastFrameTime + frameDuration) // Je¿eli aktualny czas jest wiêkszy od ostatniego czasu klatki + czasu trwania klatki
+    if (isAttacking)
     {
-		currentFrame = (currentFrame + 1) % totalFrames; // Ustaw klatkê
-		lastFrameTime = currentTime; // Ustaw ostatni czas klatki
+        if (currentTime > lastFrameTime + attackFrameDuration) // U¿yj attackFrameDuration dla animacji ataku
+        {
+            attackFrame = (attackFrame + 1) % 6; // Aktualizacja klatki ataku
+            lastFrameTime = currentTime; // Ustaw ostatni czas klatki ataku
+            if (attackFrame == 0)
+            {
+                isAttacking = false; // Zakoñczenie ataku
+            }
+        }
     }
 }
 
@@ -139,12 +167,58 @@ void Player::renderHealthBar(double healthValue, SDL_Renderer* renderer) // Rend
 
 void Player::Render(SDL_Renderer* renderer) // Renderowanie gracza
 {
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // Ustaw kolor renderowania
-	SDL_FRect player = { x - camera->GetX(), y - camera->GetY(), playerW, playerH }; // Ustawienie pozycji gracza
-	SDL_FRect srcRect = { static_cast<int>(currentFrame * frameWidth), static_cast<int>(currentRow * frameHeight), static_cast<int>(frameWidth), static_cast<int>(frameHeight) }; // Ustawienie klatki
-	SDL_RenderTexture(renderer, playerTexture, &srcRect, &player); // Renderowanie tekstury
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // Ustaw kolor renderowania
+    SDL_FRect player = { x - camera->GetX(), y - camera->GetY(), playerW, playerH }; // Ustawienie pozycji gracza
+    SDL_FRect srcRect = { static_cast<int>(currentFrame * frameWidth), static_cast<int>(currentRow * frameHeight), static_cast<int>(frameWidth), static_cast<int>(frameHeight) }; // Ustawienie klatki
 
-	renderHealthBar(100, renderer); // Renderowanie paska zdrowia
+    SDL_RenderTexture(renderer, playerTexture, &srcRect, &player); // Renderowanie tekstury gracza
+
+    if (isAttacking)
+    {
+        float attackOffsetX = 0.0f;
+        float attackOffsetY = 0.0f;
+
+        // Oblicz przesuniêcie animacji ataku w zale¿noœci od kierunku ataku
+        switch (attackRow)
+        {
+        case 0: // Right
+            attackOffsetX = playerW / 1.5f;
+            break;
+        case 1: // Left
+            attackOffsetX = -playerW / 1.5f;
+            break;
+        case 2: // Down
+            attackOffsetY = playerH / 1.5f;
+            break;
+        case 3: // Up
+            attackOffsetY = -playerH / 1.5f;
+            break;
+        case 4: // Right Down
+            attackOffsetX = playerW / 1.5f;
+            attackOffsetY = playerH / 1.5f;
+            break;
+        case 5: // Right Up
+            attackOffsetX = playerW / 1.5f;
+            attackOffsetY = -playerH / 1.5f;
+            break;
+        case 6: // Left Down
+            attackOffsetX = -playerW / 1.5f;
+            attackOffsetY = playerH / 1.5f;
+            break;
+        case 7: // Left Up
+            attackOffsetX = -playerW / 1.5f;
+            attackOffsetY = -playerH / 1.5f;
+            break;
+        default:
+            break;
+        }
+
+        SDL_FRect attackSrcRect = { static_cast<int>(attackFrame * 64), static_cast<int>(attackRow * 64), 64, 64 }; // Ustawienie klatki ataku
+        SDL_FRect attackDestRect = { player.x + attackOffsetX, player.y + attackOffsetY, playerW, playerH }; // Ustawienie pozycji animacji ataku z rozmiarem 128x128
+        SDL_RenderTexture(renderer, attackTexture, &attackSrcRect, &attackDestRect); // Renderowanie tekstury ataku
+    }
+
+    renderHealthBar(100, renderer); // Renderowanie paska zdrowia
 }
 
 void Player::SetPosition(float x, float y) 
@@ -210,10 +284,45 @@ bool isEnemyHit(float playerX, float playerY, float dirX, float dirY, Enemy& ene
     return angle < attackAngle / 2.f;
 }
 
-// Funkcja ataku
-void Player::attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY) 
+void Player::attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY) // Atak
 {
-    float attackRange = 250.0f;
+    isAttacking = true;
+    attackFrame = 0;
+
+    if (dirX > 0 && dirY == 0) // Right
+    {
+        attackRow = 0;
+    }
+    else if (dirX < 0 && dirY == 0) // Left
+    {
+        attackRow = 1;
+    }
+    else if (dirX == 0 && dirY > 0) // Down
+    {
+        attackRow = 2;
+    }
+    else if (dirX == 0 && dirY < 0) // Up
+    {
+        attackRow = 3;
+    }
+    else if (dirX > 0 && dirY > 0) // Right Down
+    {
+        attackRow = 4;
+    }
+    else if (dirX > 0 && dirY < 0) // Right Up
+    {
+        attackRow = 5;
+    }
+    else if (dirX < 0 && dirY > 0) // Left Down
+    {
+        attackRow = 6;
+    }
+    else if (dirX < 0 && dirY < 0) // Left Up
+    {
+        attackRow = 7;
+    }
+
+    float attackRange = 150.0f;
     float attackAngle = 100.0f;
 
     for (auto& enemy : enemies)

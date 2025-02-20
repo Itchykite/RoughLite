@@ -17,6 +17,7 @@ public:
     ~Player(); // Destruktor
 
     void LoadTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury gracza
+    void LoadAttackTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury ataku
     void Render(SDL_Renderer* renderer); // Renderowanie gracza
     void SetPosition(float x, float y); // Ustwienie pozycji gracza
     void Update(float deltaTime); // Aktualizacja gracza
@@ -29,8 +30,6 @@ public:
     void HandleCollision(); // Obs³uga kolizji
     void attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY); // Atak
 
-    static float playerW; // Szerokoœæ gracza
-    static float playerH; // Wysokoœæ gracza
     long int kills; // Wynik
 
     Map* map;
@@ -46,6 +45,7 @@ private:
     Camera* camera; // Kamera
 
     SDL_Texture* playerTexture; // Tekstura gracza
+    SDL_Texture* attackTexture; // Tekstura ataku
     int frameWidth; // Szerokoœæ klatki
     int frameHeight; // Wysokoœæ klatki
     int currentFrame; // Aktualna klatka
@@ -53,6 +53,11 @@ private:
     int totalFrames; // Ca³kowita liczba klatek
     Uint32 lastFrameTime; // Ostatni czas klatki
     Uint32 frameDuration; // Czas trwania klatki
+    Uint32 attackFrameDuration; // Czas trwania ataku
 
     double health; // Zdrowie
+
+    bool isAttacking; // Czy gracz atakuje
+    int attackFrame; // Aktualna klatka ataku
+    int attackRow; // Aktualny wiersz ataku
 };
