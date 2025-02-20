@@ -7,7 +7,7 @@
 #include <SDL3_image/SDL_image.h>
 #include <cmath>
 
-float RangeRover::numOfRangeRovers = 1; // Liczba RangeRoverów
+float RangeRover::numOfRangeRovers = 0; // Liczba RangeRoverów
 
 RangeRover::RangeRover(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor RangeRovera, gracz, mapa, kamera, renderer
 	: x(0), y(0), velocityX(0), velocityY(0), speed(10.0f), playerTexture(nullptr), 
@@ -58,7 +58,7 @@ void RangeRover::Render(SDL_Renderer* renderer) // Renderowanie RangeRovera
 	}
 
 	SDL_FRect srcRect = { currentFrame * frameWidth, currentRow * frameHeight, frameWidth, frameHeight }; // Ustawienie klatki
-	SDL_FRect dstRect = { x - camera->GetX() + (playerW / 2), y - camera->GetY() + (playerH / 2), enemyW, enemyH }; // Ustawienie pozycji
+	SDL_FRect dstRect = { x - camera->GetX() + (playerW / 4), y - camera->GetY() + (playerH / 4), (enemyW / 2), (enemyH / 2) }; // Ustawienie pozycji
 	SDL_RenderTexture(renderer, playerTexture, &srcRect, &dstRect); // Renderowanie tekstury
 }
 
