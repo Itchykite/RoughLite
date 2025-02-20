@@ -73,8 +73,8 @@ void Enemy::Update(float deltaTime) // Aktualizacja przeciwnika
 		return;
 	}
 
-	float targetX = player->GetX();	// Pozycja x gracza
-	float targetY = player->GetY(); // Pozycja y gracza
+	float targetX = player->GetX() - playerW / 2;	// Pozycja x gracza
+	float targetY = player->GetY() - playerH / 2; // Pozycja y gracza
 
 	float directionX = targetX - x; // Kierunek x
 	float directionY = targetY - y; // Kierunek y
