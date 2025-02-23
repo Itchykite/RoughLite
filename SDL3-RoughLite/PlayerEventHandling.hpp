@@ -8,4 +8,4 @@
 #include <vector>
 #include <memory>
 
-void PlayerEventHandling(SDL_Event* event, Player* player, std::vector<std::unique_ptr<Enemy>>& enemies);
+void PlayerEventHandling(SDL_Event* event, Player* player, std::vector<std::unique_ptr<Enemy>>& enemies, SDL_Renderer* renderer);

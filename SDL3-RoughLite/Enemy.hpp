@@ -31,6 +31,7 @@ public:
     Camera* camera; // Kamera
 
     double health; // Zdrowie
+    bool isAlive; // Czy ¿yje
 
 private:
     void UpdateAnimation(); // Aktualizacja animacji
@@ -50,7 +51,6 @@ private:
     int currentFrame; // Aktualna klatka
     int currentRow; // Aktualny wiersz
     int totalFrames; // Ca³kowita liczba klatek
-	bool isAlive; // Czy ¿yje
     Uint32 lastFrameTime; // Ostatni czas klatki
     Uint32 frameDuration; // Czas trwania klatki
 };

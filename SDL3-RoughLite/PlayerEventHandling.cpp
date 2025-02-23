@@ -8,7 +8,7 @@
 
 #include <iostream> // Dodaj, aby zobaczyæ wyjœcie
 
-void PlayerEventHandling(SDL_Event* event, Player* player, std::vector<std::unique_ptr<Enemy>>& enemies)
+void PlayerEventHandling(SDL_Event* event, Player* player, std::vector<std::unique_ptr<Enemy>>& enemies, SDL_Renderer* renderer)
 {
     static bool upPressed = false;
     static bool downPressed = false;
@@ -100,7 +100,7 @@ void PlayerEventHandling(SDL_Event* event, Player* player, std::vector<std::uniq
                     dirY = -1.0f;
                 }
 
-                player->attack(enemies, dirX, dirY);
+                player->attack(renderer, enemies, dirX, dirY);
             }
             break;
         default:

@@ -70,6 +70,8 @@ void EnemyManager::Update(float deltaTime) // Aktualizacja przeciwnika
 		enemy->Update(deltaTime); // Aktualizacja
 	}
 
+	enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [](const std::unique_ptr<Enemy>& enemy) { return !enemy->isAlive; }), enemies.end());
+
 	for (size_t i = 0; i < enemies.size(); ++i) // Dla ka¿dego przeciwnika
 	{
 		for (size_t j = i + 1; j < enemies.size(); ++j) // Dla ka¿dego przeciwnika
@@ -100,6 +102,13 @@ void EnemyManager::Update(float deltaTime) // Aktualizacja przeciwnika
             }
         }
     }
+
+	if (IsPlayerInCollision() && (currentTime > lastCollisionTime + 1000)) // Jeœli kolizja i minê³o 1000 ms od ostatniej kolizji
+	{
+		player->health -= 10; // Zmniejszenie zdrowia gracza
+		lastCollisionTime = currentTime; // Ustawienie ostatniego czasu kolizji
+		player->renderHealthBar(player->health, renderer); // Renderowanie paska zdrowia
+	}
 }
 
 void EnemyManager::UpdateRangeRover(float deltaTime) // Aktualizacja RangeRovera
@@ -209,4 +218,20 @@ bool EnemyManager::CheckCollision(const SDL_FRect& rect1, const SDL_FRect& rect2
 	float distance = std::sqrt(dx * dx + dy * dy); // Odleg³oœæ
 
 	return distance < (radius1 + radius2);	// Zwróæ czy odleg³oœæ jest mniejsza od sumy promieni
+}
+
+bool EnemyManager::IsPlayerInCollision() const // Czy gracz jest w kolizji
+{
+	SDL_FRect playerRect = player->GetCollisionRect(); // Pobierz prostok¹t kolizji gracza
+
+	for (const auto& enemy : enemies) // Dla ka¿dego przeciwnika
+	{
+		SDL_FRect enemyRect = enemy->GetCollisionRect(); // Pobierz prostok¹t kolizji przeciwnika
+		if (CheckCollision(playerRect, enemyRect)) // SprawdŸ kolizjê
+		{
+			return true; // Jeœli kolizja, zwróæ true
+		}
+	}
+
+	return false; // Jeœli brak kolizji, zwróæ false
 }

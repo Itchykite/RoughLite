@@ -20,6 +20,7 @@ public:
     void LoadTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury gracza
     void LoadAttackTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury ataku
     void Render(SDL_Renderer* renderer); // Renderowanie gracza
+    void renderHealthBar(double healthValue, SDL_Renderer* renderer); // Renderowanie paska zdrowia
     void SetPosition(float x, float y); // Ustwienie pozycji gracza
     void Update(float deltaTime); // Aktualizacja gracza
     void SetVelocity(float x, float y); // Ustwienie prêdkoœci gracza
@@ -29,17 +30,20 @@ public:
     float GetVelocityY() const; // Pobranie prêdkoœci y
     void SetCurrentRow(int row); // Ustwienie aktualnego wiersza dla animacji
     void HandleCollision(); // Obs³uga kolizji
-    void attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY); // Atak
+    void attack(SDL_Renderer* renderer, std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY); // Atak
+    void UpdateKillsTexture(SDL_Renderer* renderer);
+
+    SDL_FRect GetCollisionRect() const;
 
     long int kills; // Wynik
+    double health; // Zdrowie
+
     SDL_Texture* texture; // Tekstura
 
     Map* map;
 
 private:
     void UpdateAnimation(); // Aktualizacja animacji
-    void renderHealthBar(double healthValue, SDL_Renderer* renderer); // Renderowanie paska zdrowia
-    void UpdateKillsTexture(SDL_Renderer* renderer);
 
     float x; // Pozycja x
     float y; // Pozycja y
@@ -58,8 +62,6 @@ private:
     Uint32 lastFrameTime; // Ostatni czas klatki
     Uint32 frameDuration; // Czas trwania klatki
     Uint32 attackFrameDuration; // Czas trwania ataku
-
-    double health; // Zdrowie
 
     bool isAttacking; // Czy gracz atakuje
     int attackFrame; // Aktualna klatka ataku
