@@ -17,7 +17,7 @@ void Map::CreateCollisionSurface() // Utworzenie powierzchni kolizji
 
 bool Map::IsWithinBounds(float x, float y, float px, float py) const // Czy jest w granicach
 {
-	if (x < 64.0f || x >(width - px - 64.0f) || y < 0.0f || y >(height - py - 63.0f)) // Jeœli x jest mniejsze od 64, x jest wiêksze od szerokoœci - px - 64, y jest mniejsze od 0, y jest wiêksze od wysokoœci - py - 63
+	if (x < 64.0f || x >(width - px - 64.0f) || y < 0.0f || y >(height - py - 64.0f)) // Jeœli x jest mniejsze od 64, x jest wiêksze od szerokoœci - px - 64, y jest mniejsze od 0, y jest wiêksze od wysokoœci - py - 63
     {
         return false;
     }

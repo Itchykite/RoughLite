@@ -152,6 +152,7 @@
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="OtherFunctions.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerEventHandling.cpp" />
     <ClCompile Include="RangeRover.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="EnemyManager.hpp" />
     <ClInclude Include="Map.hpp" />
+    <ClInclude Include="OtherFunctions.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="PlayerEventHandling.hpp" />
     <ClInclude Include="RangeRover.hpp" />

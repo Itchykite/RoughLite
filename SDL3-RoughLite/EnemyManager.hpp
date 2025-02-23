@@ -29,6 +29,8 @@ public:
 
 private:
 	bool CheckCollision(const SDL_FRect& rect1, const SDL_FRect& rect2) const; // Sprawdzenie kolizji
+	bool IsPlayerInCollision() const; // Czy gracz jest w kolizji
+
 	std::vector<std::unique_ptr<RangeRover>> rangeRovers; // RangeRover
 	Player* player; // Gracz
 	Map* map; // Mapa
@@ -39,4 +41,5 @@ private:
 	float GetRandomFloat(float min, float max); // Pobranie losowej liczby zmiennoprzecinkowej
 
 	Uint32 lastSpawnTime = 0; // Ostatni czas spawnu przeciwnika
+	Uint32 lastCollisionTime = 0; // Ostatni czas spawnu przeciwnika
 };

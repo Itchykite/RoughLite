@@ -10,13 +10,15 @@ Player::Player(Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor 
     : map(map), camera(camera), x(0), y(0), velocityX(0), velocityY(0),
     playerTexture(nullptr), attackTexture(nullptr), frameWidth(0), frameHeight(0),
     currentFrame(0), totalFrames(0), lastFrameTime(0), frameDuration(100),
-    attackFrameDuration(50), // Inicjalizacja zmiennej attackFrameDuration
-	currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr)
+    attackFrameDuration(10), // Inicjalizacja zmiennej attackFrameDuration
+	currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr), health(100)
 {
     SDL_Log("Loading player texture...");
     LoadTexture(renderer, "spritesheet.png"); // Wczytanie tekstury gracza
     SDL_Log("Loading attack texture...");
     LoadAttackTexture(renderer, "Images/attack.png"); // Wczytanie tekstury ataku
+
+    TTF_Init();
 
     // Za³adowanie czcionki
     font = TTF_OpenFont("Poppins-Bold.ttf", 24);
@@ -237,7 +239,7 @@ void Player::Render(SDL_Renderer* renderer) // Renderowanie gracza
         SDL_RenderTexture(renderer, attackTexture, &attackSrcRect, &attackDestRect); // Renderowanie tekstury ataku
     }
 
-    renderHealthBar(100, renderer); // Renderowanie paska zdrowia
+    renderHealthBar(health, renderer); // Renderowanie paska zdrowia
 
     if (texture)
     {
@@ -317,7 +319,7 @@ bool isEnemyHit(float playerX, float playerY, float dirX, float dirY, Enemy& ene
     return angle < attackAngle / 2.f;
 }
 
-void Player::attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY) // Atak
+void Player::attack(SDL_Renderer* renderer, std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY) // Atak
 {
     isAttacking = true;
     attackFrame = 0;
@@ -361,7 +363,14 @@ void Player::attack(std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, fl
     {
         if (isEnemyHit(x, y, dirX, dirY, *enemy, attackRange, attackAngle))
         {
-            enemy->health -= 50;
+            enemy->health -= 100;
+            if (enemy->health <= 0)
+            {
+                enemy->isAlive = false;
+                kills++; // Zwiêkszenie liczby zabójstw
+                UpdateKillsTexture(renderer); // Aktualizacja tekstury z liczb¹ zabójstw
+                enemy->~Enemy();
+            }
         }
     }
 }
@@ -388,4 +397,42 @@ void Player::UpdateKillsTexture(SDL_Renderer* renderer)
     }
 
     SDL_DestroySurface(textSurface);
+}
+
+void GameOver(SDL_Renderer* renderer, TTF_Font* font) // Funkcja wyœwietlaj¹ca napis Game Over
+{
+    SDL_Color textColor = { 255, 255, 255, 255 };
+
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, "Game Over", 0, textColor);
+    if (!textSurface)
+    {
+        SDL_Log("Unable to render text surface: %s", SDL_GetError());
+        return;
+    }
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    if (!texture)
+    {
+        SDL_Log("Unable to create texture from rendered text: %s", SDL_GetError());
+    }
+
+    SDL_FRect dst;
+    dst.w = textSurface->w;
+    dst.h = textSurface->h;
+    dst.x = (WINDOW_WIDTH - dst.w) / 2;
+    dst.y = (WINDOW_HEIGHT - dst.h) / 2;
+    SDL_RenderTexture(renderer, texture, NULL, &dst);
+    SDL_DestroyTexture(texture);
+    SDL_DestroySurface(textSurface);
+}
+
+SDL_FRect Player::GetCollisionRect() const // Pobranie prostok¹ta kolizji
+{
+    return SDL_FRect
+    {
+        x - 48.0f,
+        y - 48.0f,
+        enemyW / 2,
+        enemyH / 2
+    };
 }

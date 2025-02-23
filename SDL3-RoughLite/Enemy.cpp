@@ -55,7 +55,7 @@ void Enemy::Render(SDL_Renderer* renderer) // Renderowanie przeciwnika
 	renderHealthBar(health, renderer); // Renderowanie paska zdrowia
 
 	SDL_FRect srcRect = { currentFrame * frameWidth, currentRow * frameHeight, frameWidth, frameHeight }; // Ustawienie klatki
-	SDL_FRect dstRect = { x - camera->GetX() + (playerW / 2), y - camera->GetY() + (playerH / 2), enemyW, enemyH }; // Ustawienie pozycji
+	SDL_FRect dstRect = { x - camera->GetX() + (playerW / 16), y - camera->GetY() + (playerH / 16), enemyW, enemyH }; // Ustawienie pozycji
 	SDL_RenderTexture(renderer, playerTexture, &srcRect, &dstRect); // Renderowanie tekstury
 }
 
@@ -79,8 +79,8 @@ void Enemy::Update(float deltaTime) // Aktualizacja przeciwnika
 		return;
 	}
 
-	float targetX = player->GetX() - playerW / 2;	// Pozycja x gracza
-	float targetY = player->GetY() - playerH / 2; // Pozycja y gracza
+	float targetX = player->GetX() - playerW / 16;	// Pozycja x gracza
+	float targetY = player->GetY() - playerH / 16; // Pozycja y gracza
 
 	float directionX = targetX - x; // Kierunek x
 	float directionY = targetY - y; // Kierunek y
@@ -133,8 +133,8 @@ void Enemy::renderHealthBar(double healthValue, SDL_Renderer* renderer) // Rende
 	float healthPercentage = healthValue / 100.0f; // Procent zdrowia
 	float currentBarWidth = barWidth * healthPercentage; // Aktualna szerokoœæ paska
 
-	float renderX = x - camera->GetX() + (playerW - 32.0f);
-	float renderY = y - camera->GetY() + (playerH / 2);
+	float renderX = x - camera->GetX() + (playerW / 2) - 32.0f;
+	float renderY = y - camera->GetY() + (playerH / 8);
 
 	SDL_FRect backgroundBar = { renderX, renderY, barWidth, barHeight }; // Prostok¹t t³a
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255); // kolor szary
