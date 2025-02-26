@@ -57,9 +57,9 @@ void EnemyManager::AddRangeRover() // Dodanie RangeRovera
 
 void EnemyManager::Update(float deltaTime) // Aktualizacja przeciwnika
 {
-	Uint32 currentTime = SDL_GetTicks(); // Aktualny czas
+	Uint64 currentTime = SDL_GetTicks(); // Aktualny czas
 
-	if (currentTime > lastSpawnTime + 500) // Jeœli aktualny czas jest wiêkszy od ostatniego czasu + 1000
+	if (currentTime > lastSpawnTime + 50000) // Jeœli aktualny czas jest wiêkszy od ostatniego czasu + 1000
 	{
 		AddEnemy(); // Dodanie przeciwnika
 		lastSpawnTime = currentTime; // Ustawienie ostatniego czasu

@@ -135,7 +135,7 @@ void RangeRover::UpdateAnimation() // Aktualizacja animacji
 		return;
 	}
 
-	Uint32 currentTime = SDL_GetTicks(); // Aktualny czas
+	Uint64 currentTime = SDL_GetTicks(); // Aktualny czas
 	if (currentTime > lastFrameTime + frameDuration) // Jeœli aktualny czas jest wiêkszy od ostatniego czasu klatki + czasu trwania klatki
 	{
 		currentFrame = (currentFrame + 1) % totalFrames; // Ustaw klatkê

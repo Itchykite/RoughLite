@@ -28,15 +28,19 @@ public:
     float GetY() const; // Pobranie pozycji y
     float GetVelocityX() const; // Pobranie prêdkoœci x
     float GetVelocityY() const; // Pobranie prêdkoœci y
+	float GetHeight() const; // Pobranie wysokoœci gracza
     void SetCurrentRow(int row); // Ustwienie aktualnego wiersza dla animacji
     void HandleCollision(); // Obs³uga kolizji
     void attack(SDL_Renderer* renderer, std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY); // Atak
     void UpdateKillsTexture(SDL_Renderer* renderer);
 
     SDL_FRect GetCollisionRect() const;
+    SDL_Texture* playerTexture; // Tekstura gracza
+
 
     long int kills; // Wynik
     double health; // Zdrowie
+    bool isGameOver;
 
     SDL_Texture* texture; // Tekstura
 
@@ -50,8 +54,6 @@ private:
     float velocityX; // Prêdkoœæ x
     float velocityY; // Prêdkoœæ y
     Camera* camera; // Kamera
-
-    SDL_Texture* playerTexture; // Tekstura gracza
     SDL_Texture* attackTexture; // Tekstura ataku
 	TTF_Font* font; // Czcionka
     int frameWidth; // Szerokoœæ klatki
@@ -59,9 +61,9 @@ private:
     int currentFrame; // Aktualna klatka
     int currentRow; // Aktualny wiersz
     int totalFrames; // Ca³kowita liczba klatek
-    Uint32 lastFrameTime; // Ostatni czas klatki
-    Uint32 frameDuration; // Czas trwania klatki
-    Uint32 attackFrameDuration; // Czas trwania ataku
+    Uint64 lastFrameTime; // Ostatni czas klatki
+    Uint64 frameDuration; // Czas trwania klatki
+    Uint64 attackFrameDuration; // Czas trwania ataku
 
     bool isAttacking; // Czy gracz atakuje
     int attackFrame; // Aktualna klatka ataku

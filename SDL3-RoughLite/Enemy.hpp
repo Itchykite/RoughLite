@@ -51,6 +51,6 @@ private:
     int currentFrame; // Aktualna klatka
     int currentRow; // Aktualny wiersz
     int totalFrames; // Ca³kowita liczba klatek
-    Uint32 lastFrameTime; // Ostatni czas klatki
-    Uint32 frameDuration; // Czas trwania klatki
+    Uint64 lastFrameTime; // Ostatni czas klatki
+    Uint64 frameDuration; // Czas trwania klatki
 };
