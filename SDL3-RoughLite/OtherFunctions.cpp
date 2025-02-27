@@ -2,17 +2,17 @@
 #include "Settings.hpp"
 #include <string>
 
-//void gameTime(Uint32& startTime, TTF_Font* font, SDL_Texture* textTexture, SDL_Surface* textSurface, SDL_Renderer* renderer)
+//void gameTime(Uint64& startTime, TTF_Font* font, SDL_Texture* textTexture, SDL_Surface* textSurface, SDL_Renderer* renderer)
 //{
-//	Uint32 currentTime = SDL_GetTicks();
-//	Uint32 elapsedTime = (currentTime - startTime) / 1000;
+//	Uint64 currentTime = SDL_GetTicks();
+//	Uint64 elapsedTime = (currentTime - startTime) / 1000;
 //	std::string timeText = "Time: " + std::to_string(elapsedTime) + " seconds";
 //	textSurface = TTF_RenderText_Solid(font, timeText.c_str(), textColor);
 //	textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 //	SDL_DestroySurface(textSurface);
 //}
 
-void RenderGameOverScreen(SDL_Renderer* renderer, Player* player, Uint32 startTime)
+void RenderGameOverScreen(SDL_Renderer* renderer, Player* player, Uint64 startTime)
 {
     // Ustaw kolor t³a na czarny
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -53,8 +53,8 @@ void RenderGameOverScreen(SDL_Renderer* renderer, Player* player, Uint32 startTi
     SDL_DestroyTexture(textTexture);
 
     // Renderowanie czasu spêdzonego w grze
-    Uint32 currentTime = SDL_GetTicks();
-    Uint32 elapsedTime = (currentTime - startTime) / 1000;
+    Uint64 currentTime = SDL_GetTicks();
+    Uint64 elapsedTime = (currentTime - startTime) / 1000;
     std::string timeText = "Time: " + std::to_string(elapsedTime) + " seconds";
     textSurface = TTF_RenderText_Solid(font, timeText.c_str(), 0, textColor);
     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);

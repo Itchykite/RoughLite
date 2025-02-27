@@ -40,6 +40,6 @@ private:
 
 	float GetRandomFloat(float min, float max); // Pobranie losowej liczby zmiennoprzecinkowej
 
-	Uint32 lastSpawnTime = 0; // Ostatni czas spawnu przeciwnika
-	Uint32 lastCollisionTime = 0; // Ostatni czas spawnu przeciwnika
+	Uint64 lastSpawnTime = 0; // Ostatni czas spawnu przeciwnika
+	Uint64 lastCollisionTime = 0; // Ostatni czas spawnu przeciwnika
 };

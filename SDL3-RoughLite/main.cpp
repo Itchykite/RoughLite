@@ -26,10 +26,8 @@ Player* player = nullptr; // wskaŸnik gracz
 EnemyManager* enemyManager = nullptr; // wskaŸnik przeciwnik
 EnemyManager* rangeRover = nullptr; // wskaŸnik krêc¹cy siê ziut
 
-Uint32 lastTime = 0;
-Uint32 startTime = 0;
-
-bool gameOver = false;
+Uint64 lastTime = 0;
+Uint64 startTime = 0;
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
@@ -61,8 +59,6 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         SDL_Log("Couldn't load collision surface");
         return SDL_APP_FAILURE;
     }
-
-    mapCollisions(map); // Kolizja za pomoc¹ kwadratów
 
     SDL_Log("Creating camera...");
     camera = new Camera(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT); // Tworzenie kamery wzglêdem okna
@@ -109,6 +105,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     lastTime = SDL_GetTicks(); // Pobranie ostatniego czasu
     startTime = SDL_GetTicks(); // Pobranie czasu rozpoczêcia gry
 
+    mapCollisions(map, renderer); // Kolizja za pomoc¹ kwadratów
+
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
@@ -128,7 +126,10 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 		}
 	}
 
-    PlayerEventHandling(event, player, enemyManager->enemies, renderer); // Funkcja zawieraj¹ca przechwytywanie WASD do poruszania siê gracza
+    if (!player->isGameOver)
+    {
+        PlayerEventHandling(event, player, enemyManager->enemies, renderer); // Funkcja zawieraj¹ca przechwytywanie WASD do poruszania siê gracza
+    }
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
@@ -136,13 +137,14 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-    if (gameOver) // Jeœli gra jest zakoñczona
+    if (player->isGameOver) // Jeœli gra jest zakoñczona
     {
-        RenderGameOverScreen(renderer, player, startTime); // Renderowanie ekranu "Game Over"
+		const Uint64 endTime = startTime; // Pobranie czasu rozpoczêcia gry
+        RenderGameOverScreen(renderer, player, endTime); // Renderowanie ekranu "Game Over"
         return SDL_APP_CONTINUE;
     }
 
-    Uint32 currentTime = SDL_GetTicks(); // Pobiera aktualny czas
+    Uint64 currentTime = SDL_GetTicks(); // Pobiera aktualny czas
     float deltaTime = (currentTime - lastTime) / 1000.0f; // Czas co sekunde
     lastTime = currentTime; // Pobiera ostatnio zapisany czas, z przed sekundy
 
@@ -158,21 +160,21 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     enemyManager->Render(renderer); // Renerowanie przeciwników
 
     player->Update(deltaTime); // Aktulizacja gracza co sekunde
-    player->Render(renderer); // Renderowanie gracza
+    map->RenderObjects(renderer, camera->GetX(), camera->GetY(), player); // Renderowanie obiektów
     player->UpdateKillsTexture(renderer); // Aktualizacja wyniku
 
     SDL_FPoint playerPosition = { player->GetX(), player->GetY()}; // Pobieranie aktualnej pozycji gracza jako punkt
     int playerX = static_cast<int>(playerPosition.x); // przechowanie aktualnego x dla gracza, int
     int playerY = static_cast<int>(playerPosition.y); // przechowanie aktualnego y dla gracza, int
 
-    if (!map->IsPixelTransparent(playerX, playerY)) // sprawdzenie przezroczystoœci
+    if (!map->IsPixelTransparent(playerX, playerY))
     {
-        player->Update(-deltaTime); // Cofniêcie gracza o delta time, tak aby nie móg³ siê ruszaæ
+        player->Update(-deltaTime);
     }
 
     if (player->health <= 0) // Jeœli zdrowie gracza jest mniejsze lub równe 0
     {
-        gameOver = true; // Gra siê koñczy
+        player->isGameOver = true; // Gra siê koñczy
         return SDL_APP_CONTINUE;
     }
 

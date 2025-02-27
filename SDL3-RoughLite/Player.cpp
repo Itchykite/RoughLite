@@ -11,7 +11,7 @@ Player::Player(Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor 
     playerTexture(nullptr), attackTexture(nullptr), frameWidth(0), frameHeight(0),
     currentFrame(0), totalFrames(0), lastFrameTime(0), frameDuration(100),
     attackFrameDuration(10), // Inicjalizacja zmiennej attackFrameDuration
-	currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr), health(100)
+	currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr), health(100), isGameOver(false)
 {
     SDL_Log("Loading player texture...");
     LoadTexture(renderer, "spritesheet.png"); // Wczytanie tekstury gracza
@@ -69,7 +69,7 @@ void Player::Update(float deltaTime) // Aktualizacja gracza
     float newX = x + velocityX * deltaTime; // Nowa pozycja x
     float newY = y + velocityY * deltaTime; // Nowa pozycja y
 
-    if (map->IsWithinBounds(newX, newY, playerW, playerH)) // Jeœli gracz jest w granicach
+    if (map->IsWithinBounds(newX, newY + (3.0f * playerH / 4.0f), playerW, playerH / 4.0f)) // Jeœli gracz jest w granicach
     {
         x = newX; // Ustaw pozycjê x
         y = newY; // Ustaw pozycjê y
@@ -145,7 +145,7 @@ void Player::LoadAttackTexture(SDL_Renderer* renderer, const char* pathFile) // 
 
 void Player::UpdateAnimation() // Aktualizacja animacji
 {
-    Uint32 currentTime = SDL_GetTicks(); // Aktualny czas
+    Uint64 currentTime = SDL_GetTicks(); // Aktualny czas
     if (currentTime > lastFrameTime + frameDuration) // Je¿eli aktualny czas jest wiêkszy od ostatniego czasu klatki + czasu trwania klatki
     {
         currentFrame = (currentFrame + 1) % totalFrames; // Ustaw klatkê
@@ -239,8 +239,6 @@ void Player::Render(SDL_Renderer* renderer) // Renderowanie gracza
         SDL_RenderTexture(renderer, attackTexture, &attackSrcRect, &attackDestRect); // Renderowanie tekstury ataku
     }
 
-    renderHealthBar(health, renderer); // Renderowanie paska zdrowia
-
     if (texture)
     {
         float w = 0, h = 0;
@@ -286,6 +284,11 @@ float Player::GetVelocityX() const
 float Player::GetVelocityY() const
 {
     return velocityY;
+}
+
+float Player::GetHeight() const
+{
+    return static_cast<float>(frameHeight);
 }
 
 // Funkcja sprawdzaj¹ca, czy wróg zosta³ trafiony
@@ -399,7 +402,7 @@ void Player::UpdateKillsTexture(SDL_Renderer* renderer)
     SDL_DestroySurface(textSurface);
 }
 
-void GameOver(SDL_Renderer* renderer, TTF_Font* font) // Funkcja wyœwietlaj¹ca napis Game Over
+void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player) // Funkcja wyœwietlaj¹ca napis Game Over
 {
     SDL_Color textColor = { 255, 255, 255, 255 };
 
@@ -424,15 +427,18 @@ void GameOver(SDL_Renderer* renderer, TTF_Font* font) // Funkcja wyœwietlaj¹ca n
     SDL_RenderTexture(renderer, texture, NULL, &dst);
     SDL_DestroyTexture(texture);
     SDL_DestroySurface(textSurface);
+
+    player->isGameOver = true;
 }
 
 SDL_FRect Player::GetCollisionRect() const // Pobranie prostok¹ta kolizji
 {
+    float collisionHeight = playerH / 4.0f; // Wysokoœæ kolizji (np. 1/4 wysokoœci gracza)
     return SDL_FRect
     {
-        x - 48.0f,
-        y - 48.0f,
-        enemyW / 2,
-        enemyH / 2
+        x,                          // X
+        y + (3.0f * playerH / 4.0f),// Y (przesuniêcie w dó³)
+        playerW,                    // Szerokoœæ
+        collisionHeight             // Wysokoœæ
     };
 }

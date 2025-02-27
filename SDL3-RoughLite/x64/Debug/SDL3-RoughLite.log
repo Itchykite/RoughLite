@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  Camera.cpp
   Enemy.cpp
   EnemyManager.cpp
@@ -65,3 +66,15 @@ C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\RangeRover.cpp(60
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\RangeRover.cpp(138,21): warning C4244: "inicjowanie": konwersja z "Uint64" do "Uint32", możliwa utrata danych
   Generowanie kodu...
   SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\Itchykite\RoughLite\x64\Debug\SDL3-RoughLite.exe
+=======
+﻿  Map.cpp
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(61,37): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(61,37): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(61,44): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(61,44): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(62,51): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(62,51): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(62,58): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(62,58): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+  SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\SDL3-RoughLite\x64\Debug\SDL3-RoughLite.exe
+>>>>>>> 892acff68a96055a5dd7f400928b1b3e5b0db0e7

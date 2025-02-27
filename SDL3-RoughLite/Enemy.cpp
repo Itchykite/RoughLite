@@ -184,7 +184,7 @@ void Enemy::UpdateAnimation() // Aktualizacja animacji
 		return;
 	}
 
-	Uint32 currentTime = SDL_GetTicks(); // Aktualny czas
+	Uint64 currentTime = SDL_GetTicks(); // Aktualny czas
 	if (currentTime > lastFrameTime + frameDuration) // Jeœli aktualny czas jest wiêkszy od ostatniego czasu + czasu trwania klatki
 	{
 		currentFrame = (currentFrame + 1) % totalFrames; // Ustaw klatkê
