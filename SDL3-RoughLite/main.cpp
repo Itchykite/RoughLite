@@ -21,25 +21,26 @@
 
 static SDL_Window* window = nullptr;
 static SDL_Renderer* renderer = nullptr;
-
-extern Map* map = nullptr; // wskaünik mapa
-extern Camera* camera = nullptr; // wskaünik kamera
-extern Player* player = nullptr; // wskaünik gracz
-extern EnemyManager* enemyManager = nullptr; // wskaünik przeciwnik
-extern EnemyManager* rangeRover = nullptr; // wskaünik krÍcπcy siÍ ziut
-
 static SDL_Event lastEvent;
 
-extern Uint64 lastTime = 0;
-extern Uint64 startTime = 0;
-extern TTF_Font* font = nullptr;
+Map* map = nullptr; // wskaünik mapa
+Camera* camera = nullptr; // wskaünik kamera
+Player* player = nullptr; // wskaünik gracz
+EnemyManager* enemyManager = nullptr; // wskaünik przeciwnik
+EnemyManager* rangeRover = nullptr; // wskaünik krÍcπcy siÍ ziut
+TTF_Font* font = nullptr; // wskaünik czcionka
+
+Uint64 lastTime = 0;
+Uint64 startTime = 0;
 
 GameStateRunning gameState = GameStateRunning::MENU;
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
-    InitEverything();
+    InitEverything(renderer, window, player, map, camera, enemyManager, font, startTime, lastTime, appstate);
+
+	return SDL_APP_CONTINUE;  /* continue running the program. */
 }
 
 /* This function runs when a new event (mouse input, keypresses, etc) occurs. */

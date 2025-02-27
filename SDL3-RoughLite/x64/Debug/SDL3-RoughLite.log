@@ -1,8 +1,9 @@
 ﻿  Init.cpp
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(33,79): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(33,65): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(40,29): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(40,19): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(20,79): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(20,65): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(27,29): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(27,19): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
   main.cpp
   Generowanie kodu...
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\main.cpp(43): error C4716: "SDL_AppInit": musi zwracać wartość
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(88): warning C4715: "InitEverything”: niewszystkie ścieżki kodu zwracają wartość
+  SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\Itchykite\RoughLite\x64\Debug\SDL3-RoughLite.exe

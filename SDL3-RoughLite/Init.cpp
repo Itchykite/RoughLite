@@ -6,21 +6,8 @@
 
 #include <iostream>
 
-static SDL_Window* window = nullptr;
-static SDL_Renderer* renderer = nullptr;
-
-Map* map = nullptr; // wskaŸnik mapa
-Camera* camera = nullptr; // wskaŸnik kamera
-Player* player = nullptr; // wskaŸnik gracz
-EnemyManager* enemyManager = nullptr; // wskaŸnik przeciwnik
-EnemyManager* rangeRover = nullptr; // wskaŸnik krêc¹cy siê ziut
-
-Uint64 lastTime = 0;
-Uint64 startTime = 0;
-
-TTF_Font* font = nullptr;
-
-SDL_AppResult InitEverything()
+SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Player*& player, Map*& map, Camera*& camera, EnemyManager*& enemyManager, TTF_Font*& font,
+    Uint64& startTime, Uint64& lastTime, void** appstate)
 {
     SDL_SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear");
 
@@ -68,19 +55,19 @@ SDL_AppResult InitEverything()
 
     player->SetPosition(512.0f, 1024.0f); // Ustawienie pozycji gracza na mapie
 
-    SDL_Log("Creating rangeRovers...");
-    rangeRover = new EnemyManager(player, map, camera, renderer); // Tworzenie RangeRovera
-    if (!rangeRover)
-    {
-        SDL_Log("Couldn't create enemy manager");
-        return SDL_APP_FAILURE;
-    }
+    //SDL_Log("Creating rangeRovers...");
+    //rangeRover = new EnemyManager(player, map, camera, renderer); // Tworzenie RangeRovera
+    //if (!rangeRover)
+    //{
+    //    SDL_Log("Couldn't create enemy manager");
+    //    return SDL_APP_FAILURE;
+    //}
 
-    for (int i = 0; i < RangeRover::numOfRangeRovers; ++i) // Tworzenie konkretenj iloœci RangeRover'ów
-    {
-        rangeRover->AddRangeRover();
-        std::cout << "Added RangeRover " << i << std::endl;
-    }
+    //for (int i = 0; i < RangeRover::numOfRangeRovers; ++i) // Tworzenie konkretenj iloœci RangeRover'ów
+    //{
+    //    rangeRover->AddRangeRover();
+    //    std::cout << "Added RangeRover " << i << std::endl;
+    //}
 
     SDL_Log("Creating enemies...");
     enemyManager = new EnemyManager(player, map, camera, renderer); // Twrozenie wroga
@@ -98,6 +85,4 @@ SDL_AppResult InitEverything()
     mapCollisions(map, renderer); // Kolizja za pomoc¹ kwadratów
 
     font = TTF_OpenFont("Poppins-Bold.ttf", 24);
-
-    return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
