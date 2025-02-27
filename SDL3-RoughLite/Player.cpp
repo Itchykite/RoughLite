@@ -402,43 +402,13 @@ void Player::UpdateKillsTexture(SDL_Renderer* renderer)
     SDL_DestroySurface(textSurface);
 }
 
-void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player) // Funkcja wyœwietlaj¹ca napis Game Over
-{
-    SDL_Color textColor = { 255, 255, 255, 255 };
-
-    SDL_Surface* textSurface = TTF_RenderText_Solid(font, "Game Over", 0, textColor);
-    if (!textSurface)
-    {
-        SDL_Log("Unable to render text surface: %s", SDL_GetError());
-        return;
-    }
-
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, textSurface);
-    if (!texture)
-    {
-        SDL_Log("Unable to create texture from rendered text: %s", SDL_GetError());
-    }
-
-    SDL_FRect dst;
-    dst.w = textSurface->w;
-    dst.h = textSurface->h;
-    dst.x = (WINDOW_WIDTH - dst.w) / 2;
-    dst.y = (WINDOW_HEIGHT - dst.h) / 2;
-    SDL_RenderTexture(renderer, texture, NULL, &dst);
-    SDL_DestroyTexture(texture);
-    SDL_DestroySurface(textSurface);
-
-    player->isGameOver = true;
-}
-
 SDL_FRect Player::GetCollisionRect() const // Pobranie prostok¹ta kolizji
 {
-    float collisionHeight = playerH / 4.0f; // Wysokoœæ kolizji (np. 1/4 wysokoœci gracza)
     return SDL_FRect
     {
-        x,                          // X
-        y + (3.0f * playerH / 4.0f),// Y (przesuniêcie w dó³)
+        x - playerW / 4,            // X
+        y - playerH,                // Y
         playerW,                    // Szerokoœæ
-        collisionHeight             // Wysokoœæ
+        playerH                     // Wysokoœæ
     };
 }
