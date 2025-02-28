@@ -57,7 +57,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 	{
 		if (event->key.key == SDLK_ESCAPE)
 		{
-			return SDL_APP_SUCCESS;
+			gameState = GameStateRunning::MENU;
 		}
 	}
 
@@ -75,6 +75,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     if (gameState == GameStateRunning::MENU)
     {
         gameMenu(renderer, lastEvent, font);
+        return SDL_APP_CONTINUE;  
     }
 
 	if (gameState == GameStateRunning::GAME)
@@ -84,7 +85,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
     if (gameState == GameStateRunning::GAMEOVER)
     {
-		GameOver(renderer, font, player);
+		GameOver(renderer, font, player, lastTime, startTime);
     }
 
 	if (gameState == GameStateRunning::EXIT)

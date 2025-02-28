@@ -1,9 +1,11 @@
 #define _USE_MATH_DEFINES
 
 #include "EnemyManager.hpp"
+#include "GameState.hpp"
 #include <iostream>
 
 long int i = 1;
+extern GameStateRunning gameState;
 
 EnemyManager::EnemyManager(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor przeciwnika, gracz, mapa, kamera, renderer
     : player(player), map(map), camera(camera), renderer(renderer)
@@ -57,6 +59,11 @@ void EnemyManager::AddRangeRover() // Dodanie RangeRovera
 
 void EnemyManager::Update(float deltaTime) // Aktualizacja przeciwnika
 {
+	if (gameState == GameStateRunning::MENU)
+	{
+		return;
+	}
+
 	Uint64 currentTime = SDL_GetTicks(); // Aktualny czas
 
 	if (currentTime > lastSpawnTime + 1000) // Jeœli aktualny czas jest wiêkszy od ostatniego czasu + 1000
