@@ -53,7 +53,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
     }
 
-	if (event->type == SDL_EVENT_KEY_DOWN) // Zamkniêcie po przyciœniêciu na klawiaturze ESCAPE
+	if (event->type == SDL_EVENT_KEY_DOWN && (gameState == GameStateRunning::GAME || gameState == GameStateRunning::GAMEOVER)) // Zamkniêcie po przyciœniêciu na klawiaturze ESCAPE
 	{
 		if (event->key.key == SDLK_ESCAPE)
 		{
@@ -74,7 +74,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 {
     if (gameState == GameStateRunning::MENU)
     {
-        gameMenu(renderer, lastEvent);
+        gameMenu(renderer, lastEvent, font);
     }
 
 	if (gameState == GameStateRunning::GAME)

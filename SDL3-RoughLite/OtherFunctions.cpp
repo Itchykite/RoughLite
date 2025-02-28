@@ -12,7 +12,11 @@
 //	SDL_DestroySurface(textSurface);
 //}
 
-void RenderGameOverScreen(SDL_Renderer* renderer, Player* player, Uint64 startTime)
+#include "OtherFunctions.hpp"
+#include "Settings.hpp"
+#include <string>
+
+void RenderGameOverScreen(SDL_Renderer* renderer, Player* player, const Uint64& gameOverTime, const Uint64& startTime)
 {
     // Ustaw kolor t³a na czarny
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -53,8 +57,7 @@ void RenderGameOverScreen(SDL_Renderer* renderer, Player* player, Uint64 startTi
     SDL_DestroyTexture(textTexture);
 
     // Renderowanie czasu spêdzonego w grze
-    Uint64 currentTime = SDL_GetTicks();
-    Uint64 elapsedTime = (currentTime - startTime) / 1000;
+    const Uint64 elapsedTime = (gameOverTime - startTime) / 1000;
     std::string timeText = "Time: " + std::to_string(elapsedTime) + " seconds";
     textSurface = TTF_RenderText_Solid(font, timeText.c_str(), 0, textColor);
     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);

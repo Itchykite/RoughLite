@@ -32,12 +32,12 @@ Button exitButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, WINDOW_HEIGHT / 2 - WIND
 });
 
 SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager, 
-    Uint64& startTime, Uint64& lastTime, void* appstate)
+    const Uint64& startTime, Uint64& lastTime, void* appstate)
 {
     if (player->isGameOver) // Jeœli gra jest zakoñczona
     {
-        const Uint64 endTime = startTime; // Pobranie czasu rozpoczêcia gry
-        RenderGameOverScreen(renderer, player, endTime); // Renderowanie ekranu "Game Over"
+        const Uint64 endTime = SDL_GetTicks(); // Pobranie czasu zakoñczenia gry
+        RenderGameOverScreen(renderer, player, endTime, startTime); // Renderowanie ekranu "Game Over"
         return SDL_APP_CONTINUE;
     }
 
@@ -102,11 +102,11 @@ void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player) // Funkcja
     player->isGameOver = true;
 }
 
-void gameMenu(SDL_Renderer* renderer, SDL_Event& event)
+void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font)
 {
-	startButton.Render(renderer); // Renderowanie przycisku start
+	startButton.Render(renderer, font, "start"); // Renderowanie przycisku start
 	startButton.handleClick(event); // Obs³uga klikniêcia przycisku start
 
-	exitButton.Render(renderer); // Renderowanie przycisku exit
+	exitButton.Render(renderer, font, "exit"); // Renderowanie przycisku exit
 	exitButton.handleClick(event); // Obs³uga klikniêcia przycisku exit
 }
