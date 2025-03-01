@@ -1,9 +1,64 @@
-﻿  Init.cpp
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(20,79): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(20,65): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(27,29): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(27,19): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
+﻿  Buttons.cpp
+  Camera.cpp
+  Enemy.cpp
+  EnemyManager.cpp
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(57,37): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(57,37): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(57,62): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(57,62): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(57,77): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(57,77): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(57,89): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(57,89): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(133,25): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(49,16): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(50,16): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+  GameState.cpp
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(94,24): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(95,24): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
+  Init.cpp
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(20,79): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(20,65): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(27,29): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(27,19): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
   main.cpp
+  Map.cpp
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(61,37): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(61,37): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(61,44): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(61,44): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(62,51): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(62,51): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(62,58): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(62,58): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
+  OtherFunctions.cpp
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\OtherFunctions.cpp(36,21): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\OtherFunctions.cpp(37,22): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+  Player.cpp
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(174,25): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(193,57): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(193,57): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(193,100): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(193,100): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(193,133): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(193,133): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(193,163): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(193,163): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(237,66): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(237,66): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(237,100): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(237,100): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+  PlayerEventHandling.cpp
+  RangeRover.cpp
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,37): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,37): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,62): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,62): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,77): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,77): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,89): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,89): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
   Generowanie kodu...
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(88): warning C4715: "InitEverything”: niewszystkie ścieżki kodu zwracają wartość
-  SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\Itchykite\RoughLite\x64\Debug\SDL3-RoughLite.exe
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(88,1): warning C4715: "InitEverything”: niewszystkie ścieżki kodu zwracają wartość
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(74,1): warning C4715: "gameRunning”: niewszystkie ścieżki kodu zwracają wartość
+  SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\SDL3-RoughLite\x64\Debug\SDL3-RoughLite.exe
