@@ -41,6 +41,7 @@ public:
     long int kills; // Wynik
     double health; // Zdrowie
     bool isGameOver;
+    Uint64 gameOverTime;
 
     SDL_Texture* texture; // Tekstura
 

@@ -31,29 +31,30 @@ Button exitButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, WINDOW_HEIGHT / 2 - WIND
     gameState = GameStateRunning::EXIT;
 });
 
-SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager, 
-    Uint64& startTime, Uint64& lastTime, void* appstate)
+SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager,
+    const Uint64& startTime, Uint64& lastTime, void* appstate)
 {
-    if (player->isGameOver) // Jeœli gra jest zakoñczona
+    if (gameState == GameStateRunning::MENU)
     {
-        const Uint64 endTime = startTime; // Pobranie czasu rozpoczêcia gry
-        RenderGameOverScreen(renderer, player, endTime); // Renderowanie ekranu "Game Over"
         return SDL_APP_CONTINUE;
     }
 
     Uint64 currentTime = SDL_GetTicks(); // Pobiera aktualny czas
     float deltaTime = (currentTime - lastTime) / 1000.0f; // Czas co sekunde
-    lastTime = currentTime; // Pobiera ostatnio zapisany czas, z przed sekundy
+
+    if (!player->isGameOver || gameState == GameStateRunning::MENU)
+    {
+        lastTime = currentTime; // Aktualizuj czas tylko jeœli gra nie jest skoñczona i nie jest w stanie pauzy
+
+        enemyManager->Update(deltaTime); // Aktualizacja przeciwnika co sekunde
+        player->Update(deltaTime); // Aktualizacja gracza co sekunde
+    }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Koloruje ekran na czarno
     SDL_RenderClear(renderer); // i go renderuje 
 
     map->Render(renderer, camera->GetX(), camera->GetY()); // Renderowanie
-
-    enemyManager->Update(deltaTime); // Aktualizacja przeciwnika co sekunde
-    enemyManager->Render(renderer); // Renerowanie przeciwników
-
-    player->Update(deltaTime); // Aktulizacja gracza co sekunde
+    enemyManager->Render(renderer); // Renderowanie przeciwników
     map->RenderObjects(renderer, camera->GetX(), camera->GetY(), player); // Renderowanie obiektów
     player->UpdateKillsTexture(renderer); // Aktualizacja wyniku
 
@@ -69,11 +70,13 @@ SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Came
     if (player->health <= 0) // Jeœli zdrowie gracza jest mniejsze lub równe 0
     {
         player->isGameOver = true; // Gra siê koñczy
-        return SDL_APP_CONTINUE;
+        gameState = GameStateRunning::GAMEOVER; // Gra siê koñczy
     }
+
+    return SDL_APP_CONTINUE;
 }
 
-void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player) // Funkcja wyœwietlaj¹ca napis Game Over
+void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& endTime, Uint64& startTime) // Funkcja wyœwietlaj¹ca napis Game Over
 {
     SDL_Color textColor = { 255, 255, 255, 255 };
 
@@ -100,13 +103,17 @@ void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player) // Funkcja
     SDL_DestroySurface(textSurface);
 
     player->isGameOver = true;
+
+    RenderGameOverScreen(renderer, player, endTime, startTime); // Renderowanie ekranu "Game Over"
 }
 
-void gameMenu(SDL_Renderer* renderer, SDL_Event& event)
+void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font)
 {
-	startButton.Render(renderer); // Renderowanie przycisku start
+	startButton.Render(renderer, font, "start"); // Renderowanie przycisku start
 	startButton.handleClick(event); // Obs³uga klikniêcia przycisku start
 
-	exitButton.Render(renderer); // Renderowanie przycisku exit
+	exitButton.Render(renderer, font, "exit"); // Renderowanie przycisku exit
 	exitButton.handleClick(event); // Obs³uga klikniêcia przycisku exit
+
+    SDL_RenderPresent(renderer); // Renderowanie ekranu menu
 }

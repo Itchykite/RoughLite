@@ -17,8 +17,8 @@ enum class GameStateRunning
 };
 
 SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager,
-    Uint64& startTime, Uint64& lastTime, void* appstate);
+    const Uint64& startTime, Uint64& lastTime, void* appstate);
 
-void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player);
+void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& endTime, Uint64& startTime);
 
-void gameMenu(SDL_Renderer* renderer, SDL_Event& event);
+void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font);

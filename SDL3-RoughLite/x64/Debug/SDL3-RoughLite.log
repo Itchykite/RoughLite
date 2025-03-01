@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  Buttons.cpp
   Camera.cpp
   Enemy.cpp
@@ -62,3 +63,7 @@ C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,89):
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(88,1): warning C4715: "InitEverything”: niewszystkie ścieżki kodu zwracają wartość
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(74,1): warning C4715: "gameRunning”: niewszystkie ścieżki kodu zwracają wartość
   SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\SDL3-RoughLite\x64\Debug\SDL3-RoughLite.exe
+=======
+﻿  main.cpp
+  SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\Itchykite\RoughLite\x64\Debug\SDL3-RoughLite.exe
+>>>>>>> 8a7e6d443b9776bb3ccb738749098ef8e9adb850

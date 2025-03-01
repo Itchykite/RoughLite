@@ -3,8 +3,11 @@
 #include "Player.hpp"
 #include "Camera.hpp"
 #include "Settings.hpp"
+#include "GameState.hpp"
 #include <SDL3_image/SDL_image.h>
 #include <cmath>
+
+extern GameStateRunning gameState;
 
 Enemy::Enemy(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer) // Konstrutkor przeciwnika, gracz, mapa, kamera, renderer
 	: x(0), y(0), velocityX(0), velocityY(0), speed(150.0f), playerTexture(nullptr),
@@ -44,7 +47,7 @@ void Enemy::LoadTexture(SDL_Renderer* renderer, const char* pathFile) // Za³adow
 
 void Enemy::Render(SDL_Renderer* renderer) // Renderowanie przeciwnika
 {
-	if (!isAlive) return; // Jeœli nie ¿yje
+	if (!isAlive || gameState == GameStateRunning::MENU) return; // Jeœli nie ¿yje
 
 	if (camera == nullptr) // Jeœli kamera nie istnieje
 	{
@@ -67,6 +70,11 @@ void Enemy::SetPosition(float x, float y) // Ustawienie pozycji przeciwnika
 
 void Enemy::Update(float deltaTime) // Aktualizacja przeciwnika
 {
+	if (gameState == GameStateRunning::MENU) // Dodaj to sprawdzenie na pocz¹tku
+	{
+		return;
+	}
+
 	if (player == nullptr) // Jeœli gracz nie istnieje
 	{
 		SDL_Log("Enemy::Update() - player is nullptr");
@@ -194,7 +202,7 @@ void Enemy::UpdateAnimation() // Aktualizacja animacji
 
 SDL_FRect Enemy::GetCollisionRect() const // Pobranie prostok¹ta kolizji
 {
-	if (!isAlive)
+	if (!isAlive || gameState == GameStateRunning::MENU)
 	{
 		return { 0,0,0,0 };
 	}
