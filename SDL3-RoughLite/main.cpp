@@ -80,12 +80,13 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
 	if (gameState == GameStateRunning::GAME)
 	{
-		gameRunning(renderer, player, map, camera, enemyManager, startTime, lastTime, appstate);
+		gameRunning(renderer, player, map, camera, enemyManager, startTime, lastTime, lastEvent, font, appstate);
 	}
 
     if (gameState == GameStateRunning::GAMEOVER)
     {
 		GameOver(renderer, font, player, lastTime, startTime);
+		return SDL_APP_CONTINUE;
     }
 
 	if (gameState == GameStateRunning::EXIT)

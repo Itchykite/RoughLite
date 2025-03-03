@@ -32,49 +32,68 @@ Button exitButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, WINDOW_HEIGHT / 2 - WIND
 });
 
 SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager,
-    const Uint64& startTime, Uint64& lastTime, void* appstate)
+    const Uint64& startTime, Uint64& lastTime, SDL_Event& event, TTF_Font* font,void* appstate)
 {
+    static Uint64 pauseStartTime = 0; // Przechowuje czas rozpoczêcia pauzy
+
     if (gameState == GameStateRunning::MENU)
     {
+        if (pauseStartTime == 0) // Tylko raz zapisujemy czas wejœcia do menu
+        {
+            pauseStartTime = SDL_GetTicks();
+        }
+
+        SDL_RenderClear(renderer);
+        gameMenu(renderer, event, font);
+        SDL_RenderPresent(renderer);
         return SDL_APP_CONTINUE;
     }
 
-    Uint64 currentTime = SDL_GetTicks(); // Pobiera aktualny czas
-    float deltaTime = (currentTime - lastTime) / 1000.0f; // Czas co sekunde
-
-    if (!player->isGameOver || gameState == GameStateRunning::MENU)
+    // WZNOWIENIE GRY: Korygujemy lastTime o czas spêdzony w menu
+    if (pauseStartTime > 0)
     {
-        lastTime = currentTime; // Aktualizuj czas tylko jeœli gra nie jest skoñczona i nie jest w stanie pauzy
-
-        enemyManager->Update(deltaTime); // Aktualizacja przeciwnika co sekunde
-        player->Update(deltaTime); // Aktualizacja gracza co sekunde
+        Uint64 pauseDuration = SDL_GetTicks() - pauseStartTime; // Czas spêdzony w menu
+        lastTime += pauseDuration; // Korygujemy lastTime, aby unikn¹æ przeskoku
+        pauseStartTime = 0; // Resetujemy znacznik pauzy
     }
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Koloruje ekran na czarno
-    SDL_RenderClear(renderer); // i go renderuje 
+    // Standardowa aktualizacja gry
+    Uint64 currentTime = SDL_GetTicks();
+    float deltaTime = (currentTime - lastTime) / 1000.0f;
+    lastTime = currentTime;
 
-    map->Render(renderer, camera->GetX(), camera->GetY()); // Renderowanie
-    enemyManager->Render(renderer); // Renderowanie przeciwników
-    map->RenderObjects(renderer, camera->GetX(), camera->GetY(), player); // Renderowanie obiektów
-    player->UpdateKillsTexture(renderer); // Aktualizacja wyniku
-
-    SDL_FPoint playerPosition = { player->GetX(), player->GetY() }; // Pobieranie aktualnej pozycji gracza jako punkt
-    int playerX = static_cast<int>(playerPosition.x); // przechowanie aktualnego x dla gracza, int
-    int playerY = static_cast<int>(playerPosition.y); // przechowanie aktualnego y dla gracza, int
-
-    if (!map->IsPixelTransparent(playerX, playerY))
+    if (!player->isGameOver)
     {
-        player->Update(-deltaTime);
-    }
+        enemyManager->Update(deltaTime);
+        player->Update(deltaTime);
 
-    if (player->health <= 0) // Jeœli zdrowie gracza jest mniejsze lub równe 0
-    {
-        player->isGameOver = true; // Gra siê koñczy
-        gameState = GameStateRunning::GAMEOVER; // Gra siê koñczy
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+
+        map->Render(renderer, camera->GetX(), camera->GetY());
+        enemyManager->Render(renderer);
+        map->RenderObjects(renderer, camera->GetX(), camera->GetY(), player);
+        player->UpdateKillsTexture(renderer);
+
+        SDL_FPoint playerPosition = { player->GetX(), player->GetY() }; // Pobieranie aktualnej pozycji gracza jako punkt
+        int playerX = static_cast<int>(playerPosition.x); // przechowanie aktualnego x dla gracza, int
+        int playerY = static_cast<int>(playerPosition.y); // przechowanie aktualnego y dla gracza, int
+
+        if (!map->IsPixelTransparent(playerX, playerY))
+        {
+            player->Update(-deltaTime);
+        }
+
+        if (player->health <= 0)
+        {
+            player->isGameOver = true;
+            gameState = GameStateRunning::GAMEOVER;
+        }
     }
 
     return SDL_APP_CONTINUE;
 }
+
 
 void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& endTime, Uint64& startTime) // Funkcja wyœwietlaj¹ca napis Game Over
 {
