@@ -185,8 +185,6 @@ void EnemyManager::Reset()
 {
 	// Usuñ wszystkich przeciwników
 	enemies.clear();
-	rangeRovers.clear();
 	// Dodaj przeciwników ponownie, jeœli to konieczne
 	AddEnemy();
-	AddRangeRover();
 }

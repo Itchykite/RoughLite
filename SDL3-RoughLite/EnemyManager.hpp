@@ -23,13 +23,10 @@ public:
 	void Update(float deltaTime, GameStateRunning currentState); // Aktualizacja przeciwnika
 	void Render(SDL_Renderer* renderer, GameStateRunning currentState); // Renderowanie przeciwnika
 
-<<<<<<< HEAD
 	void Render(SDL_Renderer* renderer); // Renderowanie przeciwnika
 	void RenderRangeRover(SDL_Renderer* renderer); // Renderowanie RangeRovera
 	void Reset();
-=======
 	void AdjustSpawnTime(Uint64 pauseDuration); // Nowa metoda
->>>>>>> ac53d2179976af266f3be2f52e662f677691c2cc
 
 	std::vector<std::unique_ptr<Enemy>> enemies; // Przeciwnicy
 
