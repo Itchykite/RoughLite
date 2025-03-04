@@ -6,12 +6,15 @@
 #include <string>
 #include <SDL3_image/SDL_image.h>
 
+extern GameStateRunning gameState;
+
 Player::Player(Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor gracza, mapa, kamera, renderer
     : map(map), camera(camera), x(0), y(0), velocityX(0), velocityY(0),
     playerTexture(nullptr), attackTexture(nullptr), frameWidth(0), frameHeight(0),
     currentFrame(0), totalFrames(0), lastFrameTime(0), frameDuration(100),
     attackFrameDuration(10), // Inicjalizacja zmiennej attackFrameDuration
-	currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr), health(100), isGameOver(false)
+	currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr), health(100), isGameOver(false),
+    deathRegistered(false)
 {
     SDL_Log("Loading player texture...");
     LoadTexture(renderer, "spritesheet.png"); // Wczytanie tekstury gracza
@@ -66,6 +69,14 @@ void Player::HandleCollision() // Obs³uga kolizji
 
 void Player::Update(float deltaTime, GameStateRunning currentState) // Aktualizacja gracza
 {
+    if (health <= 0 && !deathRegistered)
+    {
+        isGameOver = true;
+        deathRegistered = true; // Ustawienie deathRegistered na true po zarejestrowaniu œmierci
+        totalDeaths++; // Inkrementacja totalDeaths
+        gameState = GameStateRunning::GAMEOVER; // Przejœcie do stanu GAMEOVER
+    }
+
     if (currentState != GameStateRunning::GAME)
     {
         return;
@@ -376,6 +387,7 @@ void Player::attack(SDL_Renderer* renderer, std::vector<std::unique_ptr<Enemy>>&
             {
                 enemy->isAlive = false;
                 kills++; // Zwiêkszenie liczby zabójstw
+				totalKills++; // Zwiêkszenie ca³kowitej liczby zabójstw
                 UpdateKillsTexture(renderer); // Aktualizacja tekstury z liczb¹ zabójstw
                 enemy->~Enemy();
             }

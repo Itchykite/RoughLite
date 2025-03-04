@@ -44,7 +44,7 @@ void resetLastTime()
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
     InitEverything(renderer, window, player, map, camera, enemyManager, font, startTime, lastTime, appstate);
-    loadGameState(player, map, enemyManager, renderer); // Wczytaj stan gry
+    loadPlayerStats(player);
 
 	return SDL_APP_CONTINUE;  /* continue running the program. */
 }
@@ -56,6 +56,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 
     if (event->type == SDL_EVENT_QUIT)  // Zamkniêcie po naciœniêciu przycisku 'X'
     {
+        savePlayerStats(player);
         return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
     }
 
@@ -63,13 +64,19 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 	{
         if (event->key.key == SDLK_ESCAPE)
         {
-            if (gameState == GameStateRunning::GAME || gameState == GameStateRunning::GAMEOVER)
+            if (gameState != GameStateRunning::MENU)
             {
+                if (gameState == GameStateRunning::GAME)
+                {
+                    gamePause(renderer, font); // Wywo³anie funkcji pauzy
+                    gameState = GameStateRunning::MENU;
+                }
+
                 gameState = GameStateRunning::MENU;
-				gamePause(renderer, font); // Wywo³anie funkcji pauzy
+
                 SDL_Log("Prze³¹czono na PAUSE");
             }
-            else if (gameState == GameStateRunning::MENU)
+            else if (gameState != GameStateRunning::GAME)
             {
                 gameState = GameStateRunning::GAME;
                 SDL_Log("Wznowiono gre (GAME)");
@@ -110,9 +117,15 @@ SDL_AppResult SDL_AppIterate(void* appstate)
         
     case GameStateRunning::GAMEOVER:
         GameOver(renderer, font, player, lastTime, startTime);
+        savePlayerStats(player);
         break;
 
+    case GameStateRunning::STATS:
+		gameStats(renderer, font, player);
+		break;
+
     case GameStateRunning::EXIT:
+		savePlayerStats(player);
         return SDL_APP_SUCCESS;
         break;
 

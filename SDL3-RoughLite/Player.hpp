@@ -35,15 +35,18 @@ public:
     void attack(SDL_Renderer* renderer, std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY); // Atak
     void UpdateKillsTexture(SDL_Renderer* renderer);
 
-    SDL_FRect GetCollisionRect() const;
+	SDL_FRect GetCollisionRect() const; // Pobranie prostok¹ta kolizji
     SDL_Texture* playerTexture; // Tekstura gracza
 
 
     float x; // Pozycja x
     float y; // Pozycja y
     long int kills; // Wynik
+    long int totalKills; // Ca³kowita liczba zabitych przeciwników
+    long int totalDeaths; // Ca³kowita liczba zabitych przeciwników
     double health; // Zdrowie
     bool isGameOver;
+    bool deathRegistered;
     Uint64 gameOverTime;
 
     SDL_Texture* texture; // Tekstura

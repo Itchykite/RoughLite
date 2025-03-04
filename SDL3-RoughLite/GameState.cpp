@@ -17,6 +17,7 @@
 #include <memory>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 extern GameStateRunning gameState;
 extern Uint64 lastTime;
@@ -33,6 +34,12 @@ Button exitButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200,
 {
     SDL_Log("Exit Game!");
     gameState = GameStateRunning::EXIT;
+});
+
+Button statsButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200, 80, { 255, 0, 0, 255 }, []()
+{
+    SDL_Log("Stats Game!");
+	gameState = GameStateRunning::STATS;
 });
 
 SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager,
@@ -63,12 +70,6 @@ SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Came
         if (!map->IsPixelTransparent(playerX, playerY))
         {
             player->Update(-deltaTime, currentState);
-        }
-
-        if (player->health <= 0)
-        {
-            player->isGameOver = true;
-            gameState = GameStateRunning::GAMEOVER;
         }
     }
 
@@ -108,6 +109,10 @@ void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& en
 
 void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager)
 {
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
+    SDL_RenderClear(renderer);
+
     float OffSet = 24.0f;
 
     // Renderowanie przycisku start
@@ -121,16 +126,28 @@ void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* 
     startButton.Render(renderer, font, "start", player, map, enemyManager);
     startButton.handleClick(event);
 
+	// Renderowanie przycisku stats
+    SDL_Surface* statsTextSurface = TTF_RenderText_Solid(font, "stats", 0, { 255, 255, 255, 255 });
+    if (statsTextSurface)
+    {
+        int statsTextWidth = statsTextSurface->w;
+        SDL_DestroySurface(statsTextSurface);
+        statsButton.SetPosition(WINDOW_WIDTH / 2 - statsButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2);
+    }
+    statsButton.Render(renderer, font, "stats", player, map, enemyManager);
+    statsButton.handleClick(event);
+
     // Renderowanie przycisku exit
     SDL_Surface* exitTextSurface = TTF_RenderText_Solid(font, "exit", 0, { 255, 255, 255, 255 });
     if (exitTextSurface)
     {
         int exitTextWidth = exitTextSurface->w;
         SDL_DestroySurface(exitTextSurface);
-        exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2);
+        exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2 + exitButton.GetFRect().h + OffSet);
     }
     exitButton.Render(renderer, font, "exit", player, map, enemyManager);
     exitButton.handleClick(event);
+
 
     SDL_RenderPresent(renderer); // Renderowanie ekranu menu
 }
@@ -150,6 +167,68 @@ void gamePause(SDL_Renderer* renderer, TTF_Font* font)
     SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
     SDL_DestroySurface(textSurface);
     SDL_DestroyTexture(textTexture);
+}
+
+void gameStats(SDL_Renderer* renderer, TTF_Font* font, Player* player)
+{
+    SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
+    SDL_FRect statsRect = { WINDOW_WIDTH / 2 - 100, 100, 200, 100 };
+    SDL_RenderFillRect(renderer, &statsRect);
+
+    SDL_Color white = { 255, 255, 255, 255 };
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, "STATS", 0, white);
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FRect textRect = { statsRect.x + 50, statsRect.y + 25, 100, 50 };
+    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+
+    SDL_DestroySurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+
+    float textWidth = textSurface->w;
+    float textHeight = textSurface->h;
+
+    std::string killsText = "Total kills: " + std::to_string(player->totalKills);
+    textSurface = TTF_RenderText_Solid(font, killsText.c_str(), 0, white);
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+    textRect = { (WINDOW_WIDTH - textWidth * 2) / 2, WINDOW_HEIGHT / 2, textWidth * 2, textHeight };
+    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+
+    SDL_DestroySurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+
+    std::string deathsText = "Total deaths: " + std::to_string(player->totalDeaths);
+    textSurface = TTF_RenderText_Solid(font, deathsText.c_str(), 0, white);
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+    textRect = { (WINDOW_WIDTH - textWidth * 2) / 2, WINDOW_HEIGHT / 2 - textHeight, textWidth * 2, textHeight };
+    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+
+    SDL_DestroySurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+}
+
+void savePlayerStats(Player* player)
+{
+	std::ofstream saveFile("playerstats.dat", std::ios::binary);
+	if (saveFile.is_open())
+	{
+        saveFile.write(reinterpret_cast<char*>(&player->totalKills), sizeof(player->totalKills));
+        saveFile.write(reinterpret_cast<char*>(&player->totalDeaths), sizeof(player->totalDeaths));
+		saveFile.close();
+	}
+}
+
+void loadPlayerStats(Player* player)
+{
+	std::ifstream loadFile("playerstats.dat", std::ios::binary);
+	if (loadFile.is_open())
+	{
+		loadFile.read(reinterpret_cast<char*>(&player->totalKills), sizeof(player->totalKills));
+        loadFile.read(reinterpret_cast<char*>(&player->totalDeaths), sizeof(player->totalDeaths));
+		loadFile.close();
+	}
 }
 
 void saveGameState(Player* player, Map* map, EnemyManager* enemyManager)

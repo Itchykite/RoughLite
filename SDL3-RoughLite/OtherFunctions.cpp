@@ -12,10 +12,6 @@
 //	SDL_DestroySurface(textSurface);
 //}
 
-#include "OtherFunctions.hpp"
-#include "Settings.hpp"
-#include <string>
-
 void RenderGameOverScreen(SDL_Renderer* renderer, Player* player, const Uint64& gameOverTime, const Uint64& startTime)
 {
     // Ustaw kolor t³a na czarny

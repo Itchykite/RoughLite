@@ -1,21 +1,15 @@
-﻿  GameState.cpp
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Buttons.hpp(43,28): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Buttons.hpp(44,28): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Buttons.hpp(77,18): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Buttons.hpp(78,18): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\GameState.cpp(96,24): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\GameState.cpp(97,24): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\GameState.cpp(119,132): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\GameState.cpp(119,77): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\GameState.cpp(130,99): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\GameState.cpp(130,75): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\GameState.cpp(171,24): warning C4267: "inicjowanie": konwersja z "size_t" do "int", możliwa utrata danych
+﻿  Player.cpp
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(190,25): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(209,57): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(209,57): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(209,100): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(209,100): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(209,133): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(209,133): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(209,163): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(209,163): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(253,66): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(253,66): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(253,100): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(253,100): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
   SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\Itchykite\RoughLite\x64\Debug\SDL3-RoughLite.exe
