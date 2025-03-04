@@ -1,5 +1,4 @@
 ﻿  Buttons.cpp
-  Camera.cpp
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
   (kompilowanie pliku źródłowego „Buttons.cpp”)
   
@@ -66,83 +65,8 @@ C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): err
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C3203: „unique_ptr”: nie można używać klasy niespecjalizowanej klasa szablon jako argumentu szablon dla parametru szablon „_Ty”, oczekiwano typu rzeczywistego
   (kompilowanie pliku źródłowego „EnemyManager.cpp”)
   
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(27,37): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(30,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(31,44): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(32,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(34,45): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(14,20): error C2039: „AdjustSpawnTime”: nie jest składową elementu „EnemyManager”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(15,7):
-      zobacz deklarację „EnemyManager”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(16,2): error C2065: "lastSpawnTime": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(17,2): error C2065: "lastCollisionTime": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(33,28): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(33,20): error C2530: "enemy": odwołania muszą być zainicjowane
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(33,20): error C3531: „enemy”: symbol, którego typ zawiera „auto”, musi mieć inicjator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(33,26): error C2143: błąd składniowy: brakuje „;” przed „:”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(33,35): error C2143: błąd składniowy: brakuje „;” przed „)”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(35,8): error C2660: "EnemyManager::CheckCollision": funkcja nie przyjmuje 1 argumentów
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(42,7):
-      zobacz deklarację „EnemyManager::CheckCollision”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(35,8):
-      podczas próby dopasowania listy argumentów "(SDL_FRect)"
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(45,2): error C2065: "enemies": niezadeklarowany identyfikator
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(56,16): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(57,16): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(82,22): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(82,14): error C2530: "enemy": odwołania muszą być zainicjowane
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(82,14): error C3531: „enemy”: symbol, którego typ zawiera „auto”, musi mieć inicjator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(82,20): error C2143: błąd składniowy: brakuje „;” przed „:”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(82,29): error C2143: błąd składniowy: brakuje „;” przed „)”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(87,3): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(87,32): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(87,49): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(87,22): error C2672: „std::remove_if”: nie znaleziono zgodnej przeciążonej funkcji
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\algorithm(4494,30):
-      może to być „_FwdIt std::remove_if(_ExPo &&,_FwdIt,_FwdIt,_Pr) noexcept”
-          C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(87,22):
-          „_FwdIt std::remove_if(_ExPo &&,_FwdIt,_FwdIt,_Pr) noexcept”: oczekuje 4 argumentów — podano 2
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\xmemory(2208,43):
-      lub       "_FwdIt std::remove_if(_FwdIt,const _FwdIt,_Pr)"
-          C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(87,22):
-          „_FwdIt std::remove_if(_FwdIt,const _FwdIt,_Pr)”: oczekuje 3 argumentów — podano 2
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(87,134): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(89,26): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(91,31): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(93,20): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(93,18): error C2530: "enemy1": odwołania muszą być zainicjowane
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(94,20): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(94,18): error C2530: "enemy2": odwołania muszą być zainicjowane
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(96,23): error C3536: "enemy1" : nie można użyć, zanim zostanie zainicjowany
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(97,23): error C3536: "enemy2" : nie można użyć, zanim zostanie zainicjowany
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(136,21): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(136,13): error C2530: "enemy": odwołania muszą być zainicjowane
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(136,13): error C3531: „enemy”: symbol, którego typ zawiera „auto”, musi mieć inicjator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(136,19): error C2143: błąd składniowy: brakuje „;” przed „:”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(136,28): error C2143: błąd składniowy: brakuje „;” przed „)”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(172,27): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(172,19): error C2530: "enemy": odwołania muszą być zainicjowane
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(172,19): error C3531: „enemy”: symbol, którego typ zawiera „auto”, musi mieć inicjator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(172,25): error C2143: błąd składniowy: brakuje „;” przed „:”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(172,34): error C2143: błąd składniowy: brakuje „;” przed „)”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(187,2): error C2065: "enemies": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(188,2): error C2065: "rangeRovers": niezadeklarowany identyfikator
   GameState.cpp
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
   (kompilowanie pliku źródłowego „GameState.cpp”)
@@ -157,24 +81,6 @@ F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include\SDL3_image\SDL_image.h
   (kompilowanie pliku źródłowego „GameState.cpp”)
   
 F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include\SDL3_image\SDL_image.h(40,12): error C2447: "{": brak nagłówka funkcji (stary styl formalnej listy?)
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(27,37): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(30,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(31,44): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(32,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(34,45): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
   (kompilowanie pliku źródłowego „GameState.cpp”)
   
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Buttons.hpp(43,28): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
@@ -244,24 +150,6 @@ C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): err
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C3203: „unique_ptr”: nie można używać klasy niespecjalizowanej klasa szablon jako argumentu szablon dla parametru szablon „_Ty”, oczekiwano typu rzeczywistego
   (kompilowanie pliku źródłowego „Init.cpp”)
   
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „Init.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(27,37): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
-  (kompilowanie pliku źródłowego „Init.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(30,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „Init.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(31,44): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
-  (kompilowanie pliku źródłowego „Init.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(32,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „Init.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(34,45): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
-  (kompilowanie pliku źródłowego „Init.cpp”)
-  
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(20,79): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(20,65): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(27,29): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
@@ -291,34 +179,6 @@ C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): err
   
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C3203: „unique_ptr”: nie można używać klasy niespecjalizowanej klasa szablon jako argumentu szablon dla parametru szablon „_Ty”, oczekiwano typu rzeczywistego
   (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(27,37): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
-  (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(30,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(31,44): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
-  (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(32,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(34,45): error C2238: nieoczekiwany(e) token(y) poprzedzający(e) ";"
-  (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\main.cpp(90,58): error C2039: „enemies”: nie jest składową elementu „EnemyManager”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.hpp(15,7):
-      zobacz deklarację „EnemyManager”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\main.cpp(90,9): error C2660: "PlayerEventHandling": funkcja nie przyjmuje 3 argumentów
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\PlayerEventHandling.hpp(11,6):
-      zobacz deklarację „PlayerEventHandling”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\main.cpp(90,9):
-      podczas próby dopasowania listy argumentów "(SDL_Event *, Player *, SDL_Renderer *)"
   
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\main.cpp(115,9): error C3861: "gameMenu": identyfikatora nie odnaleziono
   Map.cpp

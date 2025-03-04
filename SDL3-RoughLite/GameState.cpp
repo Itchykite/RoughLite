@@ -23,25 +23,16 @@ extern GameStateRunning gameState;
 extern Uint64 lastTime;
 extern void resetLastTime();
 
-<<<<<<< HEAD
-float window_placement_y = WINDOW_HEIGHT / 2;
 float yOffSet = 100.0f;
 
-Button startButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, window_placement_y, 200, 80, { 255, 0, 0, 255 }, []()
-=======
 Button startButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 8, 200, 80, {255, 0, 0, 255}, []()
->>>>>>> ac53d2179976af266f3be2f52e662f677691c2cc
 {
     SDL_Log("Start Game!");
     gameState = GameStateRunning::GAME;
     resetLastTime(); // Resetowanie lastTime poprzez wywo³anie funkcji
 });
 
-<<<<<<< HEAD
-Button exitButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, window_placement_y + yOffSet, 200, 80, { 255, 0, 0, 255 }, []()
-=======
 Button exitButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200, 80, { 255, 0, 0, 255 }, []()
->>>>>>> ac53d2179976af266f3be2f52e662f677691c2cc
 {
     SDL_Log("Exit Game!");
     gameState = GameStateRunning::EXIT;
@@ -118,15 +109,6 @@ void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& en
     RenderGameOverScreen(renderer, player, endTime, startTime); // Renderowanie ekranu "Game Over"
 }
 
-<<<<<<< HEAD
-void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager, Camera* camera)
-{
-    startButton.Render(renderer, font, "start"); // Renderowanie przycisku start
-    startButton.handleClick(event); // Obs³uga klikniêcia przycisku start
-
-    exitButton.Render(renderer, font, "exit"); // Renderowanie przycisku exit
-    exitButton.handleClick(event); // Obs³uga klikniêcia przycisku exit
-=======
 void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager)
 {
     SDL_RenderClear(renderer);
@@ -167,8 +149,6 @@ void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* 
     }
     exitButton.Render(renderer, font, "exit", player, map, enemyManager);
     exitButton.handleClick(event);
-
->>>>>>> ac53d2179976af266f3be2f52e662f677691c2cc
 
     SDL_RenderPresent(renderer); // Renderowanie ekranu menu
 }

@@ -440,16 +440,9 @@ SDL_FRect Player::GetCollisionRect() const // Pobranie prostok¹ta kolizji
 {
     return SDL_FRect
     {
-<<<<<<< HEAD
-        x - playerW / 4 + 16.0f,            // X
-        y - playerH / 4 + 32.0f,                // Y
-        playerW / 2,                    // Szerokoœæ
-        playerH / 2                     // Wysokoœæ
-=======
         x - playerW / 4 + 32.0f,            // X
         y - playerH / 4 + 32.0f,                // Y
         playerW / 4,                    // Szerokoœæ
         playerH / 4                     // Wysokoœæ
->>>>>>> ac53d2179976af266f3be2f52e662f677691c2cc
     };
 }
