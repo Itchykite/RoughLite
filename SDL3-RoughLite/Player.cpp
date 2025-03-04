@@ -402,13 +402,30 @@ void Player::UpdateKillsTexture(SDL_Renderer* renderer)
     SDL_DestroySurface(textSurface);
 }
 
+void Player::Reset()
+{
+    // Resetuj pozycjê gracza
+    SetPosition(0.0f, 0.0f);
+    // Resetuj zdrowie gracza
+    health = 100.0;
+    // Resetuj inne w³aœciwoœci gracza
+    isGameOver = false;
+    kills = 0;
+    velocityX = 0.0f;
+    velocityY = 0.0f;
+    // Resetuj animacje
+    currentFrame = 0;
+    currentRow = 0;
+    isAttacking = false;
+}
+
 SDL_FRect Player::GetCollisionRect() const // Pobranie prostok¹ta kolizji
 {
     return SDL_FRect
     {
-        x - playerW / 4 - 32.0f,            // X
+        x - playerW / 4 + 16.0f,            // X
         y - playerH / 4 + 32.0f,                // Y
-        playerW,                    // Szerokoœæ
-        playerH                     // Wysokoœæ
+        playerW / 2,                    // Szerokoœæ
+        playerH / 2                     // Wysokoœæ
     };
 }

@@ -33,6 +33,7 @@ public:
 	void CreateCollisionSurface(); // Utworzenie powierzchni kolizji
 	void AddObjectWithCollision(SDL_Renderer* renderer, const char* objectTexturePath, float posX, float posY, float objWidth, float objHeight);
 	void SortObjectsByY();
+	void Reset(SDL_Renderer* renderer);
 
 	SDL_Surface* collisionSurface; // Powierzchnia kolizji
 	std::vector<ObjectCollision> objectCollisions;

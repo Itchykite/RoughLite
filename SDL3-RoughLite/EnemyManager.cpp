@@ -242,3 +242,13 @@ bool EnemyManager::IsPlayerInCollision() const // Czy gracz jest w kolizji
 
 	return false; // Jeœli brak kolizji, zwróæ false
 }
+
+void EnemyManager::Reset()
+{
+	// Usuñ wszystkich przeciwników
+	enemies.clear();
+	rangeRovers.clear();
+	// Dodaj przeciwników ponownie, jeœli to konieczne
+	AddEnemy();
+	AddRangeRover();
+}

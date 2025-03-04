@@ -74,8 +74,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 {
     if (gameState == GameStateRunning::MENU)
     {
-        gameMenu(renderer, lastEvent, font);
-        return SDL_APP_CONTINUE;  
+        gameMenu(renderer, lastEvent, font, player, map, enemyManager, camera);
+        return SDL_APP_CONTINUE;   
     }
 
 	if (gameState == GameStateRunning::GAME)

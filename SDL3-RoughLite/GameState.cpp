@@ -19,13 +19,16 @@
 
 extern GameStateRunning gameState;
 
-Button startButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 8, 200, 80, { 255, 0, 0, 255 }, []()
+float window_placement_y = WINDOW_HEIGHT / 2;
+float yOffSet = 100.0f;
+
+Button startButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, window_placement_y, 200, 80, { 255, 0, 0, 255 }, []()
 {
     SDL_Log("Start Game!");
     gameState = GameStateRunning::GAME;
 });
 
-Button exitButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200, 80, { 255, 0, 0, 255 }, []()
+Button exitButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, window_placement_y + yOffSet, 200, 80, { 255, 0, 0, 255 }, []()
 {
     SDL_Log("Exit Game!");
     gameState = GameStateRunning::EXIT;
@@ -107,13 +110,13 @@ void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& en
     RenderGameOverScreen(renderer, player, endTime, startTime); // Renderowanie ekranu "Game Over"
 }
 
-void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font)
+void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager, Camera* camera)
 {
-	startButton.Render(renderer, font, "start"); // Renderowanie przycisku start
-	startButton.handleClick(event); // Obs³uga klikniêcia przycisku start
+    startButton.Render(renderer, font, "start"); // Renderowanie przycisku start
+    startButton.handleClick(event); // Obs³uga klikniêcia przycisku start
 
-	exitButton.Render(renderer, font, "exit"); // Renderowanie przycisku exit
-	exitButton.handleClick(event); // Obs³uga klikniêcia przycisku exit
+    exitButton.Render(renderer, font, "exit"); // Renderowanie przycisku exit
+    exitButton.handleClick(event); // Obs³uga klikniêcia przycisku exit
 
     SDL_RenderPresent(renderer); // Renderowanie ekranu menu
 }

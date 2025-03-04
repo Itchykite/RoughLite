@@ -33,6 +33,7 @@ public:
     void HandleCollision(); // Obs³uga kolizji
     void attack(SDL_Renderer* renderer, std::vector<std::unique_ptr<Enemy>>& enemies, float dirX, float dirY); // Atak
     void UpdateKillsTexture(SDL_Renderer* renderer);
+    void Reset();
 
     SDL_FRect GetCollisionRect() const;
     SDL_Texture* playerTexture; // Tekstura gracza

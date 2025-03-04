@@ -21,4 +21,4 @@ SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Came
 
 void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& endTime, Uint64& startTime);
 
-void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font);
+void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager, Camera* camera);

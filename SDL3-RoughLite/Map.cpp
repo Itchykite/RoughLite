@@ -232,3 +232,13 @@ void Map::SortObjectsByY()
         return a.rect.y < b.rect.y;
     });
 }
+
+void Map::Reset(SDL_Renderer* renderer)
+{
+    // Resetuj mapê, np. usuñ obiekty kolizji
+    objectCollisions.clear();
+    // Ponownie utwórz siatkê kolizji
+    CreateGrid(nodeSize);
+    // Dodaj obiekty kolizji ponownie, jeœli to konieczne
+    mapCollisions(this, renderer);
+}

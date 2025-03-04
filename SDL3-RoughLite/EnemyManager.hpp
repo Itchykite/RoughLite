@@ -24,6 +24,7 @@ public:
 
 	void Render(SDL_Renderer* renderer); // Renderowanie przeciwnika
 	void RenderRangeRover(SDL_Renderer* renderer); // Renderowanie RangeRovera
+	void Reset();
 
 	std::vector<std::unique_ptr<Enemy>> enemies; // Przeciwnicy
 
