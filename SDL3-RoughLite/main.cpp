@@ -136,6 +136,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
     SDL_RenderPresent(renderer); // Renderowanie ca≥oúci
 
+	SDL_Delay(fps); // Opoünienie
+
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
