@@ -27,18 +27,24 @@ Map* map = nullptr; // wskaŸnik mapa
 Camera* camera = nullptr; // wskaŸnik kamera
 Player* player = nullptr; // wskaŸnik gracz
 EnemyManager* enemyManager = nullptr; // wskaŸnik przeciwnik
-EnemyManager* rangeRover = nullptr; // wskaŸnik krêc¹cy siê ziut
 TTF_Font* font = nullptr; // wskaŸnik czcionka
 
 Uint64 lastTime = 0;
 Uint64 startTime = 0;
 
 GameStateRunning gameState = GameStateRunning::MENU;
+GameStateRunning previousState = gameState; // Dodanie zmiennej previousState
+
+void resetLastTime() 
+{
+    lastTime = SDL_GetTicks();
+}
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
     InitEverything(renderer, window, player, map, camera, enemyManager, font, startTime, lastTime, appstate);
+    loadPlayerStats(player);
 
 	return SDL_APP_CONTINUE;  /* continue running the program. */
 }
@@ -50,18 +56,36 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 
     if (event->type == SDL_EVENT_QUIT)  // Zamkniêcie po naciœniêciu przycisku 'X'
     {
+        savePlayerStats(player);
         return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
     }
 
-	if (event->type == SDL_EVENT_KEY_DOWN && (gameState == GameStateRunning::GAME || gameState == GameStateRunning::GAMEOVER)) // Zamkniêcie po przyciœniêciu na klawiaturze ESCAPE
+	if (event->type == SDL_EVENT_KEY_DOWN) // Zamkniêcie po przyciœniêciu na klawiaturze ESCAPE
 	{
-		if (event->key.key == SDLK_ESCAPE)
-		{
-			gameState = GameStateRunning::MENU;
-		}
+        if (event->key.key == SDLK_ESCAPE)
+        {
+            if (gameState != GameStateRunning::MENU)
+            {
+                if (gameState == GameStateRunning::GAME)
+                {
+                    gamePause(renderer, font); // Wywo³anie funkcji pauzy
+                    gameState = GameStateRunning::MENU;
+                }
+
+                gameState = GameStateRunning::MENU;
+
+                SDL_Log("Prze³¹czono na PAUSE");
+            }
+            else if (gameState != GameStateRunning::GAME)
+            {
+                gameState = GameStateRunning::GAME;
+                SDL_Log("Wznowiono gre (GAME)");
+                resetLastTime(); // Resetowanie lastTime przy przejœciu do GAME
+            }
+        }
 	}
 
-    if (!player->isGameOver)
+    if (gameState == GameStateRunning::GAME && !player->isGameOver)
     {
         PlayerEventHandling(event, player, enemyManager->enemies, renderer); // Funkcja zawieraj¹ca przechwytywanie WASD do poruszania siê gracza
     }
@@ -72,26 +96,43 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-    if (gameState == GameStateRunning::MENU)
+    if (gameState != previousState)
     {
-        gameMenu(renderer, lastEvent, font, player, map, enemyManager, camera);
-        return SDL_APP_CONTINUE;   
+        if (gameState == GameStateRunning::GAME)
+        {
+            resetLastTime(); // Resetowanie lastTime przy przejœciu do GAME
+        }
+        previousState = gameState;
     }
 
-	if (gameState == GameStateRunning::GAME)
-	{
-		gameRunning(renderer, player, map, camera, enemyManager, startTime, lastTime, appstate);
-	}
-
-    if (gameState == GameStateRunning::GAMEOVER)
+    switch (gameState)
     {
-		GameOver(renderer, font, player, lastTime, startTime);
-    }
+    case GameStateRunning::GAME:
+        gameRunning(renderer, player, map, camera, enemyManager, startTime, lastTime, lastEvent, font, appstate, gameState);
+        break;
 
-	if (gameState == GameStateRunning::EXIT)
-	{
-		return SDL_APP_SUCCESS;
-	}
+    case GameStateRunning::MENU:
+        gameMenu(renderer, lastEvent, font, player, map, enemyManager);
+        break;
+        
+    case GameStateRunning::GAMEOVER:
+        GameOver(renderer, font, player, lastTime, startTime);
+        savePlayerStats(player);
+        break;
+
+    case GameStateRunning::STATS:
+		gameStats(renderer, font, player);
+		break;
+
+    case GameStateRunning::EXIT:
+		savePlayerStats(player);
+        return SDL_APP_SUCCESS;
+        break;
+
+    default:
+        return SDL_APP_FAILURE;
+        break;
+    }
 
     SDL_RenderPresent(renderer); // Renderowanie ca³oœci
 
@@ -102,11 +143,9 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 void SDL_AppQuit(void* appstate, SDL_AppResult result)
 {
     // Zwolnienie wskaŸników
-
     SDL_Log("Cleaning up...");
     delete player;
     delete map;
     delete camera;
     delete enemyManager;
-    delete rangeRover;
 }

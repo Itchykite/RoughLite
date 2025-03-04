@@ -69,10 +69,9 @@ void Map::RenderObjects(SDL_Renderer* renderer, float cameraX, float cameraY, Pl
     std::vector<Renderable> renderQueue;
 
     // Dodaj wszystkie obiekty (drzewa) do kolejki
-    for (const auto& object : objectCollisions) 
+    for (const auto& object : objectCollisions)
     {
         Renderable r;
-        // U¿ywamy linii kolizji jako punktu odniesienia (mo¿esz dostosowaæ wed³ug potrzeb)
         r.depth = object.collisionRects[0].y;
         r.type = Renderable::OBJECT;
         r.texture = object.texture;
@@ -82,27 +81,25 @@ void Map::RenderObjects(SDL_Renderer* renderer, float cameraX, float cameraY, Pl
 
     // Dodaj gracza do kolejki
     Renderable p;
-    // Ustal "g³êbiê" gracza – przyk³adowo dolna krawêdŸ
     p.depth = player->GetY() + player->GetHeight() + 32.0f;
     p.type = Renderable::PLAYER;
     p.player = player;
     renderQueue.push_back(p);
 
     // Sortuj kolejkê renderowania wed³ug wartoœci depth (od najmniejszej do najwiêkszej)
-    std::sort(renderQueue.begin(), renderQueue.end(), [](const Renderable& a, const Renderable& b) 
-    {
-        return a.depth < b.depth;
-    });
+    std::sort(renderQueue.begin(), renderQueue.end(), [](const Renderable& a, const Renderable& b)
+        {
+            return a.depth < b.depth;
+        });
 
     // Renderuj wszystkie elementy w kolejnoœci
-    for (const auto& item : renderQueue) 
+    for (const auto& item : renderQueue)
     {
         if (item.type == Renderable::PLAYER)
         {
             item.player->Render(renderer);
         }
-
-        else if (item.type == Renderable::OBJECT) 
+        else if (item.type == Renderable::OBJECT)
         {
             SDL_FRect dstRect = item.rect;
             dstRect.x -= cameraX;

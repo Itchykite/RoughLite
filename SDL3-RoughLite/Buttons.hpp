@@ -5,14 +5,21 @@
 #include <functional>
 #include <iostream>
 
+#include "GameState.hpp"
+
+class Player;
+class Map;
+class EnemyManager;
+
 class Button
 {
 public:
     Button(float x, float y, float w, float h, SDL_Color color, std::function<void()> onClick)
-        : rect{ x, y, w, h }, color(color), onClick(onClick), isPressed(false) {
+        : rect{ x, y, w, h }, color(color), onClick(onClick), isPressed(false) 
+    {
     }
 
-    void Render(SDL_Renderer* renderer, TTF_Font* font, const char* name)
+    void Render(SDL_Renderer* renderer, TTF_Font* font, const char* name, Player* player, Map* map, EnemyManager* enemyManager)
     {
         SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 		SDL_RenderFillRect(renderer, &rect);
@@ -35,8 +42,8 @@ public:
         SDL_FRect dst;
         dst.w = textSurface->w;
         dst.h = textSurface->h;
-        dst.x = rect.x + dst.w + dst.w / 2;
-        dst.y = rect.y + dst.h - dst.h / 2;
+        dst.x = rect.x + (rect.w - textSurface->w) / 2.0f;
+        dst.y = rect.y + (rect.h - textSurface->h) / 2.0f;
         SDL_RenderTexture(renderer, texture, NULL, &dst);
         SDL_DestroyTexture(texture);
         SDL_DestroySurface(textSurface);
@@ -63,6 +70,17 @@ public:
                 onClick();
             }
         }
+    }
+
+    void SetPosition(int x, int y)
+    {
+        rect.x = x;
+        rect.y = y;
+    }
+
+    SDL_FRect GetFRect() const
+    {
+        return rect;
     }
 
 private:

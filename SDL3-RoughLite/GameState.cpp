@@ -16,64 +16,72 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <fstream>
+#include <string>
 
 extern GameStateRunning gameState;
+extern Uint64 lastTime;
+extern void resetLastTime();
 
+<<<<<<< HEAD
 float window_placement_y = WINDOW_HEIGHT / 2;
 float yOffSet = 100.0f;
 
 Button startButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, window_placement_y, 200, 80, { 255, 0, 0, 255 }, []()
+=======
+Button startButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 8, 200, 80, {255, 0, 0, 255}, []()
+>>>>>>> ac53d2179976af266f3be2f52e662f677691c2cc
 {
     SDL_Log("Start Game!");
     gameState = GameStateRunning::GAME;
+    resetLastTime(); // Resetowanie lastTime poprzez wywo³anie funkcji
 });
 
+<<<<<<< HEAD
 Button exitButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, window_placement_y + yOffSet, 200, 80, { 255, 0, 0, 255 }, []()
+=======
+Button exitButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200, 80, { 255, 0, 0, 255 }, []()
+>>>>>>> ac53d2179976af266f3be2f52e662f677691c2cc
 {
     SDL_Log("Exit Game!");
     gameState = GameStateRunning::EXIT;
 });
 
-SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager,
-    const Uint64& startTime, Uint64& lastTime, void* appstate)
+Button statsButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200, 80, { 255, 0, 0, 255 }, []()
 {
-    if (gameState == GameStateRunning::MENU)
+    SDL_Log("Stats Game!");
+	gameState = GameStateRunning::STATS;
+});
+
+SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager,
+    const Uint64& startTime, Uint64& lastTime, SDL_Event& event, TTF_Font* font, void* appstate, GameStateRunning currentState)
+{
+    Uint64 currentTime = SDL_GetTicks();
+
+    if (!player->isGameOver && currentState == GameStateRunning::GAME)
     {
-        return SDL_APP_CONTINUE;
-    }
+        float deltaTime = (currentTime - lastTime) / 1000.0f;
+        lastTime = currentTime;
 
-    Uint64 currentTime = SDL_GetTicks(); // Pobiera aktualny czas
-    float deltaTime = (currentTime - lastTime) / 1000.0f; // Czas co sekunde
+        enemyManager->Update(deltaTime, currentState);
+        player->Update(deltaTime, currentState);
 
-    if (!player->isGameOver || gameState == GameStateRunning::MENU)
-    {
-        lastTime = currentTime; // Aktualizuj czas tylko jeœli gra nie jest skoñczona i nie jest w stanie pauzy
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
 
-        enemyManager->Update(deltaTime); // Aktualizacja przeciwnika co sekunde
-        player->Update(deltaTime); // Aktualizacja gracza co sekunde
-    }
+        map->Render(renderer, camera->GetX(), camera->GetY());
+        enemyManager->Render(renderer, currentState);
+        map->RenderObjects(renderer, camera->GetX(), camera->GetY(), player);
+        player->UpdateKillsTexture(renderer);
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Koloruje ekran na czarno
-    SDL_RenderClear(renderer); // i go renderuje 
+        SDL_FPoint playerPosition = { player->GetX(), player->GetY() };
+        int playerX = static_cast<int>(playerPosition.x);
+        int playerY = static_cast<int>(playerPosition.y);
 
-    map->Render(renderer, camera->GetX(), camera->GetY()); // Renderowanie
-    enemyManager->Render(renderer); // Renderowanie przeciwników
-    map->RenderObjects(renderer, camera->GetX(), camera->GetY(), player); // Renderowanie obiektów
-    player->UpdateKillsTexture(renderer); // Aktualizacja wyniku
-
-    SDL_FPoint playerPosition = { player->GetX(), player->GetY() }; // Pobieranie aktualnej pozycji gracza jako punkt
-    int playerX = static_cast<int>(playerPosition.x); // przechowanie aktualnego x dla gracza, int
-    int playerY = static_cast<int>(playerPosition.y); // przechowanie aktualnego y dla gracza, int
-
-    if (!map->IsPixelTransparent(playerX, playerY))
-    {
-        player->Update(-deltaTime);
-    }
-
-    if (player->health <= 0) // Jeœli zdrowie gracza jest mniejsze lub równe 0
-    {
-        player->isGameOver = true; // Gra siê koñczy
-        gameState = GameStateRunning::GAMEOVER; // Gra siê koñczy
+        if (!map->IsPixelTransparent(playerX, playerY))
+        {
+            player->Update(-deltaTime, currentState);
+        }
     }
 
     return SDL_APP_CONTINUE;
@@ -110,6 +118,7 @@ void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& en
     RenderGameOverScreen(renderer, player, endTime, startTime); // Renderowanie ekranu "Game Over"
 }
 
+<<<<<<< HEAD
 void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager, Camera* camera)
 {
     startButton.Render(renderer, font, "start"); // Renderowanie przycisku start
@@ -117,6 +126,191 @@ void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* 
 
     exitButton.Render(renderer, font, "exit"); // Renderowanie przycisku exit
     exitButton.handleClick(event); // Obs³uga klikniêcia przycisku exit
+=======
+void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager)
+{
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
+    SDL_RenderClear(renderer);
+
+    float OffSet = 24.0f;
+
+    // Renderowanie przycisku start
+    SDL_Surface* startTextSurface = TTF_RenderText_Solid(font, "start", 0, { 255, 255, 255, 255 });
+    if (startTextSurface)
+    {
+        int startTextWidth = startTextSurface->w;
+        SDL_DestroySurface(startTextSurface);
+        startButton.SetPosition(WINDOW_WIDTH / 2 - startButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2 - startButton.GetFRect().h - OffSet);
+    }
+    startButton.Render(renderer, font, "start", player, map, enemyManager);
+    startButton.handleClick(event);
+
+	// Renderowanie przycisku stats
+    SDL_Surface* statsTextSurface = TTF_RenderText_Solid(font, "stats", 0, { 255, 255, 255, 255 });
+    if (statsTextSurface)
+    {
+        int statsTextWidth = statsTextSurface->w;
+        SDL_DestroySurface(statsTextSurface);
+        statsButton.SetPosition(WINDOW_WIDTH / 2 - statsButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2);
+    }
+    statsButton.Render(renderer, font, "stats", player, map, enemyManager);
+    statsButton.handleClick(event);
+
+    // Renderowanie przycisku exit
+    SDL_Surface* exitTextSurface = TTF_RenderText_Solid(font, "exit", 0, { 255, 255, 255, 255 });
+    if (exitTextSurface)
+    {
+        int exitTextWidth = exitTextSurface->w;
+        SDL_DestroySurface(exitTextSurface);
+        exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2 + exitButton.GetFRect().h + OffSet);
+    }
+    exitButton.Render(renderer, font, "exit", player, map, enemyManager);
+    exitButton.handleClick(event);
+
+>>>>>>> ac53d2179976af266f3be2f52e662f677691c2cc
 
     SDL_RenderPresent(renderer); // Renderowanie ekranu menu
+}
+
+void gamePause(SDL_Renderer* renderer, TTF_Font* font)
+{
+    // Renderowanie t³a pauzy
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128); // Pó³przezroczyste czarne t³o
+    SDL_FRect pauseRect = { WINDOW_WIDTH / 2 - 100, 100, 200, 100 };
+    SDL_RenderFillRect(renderer, &pauseRect);
+
+    // Renderowanie napisu "PAUZA"
+    SDL_Color white = { 255, 255, 255, 255 };
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, "PAUZA", 0, white);
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FRect textRect = { pauseRect.x + 50, pauseRect.y + 25, 100, 50 };
+    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+    SDL_DestroySurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+}
+
+void gameStats(SDL_Renderer* renderer, TTF_Font* font, Player* player)
+{
+    SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
+    SDL_FRect statsRect = { WINDOW_WIDTH / 2 - 100, 100, 200, 100 };
+    SDL_RenderFillRect(renderer, &statsRect);
+
+    SDL_Color white = { 255, 255, 255, 255 };
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, "STATS", 0, white);
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FRect textRect = { statsRect.x + 50, statsRect.y + 25, 100, 50 };
+    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+
+    SDL_DestroySurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+
+    float textWidth = textSurface->w;
+    float textHeight = textSurface->h;
+
+    std::string killsText = "Total kills: " + std::to_string(player->totalKills);
+    textSurface = TTF_RenderText_Solid(font, killsText.c_str(), 0, white);
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+    textRect = { (WINDOW_WIDTH - textWidth * 2) / 2, WINDOW_HEIGHT / 2, textWidth * 2, textHeight };
+    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+
+    SDL_DestroySurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+
+    std::string deathsText = "Total deaths: " + std::to_string(player->totalDeaths);
+    textSurface = TTF_RenderText_Solid(font, deathsText.c_str(), 0, white);
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+    textRect = { (WINDOW_WIDTH - textWidth * 2) / 2, WINDOW_HEIGHT / 2 - textHeight, textWidth * 2, textHeight };
+    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+
+    SDL_DestroySurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+}
+
+void savePlayerStats(Player* player)
+{
+	std::ofstream saveFile("playerstats.dat", std::ios::binary);
+	if (saveFile.is_open())
+	{
+        saveFile.write(reinterpret_cast<char*>(&player->totalKills), sizeof(player->totalKills));
+        saveFile.write(reinterpret_cast<char*>(&player->totalDeaths), sizeof(player->totalDeaths));
+		saveFile.close();
+	}
+}
+
+void loadPlayerStats(Player* player)
+{
+	std::ifstream loadFile("playerstats.dat", std::ios::binary);
+	if (loadFile.is_open())
+	{
+		loadFile.read(reinterpret_cast<char*>(&player->totalKills), sizeof(player->totalKills));
+        loadFile.read(reinterpret_cast<char*>(&player->totalDeaths), sizeof(player->totalDeaths));
+		loadFile.close();
+	}
+}
+
+void saveGameState(Player* player, Map* map, EnemyManager* enemyManager)
+{
+    std::ofstream saveFile("savegame.dat", std::ios::binary);
+
+    float playerX = player->GetX();
+    float playerY = player->GetY();
+
+    if (saveFile.is_open())
+    {
+        // Zapisz stan gracza
+        saveFile.write(reinterpret_cast<char*>(&playerX), sizeof(playerX));
+        saveFile.write(reinterpret_cast<char*>(&playerY), sizeof(playerY));
+        saveFile.write(reinterpret_cast<char*>(&player->health), sizeof(player->health));
+        saveFile.write(reinterpret_cast<char*>(&player->kills), sizeof(player->kills));
+
+        // Zapisz stan przeciwników
+        int numEnemies = enemyManager->enemies.size();
+        saveFile.write(reinterpret_cast<char*>(&numEnemies), sizeof(numEnemies));
+
+        for (const auto& enemy : enemyManager->enemies)
+        {
+            float enemyX = enemy->GetX();
+            float enemyY = enemy->GetY();
+            saveFile.write(reinterpret_cast<const char*>(&enemyX), sizeof(enemyX));
+            saveFile.write(reinterpret_cast<const char*>(&enemyY), sizeof(enemyY));
+        }
+
+        saveFile.close();
+    }
+}
+
+void loadGameState(Player* player, Map* map, EnemyManager* enemyManager, SDL_Renderer* renderer)
+{
+    std::ifstream loadFile("savegame.dat", std::ios::binary);
+
+    if (loadFile.is_open())
+    {
+        // Wczytaj stan gracza
+        loadFile.read(reinterpret_cast<char*>(&player->x), sizeof(player->x));
+        loadFile.read(reinterpret_cast<char*>(&player->y), sizeof(player->y));
+        loadFile.read(reinterpret_cast<char*>(&player->health), sizeof(player->health));
+        loadFile.read(reinterpret_cast<char*>(&player->kills), sizeof(player->kills));
+
+        // Wczytaj stan przeciwników
+        int numEnemies;
+        loadFile.read(reinterpret_cast<char*>(&numEnemies), sizeof(numEnemies));
+
+        enemyManager->enemies.clear();
+
+        for (int i = 0; i < numEnemies; ++i) 
+        {
+            float enemyX, enemyY;
+            loadFile.read(reinterpret_cast<char*>(&enemyX), sizeof(enemyX));
+            loadFile.read(reinterpret_cast<char*>(&enemyY), sizeof(enemyY));
+            auto enemy = std::make_unique<Enemy>(player, map, enemyManager->camera, enemyManager->renderer);
+            enemy->SetPosition(enemyX, enemyY);
+            enemyManager->enemies.push_back(std::move(enemy));
+        }
+
+        loadFile.close();
+    }
 }

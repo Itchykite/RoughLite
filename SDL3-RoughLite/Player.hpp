@@ -8,6 +8,7 @@
 #include "Camera.hpp"
 #include <memory>
 #include <vector>
+#include "GameState.hpp"
 
 class Enemy;
 
@@ -22,7 +23,7 @@ public:
     void Render(SDL_Renderer* renderer); // Renderowanie gracza
     void renderHealthBar(double healthValue, SDL_Renderer* renderer); // Renderowanie paska zdrowia
     void SetPosition(float x, float y); // Ustwienie pozycji gracza
-    void Update(float deltaTime); // Aktualizacja gracza
+    void Update(float deltaTime, GameStateRunning currentState); // Aktualizacja gracza
     void SetVelocity(float x, float y); // Ustwienie prêdkoœci gracza
     float GetX() const; // Pobranie pozycji x 
     float GetY() const; // Pobranie pozycji y
@@ -35,13 +36,18 @@ public:
     void UpdateKillsTexture(SDL_Renderer* renderer);
     void Reset();
 
-    SDL_FRect GetCollisionRect() const;
+	SDL_FRect GetCollisionRect() const; // Pobranie prostok¹ta kolizji
     SDL_Texture* playerTexture; // Tekstura gracza
 
 
+    float x; // Pozycja x
+    float y; // Pozycja y
     long int kills; // Wynik
+    long int totalKills; // Ca³kowita liczba zabitych przeciwników
+    long int totalDeaths; // Ca³kowita liczba zabitych przeciwników
     double health; // Zdrowie
     bool isGameOver;
+    bool deathRegistered;
     Uint64 gameOverTime;
 
     SDL_Texture* texture; // Tekstura
@@ -51,8 +57,6 @@ public:
 private:
     void UpdateAnimation(); // Aktualizacja animacji
 
-    float x; // Pozycja x
-    float y; // Pozycja y
     float velocityX; // Prêdkoœæ x
     float velocityY; // Prêdkoœæ y
     Camera* camera; // Kamera
