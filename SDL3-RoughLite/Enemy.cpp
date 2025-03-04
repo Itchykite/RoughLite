@@ -3,7 +3,6 @@
 #include "Player.hpp"
 #include "Camera.hpp"
 #include "Settings.hpp"
-#include "GameState.hpp"
 #include <SDL3_image/SDL_image.h>
 #include <cmath>
 
@@ -47,7 +46,7 @@ void Enemy::LoadTexture(SDL_Renderer* renderer, const char* pathFile) // Za³adow
 
 void Enemy::Render(SDL_Renderer* renderer) // Renderowanie przeciwnika
 {
-	if (!isAlive || gameState == GameStateRunning::MENU) return; // Jeœli nie ¿yje
+	if (!isAlive) return; // Jeœli nie ¿yje
 
 	if (camera == nullptr) // Jeœli kamera nie istnieje
 	{
@@ -68,9 +67,9 @@ void Enemy::SetPosition(float x, float y) // Ustawienie pozycji przeciwnika
 	this->y = y; // Ustawienie pozycji y
 }
 
-void Enemy::Update(float deltaTime) // Aktualizacja przeciwnika
+void Enemy::Update(float deltaTime, GameStateRunning currentState) // Aktualizacja przeciwnika
 {
-	if (gameState == GameStateRunning::MENU) // Dodaj to sprawdzenie na pocz¹tku
+	if (currentState != GameStateRunning::GAME)
 	{
 		return;
 	}
@@ -202,7 +201,7 @@ void Enemy::UpdateAnimation() // Aktualizacja animacji
 
 SDL_FRect Enemy::GetCollisionRect() const // Pobranie prostok¹ta kolizji
 {
-	if (!isAlive || gameState == GameStateRunning::MENU)
+	if (!isAlive || gameState != GameStateRunning::GAME)
 	{
 		return { 0,0,0,0 };
 	}

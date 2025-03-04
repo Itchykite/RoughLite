@@ -4,6 +4,7 @@
 #include "Map.hpp"
 #include "Camera.hpp"
 #include <memory>
+#include "GameState.hpp"
 
 class Player;
 
@@ -16,7 +17,7 @@ public:
     void LoadTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury przeciwnika
     void Render(SDL_Renderer* renderer); // Renderowanie przeciwnika
     void SetPosition(float x, float y); // Ustwienie pozycji przeciwnika
-    void Update(float deltaTime); // Aktualizacja przeciwnika
+    void Update(float deltaTime, GameStateRunning currentState); // Aktualizacja przeciwnika
     void SetVelocity(float x, float y); // Ustwienie prêdkoœci przeciwnika
     float GetX() const; // Pobranie pozycji x
     float GetY() const; // Pobranie pozycji y

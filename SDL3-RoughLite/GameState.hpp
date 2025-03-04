@@ -13,12 +13,20 @@ enum class GameStateRunning
     MENU,
     GAME,
     GAMEOVER,
+    PAUSE,
     EXIT
 };
 
 SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager,
-    const Uint64& startTime, Uint64& lastTime, SDL_Event& event, TTF_Font* font, void* appstate);
+    const Uint64& startTime, Uint64& lastTime, SDL_Event& event, TTF_Font* font, void* appstate, GameStateRunning currentState);
 
 void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& endTime, Uint64& startTime);
 
-void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font);
+void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager);
+
+void gamePause(SDL_Renderer* renderer, TTF_Font* font);
+
+void saveGameState(Player* player, Map* map, EnemyManager* enemyManager);
+void loadGameState(Player* player, Map* map, EnemyManager* enemyManager, SDL_Renderer* renderer);
+void reWriteSave();
+void resetLastTime();

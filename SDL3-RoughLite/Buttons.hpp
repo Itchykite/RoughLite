@@ -5,6 +5,12 @@
 #include <functional>
 #include <iostream>
 
+#include "GameState.hpp"
+
+class Player;
+class Map;
+class EnemyManager;
+
 class Button
 {
 public:
@@ -12,7 +18,7 @@ public:
         : rect{ x, y, w, h }, color(color), onClick(onClick), isPressed(false) {
     }
 
-    void Render(SDL_Renderer* renderer, TTF_Font* font, const char* name)
+    void Render(SDL_Renderer* renderer, TTF_Font* font, const char* name, Player* player, Map* map, EnemyManager* enemyManager)
     {
         SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 		SDL_RenderFillRect(renderer, &rect);

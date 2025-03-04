@@ -1,15 +1,20 @@
 #define _USE_MATH_DEFINES
 
 #include "EnemyManager.hpp"
-#include "GameState.hpp"
 #include <iostream>
 
 long int i = 1;
 extern GameStateRunning gameState;
 
-EnemyManager::EnemyManager(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor przeciwnika, gracz, mapa, kamera, renderer
-    : player(player), map(map), camera(camera), renderer(renderer)
+EnemyManager::EnemyManager(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer)
+	: player(player), map(map), camera(camera), renderer(renderer), lastSpawnTime(SDL_GetTicks()), lastCollisionTime(SDL_GetTicks())
 {
+}
+
+void EnemyManager::AdjustSpawnTime(Uint64 pauseDuration)
+{
+	lastSpawnTime += pauseDuration;
+	lastCollisionTime += pauseDuration;
 }
 
 void EnemyManager::AddEnemy() // Dodanie przeciwnika
@@ -53,152 +58,85 @@ void EnemyManager::AddRangeRover() // Dodanie RangeRovera
 
 		auto rangeRover = std::make_unique<RangeRover>(player, map, camera, renderer); // Utworzenie nowego RangeRovera
 		rangeRover->SetPosition(enemyX, enemyY); // Ustawienie pozycji
-		rangeRovers.push_back(std::move(rangeRover)); // Dodanie RangeRovera
     }
 }
 
-void EnemyManager::Update(float deltaTime) // Aktualizacja przeciwnika
+void EnemyManager::Update(float deltaTime, GameStateRunning currentState) // Aktualizacja przeciwnika
 {
-	if (gameState == GameStateRunning::MENU)
+	if (currentState != GameStateRunning::GAME || player->isGameOver)
+	{
+		SDL_Log("EnemyManager::Update - Nie aktualizujê przeciwników, poniewa¿ currentState = %d", static_cast<int>(currentState));
+		return;
+	}
+
+	else
+	{
+		Uint64 currentTime = SDL_GetTicks();
+
+		if (currentTime > lastSpawnTime + 1000)
+		{
+			AddEnemy();
+			lastSpawnTime = currentTime;
+		}
+
+		for (auto& enemy : enemies)
+		{
+			enemy->Update(deltaTime, currentState);
+		}
+
+		enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [](const std::unique_ptr<Enemy>& enemy) { return !enemy->isAlive; }), enemies.end());
+
+		for (size_t i = 0; i < enemies.size(); ++i) // Dla ka¿dego przeciwnika
+		{
+			for (size_t j = i + 1; j < enemies.size(); ++j) // Dla ka¿dego przeciwnika
+			{
+				auto& enemy1 = enemies[i]; // Przeciwnik 1
+				auto& enemy2 = enemies[j]; // Przeciwnik 2
+
+				SDL_FRect rect1 = enemy1->GetCollisionRect(); // Prostok¹t kolizji 1
+				SDL_FRect rect2 = enemy2->GetCollisionRect(); // Prostok¹t kolizji 2
+
+				if (CheckCollision(rect1, rect2)) // Jeœli kolizja
+				{
+					float dx = (rect1.x + rect1.w / 2) - (rect2.x + rect2.w / 2); // Ró¿nica x
+					float dy = (rect1.y + rect1.h / 2) - (rect2.y + rect2.h / 2); // Ró¿nica y
+
+					float distance = std::sqrt(dx * dx + dy * dy); // Odleg³oœæ
+					if (distance == 0) distance = 0.001f; // Jeœli odleg³oœæ jest równa 0
+
+					float overlap = (rect1.w / 2 + rect2.w / 2) - distance; // Przeciêcie
+					float pushX = (dx / distance) * overlap * 0.5f; // Przesuniêcie x
+					float pushY = (dy / distance) * overlap * 0.5f; // Przesuniêcie y
+
+					enemy1->SetPosition(rect1.x + pushX, rect1.y + pushY); // Ustawienie pozycji
+					enemy2->SetPosition(rect2.x - pushX, rect2.y - pushY); // Ustawienie pozycji
+
+					enemy1->SetVelocity(enemy1->GetVelocityX() * 0.2f, enemy1->GetVelocityY() * 0.2f); // Ustawienie prêdkoœci
+					enemy2->SetVelocity(enemy2->GetVelocityX() * 0.2f, enemy2->GetVelocityY() * 0.2f); // Ustawienie prêdkoœci
+				}
+			}
+		}
+
+		if (IsPlayerInCollision() && (currentTime > lastCollisionTime + 1000)) // Jeœli kolizja i minê³o 1000 ms od ostatniej kolizji
+		{
+			player->health -= 10; // Zmniejszenie zdrowia gracza
+			lastCollisionTime = currentTime; // Ustawienie ostatniego czasu kolizji
+			player->renderHealthBar(player->health, renderer); // Renderowanie paska zdrowia
+		}
+	}
+}
+
+void EnemyManager::Render(SDL_Renderer* renderer, GameStateRunning currentState) // Renderowanie przeciwnika
+{
+	if (currentState != GameStateRunning::GAME)
 	{
 		return;
 	}
 
-	Uint64 currentTime = SDL_GetTicks(); // Aktualny czas
-
-	if (currentTime > lastSpawnTime + 1000) // Jeœli aktualny czas jest wiêkszy od ostatniego czasu + 1000
-	{
-		AddEnemy(); // Dodanie przeciwnika
-		lastSpawnTime = currentTime; // Ustawienie ostatniego czasu
-	}
-
 	for (auto& enemy : enemies) // Dla ka¿dego przeciwnika
 	{
-		enemy->Update(deltaTime); // Aktualizacja
-	}
-
-	enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [](const std::unique_ptr<Enemy>& enemy) { return !enemy->isAlive; }), enemies.end());
-
-	for (size_t i = 0; i < enemies.size(); ++i) // Dla ka¿dego przeciwnika
-	{
-		for (size_t j = i + 1; j < enemies.size(); ++j) // Dla ka¿dego przeciwnika
-		{
-			auto& enemy1 = enemies[i]; // Przeciwnik 1
-			auto& enemy2 = enemies[j]; // Przeciwnik 2
-
-			SDL_FRect rect1 = enemy1->GetCollisionRect(); // Prostok¹t kolizji 1
-			SDL_FRect rect2 = enemy2->GetCollisionRect(); // Prostok¹t kolizji 2
-
-            if (CheckCollision(rect1, rect2)) // Jeœli kolizja
-            {
-                float dx = (rect1.x + rect1.w / 2) - (rect2.x + rect2.w / 2); // Ró¿nica x
-                float dy = (rect1.y + rect1.h / 2) - (rect2.y + rect2.h / 2); // Ró¿nica y
-
-                float distance = std::sqrt(dx * dx + dy * dy); // Odleg³oœæ
-                if (distance == 0) distance = 0.001f; // Jeœli odleg³oœæ jest równa 0
-
-                float overlap = (rect1.w / 2 + rect2.w / 2) - distance; // Przeciêcie
-                float pushX = (dx / distance) * overlap * 0.5f; // Przesuniêcie x
-                float pushY = (dy / distance) * overlap * 0.5f; // Przesuniêcie y
-
-                enemy1->SetPosition(rect1.x + pushX, rect1.y + pushY); // Ustawienie pozycji
-                enemy2->SetPosition(rect2.x - pushX, rect2.y - pushY); // Ustawienie pozycji
-
-                enemy1->SetVelocity(enemy1->GetVelocityX() * 0.2f, enemy1->GetVelocityY() * 0.2f); // Ustawienie prêdkoœci
-                enemy2->SetVelocity(enemy2->GetVelocityX() * 0.2f, enemy2->GetVelocityY() * 0.2f); // Ustawienie prêdkoœci
-            }
-        }
-    }
-
-	if (IsPlayerInCollision() && (currentTime > lastCollisionTime + 1000)) // Jeœli kolizja i minê³o 1000 ms od ostatniej kolizji
-	{
-		player->health -= 10; // Zmniejszenie zdrowia gracza
-		lastCollisionTime = currentTime; // Ustawienie ostatniego czasu kolizji
-		player->renderHealthBar(player->health, renderer); // Renderowanie paska zdrowia
-	}
-}
-
-void EnemyManager::UpdateRangeRover(float deltaTime) // Aktualizacja RangeRovera
-{
-	for (auto& rangeRover : rangeRovers) // Dla ka¿dego RangeRovera
-    { 
-		rangeRover->Update(deltaTime); // Aktualizacja
-    }
-
-	for (size_t i = 0; i < rangeRovers.size(); ++i) // Dla ka¿dego RangeRovera
-	{
-		for (size_t j = i + 1; j < rangeRovers.size(); ++j) // Dla ka¿dego RangeRovera
-		{
-			auto& enemy1 = rangeRovers[i]; // RangeRover 1
-			auto& enemy2 = rangeRovers[j]; // RangeRover 2
-
-			SDL_FRect rect1 = enemy1->GetCollisionRect(); // Prostok¹t kolizji 1
-			SDL_FRect rect2 = enemy2->GetCollisionRect(); // Prostok¹t kolizji 2
-
-            if (CheckCollision(rect1, rect2)) // Jeœli kolizja
-            {
-                float dx = (rect1.x + rect1.w / 2) - (rect2.x + rect2.w / 2); // Ró¿nica x
-                float dy = (rect1.y + rect1.h / 2) - (rect2.y + rect2.h / 2); // Ró¿nica y
-
-                float distance = std::sqrt(dx * dx + dy * dy); // Odleg³oœæ
-                if (distance == 0) distance = 0.001f; // Jeœli odleg³oœæ jest równa 0
-
-                float overlap = (rect1.w / 2 + rect2.w / 2) - distance; // Przeciêcie
-                float pushX = (dx / distance) * overlap * 0.5f; // Przesuniêcie x
-                float pushY = (dy / distance) * overlap * 0.5f; // Przesuniêcie y
-
-                enemy1->SetPosition(rect1.x + pushX, rect1.y + pushY); // Ustawienie pozycji
-                enemy2->SetPosition(rect2.x - pushX, rect2.y - pushY); // Ustawienie pozycji
-
-                enemy1->SetVelocity(enemy1->GetVelocityX() * 0.2f, enemy1->GetVelocityY() * 0.2f); // Ustawienie prêdkoœci
-                enemy2->SetVelocity(enemy2->GetVelocityX() * 0.2f, enemy2->GetVelocityY() * 0.2f); // Ustawienie prêdkoœci
-            }
-        }
-    }
-
-	for (auto& rangeRover : rangeRovers) // Dla ka¿dego RangeRovera
-    {
-		SDL_FRect rangeRoverRect = rangeRover->GetCollisionRect(); // Prostok¹t kolizji RangeRovera
-
-		for (auto& enemy : enemies) // Dla ka¿dego przeciwnika
-        {
-			SDL_FRect enemyRect = enemy->GetCollisionRect(); // Prostok¹t kolizji przeciwnika
-
-			if (CheckCollision(rangeRoverRect, enemyRect)) // Jeœli kolizja
-            {
-				float dx = (rangeRoverRect.x + rangeRoverRect.w / 2) - (enemyRect.x + enemyRect.w / 2); // Ró¿nica x
-				float dy = (rangeRoverRect.y + rangeRoverRect.h / 2) - (enemyRect.y + enemyRect.h / 2); // Ró¿nica y
-				float distance = std::sqrt(dx * dx + dy * dy); // Odleg³oœæ
-
-				if (distance == 0) distance = 0.001f; // Jeœli odleg³oœæ jest równa 0
-
-				float overlap = (rangeRoverRect.w / 2 + enemyRect.w / 2) - distance; // Przeciêcie
-				float pushX = (dx / distance) * overlap * 0.5f; // Przesuniêcie x
-				float pushY = (dy / distance) * overlap * 0.5f; // Przesuniêcie y
-
-                // Przesuñ tylko Enemy, RangeRover pozostaje nieruszony
-                enemy->SetPosition(enemyRect.x - pushX, enemyRect.y - pushY);
-
-				enemy->SetVelocity(enemy->GetVelocityX() * 0.2f, enemy->GetVelocityY() * 0.2f); // Ustawienie prêdkoœci
-            }
-        }
-    }
-}
-
-void EnemyManager::Render(SDL_Renderer* renderer) // Renderowanie przeciwnika
-{
-	for (auto& enemy : enemies) // Dla ka¿dego przeciwnika
-    {
 		enemy->Render(renderer); // Renderowanie
-    }
-}
-
-void EnemyManager::RenderRangeRover(SDL_Renderer* renderer) // Renderowanie RangeRovera
-{
-	for (auto& rangeRover : rangeRovers) // Dla ka¿dego RangeRovera
-    {
-		rangeRover->Render(renderer); // Renderowanie
-    }
+	}
 }
 
 float EnemyManager::GetRandomFloat(float min, float max) // Pobranie losowej liczby zmiennoprzecinkowej

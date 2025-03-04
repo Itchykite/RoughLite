@@ -10,6 +10,7 @@
 #include "Enemy.hpp"
 #include "Settings.hpp"
 #include "RangeRover.hpp"
+#include "GameState.hpp"
 
 class EnemyManager
 {
@@ -19,24 +20,21 @@ public:
 	void AddEnemy(); // Dodanie przeciwnika
 	void AddRangeRover(); // Dodanie RangeRovera
 
-	void Update(float deltaTime); // Aktualizacja przeciwnika
-	void UpdateRangeRover(float deltaTime); // Aktualizacja RangeRovera
+	void Update(float deltaTime, GameStateRunning currentState); // Aktualizacja przeciwnika
+	void Render(SDL_Renderer* renderer, GameStateRunning currentState); // Renderowanie przeciwnika
 
-	void Render(SDL_Renderer* renderer); // Renderowanie przeciwnika
-	void RenderRangeRover(SDL_Renderer* renderer); // Renderowanie RangeRovera
+	void AdjustSpawnTime(Uint64 pauseDuration); // Nowa metoda
 
 	std::vector<std::unique_ptr<Enemy>> enemies; // Przeciwnicy
+
+	Player* player; // Gracz
+	Map* map; // Mapa
+	Camera* camera; // Kamera
+	SDL_Renderer* renderer; // Renderer
 
 private:
 	bool CheckCollision(const SDL_FRect& rect1, const SDL_FRect& rect2) const; // Sprawdzenie kolizji
 	bool IsPlayerInCollision() const; // Czy gracz jest w kolizji
-
-	std::vector<std::unique_ptr<RangeRover>> rangeRovers; // RangeRover
-	Player* player; // Gracz
-	Map* map; // Mapa
-	Camera* camera; // Kamera
-
-	SDL_Renderer* renderer; // Renderer
 
 	float GetRandomFloat(float min, float max); // Pobranie losowej liczby zmiennoprzecinkowej
 

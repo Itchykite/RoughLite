@@ -64,8 +64,13 @@ void Player::HandleCollision() // Obs³uga kolizji
     }
 }
 
-void Player::Update(float deltaTime) // Aktualizacja gracza
+void Player::Update(float deltaTime, GameStateRunning currentState) // Aktualizacja gracza
 {
+    if (currentState != GameStateRunning::GAME)
+    {
+        return;
+    }
+
     float newX = x + velocityX * deltaTime; // Nowa pozycja x
     float newY = y + velocityY * deltaTime; // Nowa pozycja y
 

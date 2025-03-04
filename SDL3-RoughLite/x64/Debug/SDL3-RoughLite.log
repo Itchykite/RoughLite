@@ -1,10 +1,2 @@
-﻿  GameState.cpp
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Buttons.hpp(36,28): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Buttons.hpp(37,28): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\GameState.cpp(116,24): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\GameState.cpp(117,24): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
+﻿  main.cpp
   SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\Itchykite\RoughLite\x64\Debug\SDL3-RoughLite.exe

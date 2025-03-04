@@ -16,13 +16,17 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <fstream>
 
 extern GameStateRunning gameState;
+extern Uint64 lastTime;
+extern void resetLastTime();
 
 Button startButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 8, 200, 80, { 255, 0, 0, 255 }, []()
 {
     SDL_Log("Start Game!");
     gameState = GameStateRunning::GAME;
+    resetLastTime(); // Resetowanie lastTime poprzez wywo³anie funkcji
 });
 
 Button exitButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200, 80, { 255, 0, 0, 255 }, []()
@@ -32,56 +36,33 @@ Button exitButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, WINDOW_HEIGHT / 2 - WIND
 });
 
 SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager,
-    const Uint64& startTime, Uint64& lastTime, SDL_Event& event, TTF_Font* font,void* appstate)
+    const Uint64& startTime, Uint64& lastTime, SDL_Event& event, TTF_Font* font, void* appstate, GameStateRunning currentState)
 {
-    static Uint64 pauseStartTime = 0; // Przechowuje czas rozpoczêcia pauzy
-
-    if (gameState == GameStateRunning::MENU)
-    {
-        if (pauseStartTime == 0) // Tylko raz zapisujemy czas wejœcia do menu
-        {
-            pauseStartTime = SDL_GetTicks();
-        }
-
-        SDL_RenderClear(renderer);
-        gameMenu(renderer, event, font);
-        SDL_RenderPresent(renderer);
-        return SDL_APP_CONTINUE;
-    }
-
-    // WZNOWIENIE GRY: Korygujemy lastTime o czas spêdzony w menu
-    if (pauseStartTime > 0)
-    {
-        Uint64 pauseDuration = SDL_GetTicks() - pauseStartTime; // Czas spêdzony w menu
-        lastTime += pauseDuration; // Korygujemy lastTime, aby unikn¹æ przeskoku
-        pauseStartTime = 0; // Resetujemy znacznik pauzy
-    }
-
-    // Standardowa aktualizacja gry
     Uint64 currentTime = SDL_GetTicks();
-    float deltaTime = (currentTime - lastTime) / 1000.0f;
-    lastTime = currentTime;
 
-    if (!player->isGameOver)
+    if (!player->isGameOver && currentState == GameStateRunning::GAME)
     {
-        enemyManager->Update(deltaTime);
-        player->Update(deltaTime);
+        float deltaTime = (currentTime - lastTime) / 1000.0f;
+        lastTime = currentTime;
+
+        enemyManager->Update(deltaTime, currentState);
+        player->Update(deltaTime, currentState);
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
         map->Render(renderer, camera->GetX(), camera->GetY());
-        enemyManager->Render(renderer);
+        enemyManager->Render(renderer, currentState);
         map->RenderObjects(renderer, camera->GetX(), camera->GetY(), player);
         player->UpdateKillsTexture(renderer);
 
-        SDL_FPoint playerPosition = { player->GetX(), player->GetY() }; // Pobieranie aktualnej pozycji gracza jako punkt
-        int playerX = static_cast<int>(playerPosition.x); // przechowanie aktualnego x dla gracza, int
-        int playerY = static_cast<int>(playerPosition.y); // przechowanie aktualnego y dla gracza, int
+        SDL_FPoint playerPosition = { player->GetX(), player->GetY() };
+        int playerX = static_cast<int>(playerPosition.x);
+        int playerY = static_cast<int>(playerPosition.y);
 
         if (!map->IsPixelTransparent(playerX, playerY))
         {
-            player->Update(-deltaTime);
+            player->Update(-deltaTime, currentState);
         }
 
         if (player->health <= 0)
@@ -93,7 +74,6 @@ SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Came
 
     return SDL_APP_CONTINUE;
 }
-
 
 void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& endTime, Uint64& startTime) // Funkcja wyœwietlaj¹ca napis Game Over
 {
@@ -126,13 +106,103 @@ void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& en
     RenderGameOverScreen(renderer, player, endTime, startTime); // Renderowanie ekranu "Game Over"
 }
 
-void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font)
+void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager)
 {
-	startButton.Render(renderer, font, "start"); // Renderowanie przycisku start
+	startButton.Render(renderer, font, "start", player, map, enemyManager); // Renderowanie przycisku start
 	startButton.handleClick(event); // Obs³uga klikniêcia przycisku start
 
-	exitButton.Render(renderer, font, "exit"); // Renderowanie przycisku exit
+	exitButton.Render(renderer, font, "exit", player, map, enemyManager); // Renderowanie przycisku exit
 	exitButton.handleClick(event); // Obs³uga klikniêcia przycisku exit
 
     SDL_RenderPresent(renderer); // Renderowanie ekranu menu
+}
+
+void gamePause(SDL_Renderer* renderer, TTF_Font* font)
+{
+    // Renderowanie t³a pauzy
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128); // Pó³przezroczyste czarne t³o
+    SDL_FRect pauseRect = { WINDOW_WIDTH / 2 - 100, WINDOW_HEIGHT / 2 - 50, 200, 100 };
+    SDL_RenderFillRect(renderer, &pauseRect);
+
+    // Renderowanie napisu "PAUZA"
+    SDL_Color white = { 255, 255, 255, 255 };
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, "PAUZA", 0, white);
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FRect textRect = { pauseRect.x + 50, pauseRect.y + 25, 100, 50 };
+    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+    SDL_DestroySurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+}
+
+void saveGameState(Player* player, Map* map, EnemyManager* enemyManager)
+{
+    std::ofstream saveFile("savegame.dat", std::ios::binary);
+
+    float playerX = player->GetX();
+    float playerY = player->GetY();
+
+    if (saveFile.is_open())
+    {
+        // Zapisz stan gracza
+        saveFile.write(reinterpret_cast<char*>(&playerX), sizeof(playerX));
+        saveFile.write(reinterpret_cast<char*>(&playerY), sizeof(playerY));
+        saveFile.write(reinterpret_cast<char*>(&player->health), sizeof(player->health));
+        saveFile.write(reinterpret_cast<char*>(&player->kills), sizeof(player->kills));
+
+        // Zapisz stan przeciwników
+        int numEnemies = enemyManager->enemies.size();
+        saveFile.write(reinterpret_cast<char*>(&numEnemies), sizeof(numEnemies));
+
+        for (const auto& enemy : enemyManager->enemies)
+        {
+            float enemyX = enemy->GetX();
+            float enemyY = enemy->GetY();
+            saveFile.write(reinterpret_cast<const char*>(&enemyX), sizeof(enemyX));
+            saveFile.write(reinterpret_cast<const char*>(&enemyY), sizeof(enemyY));
+        }
+
+        saveFile.close();
+    }
+}
+
+void loadGameState(Player* player, Map* map, EnemyManager* enemyManager, SDL_Renderer* renderer)
+{
+    std::ifstream loadFile("savegame.dat", std::ios::binary);
+
+    if (loadFile.is_open())
+    {
+        // Wczytaj stan gracza
+        loadFile.read(reinterpret_cast<char*>(&player->x), sizeof(player->x));
+        loadFile.read(reinterpret_cast<char*>(&player->y), sizeof(player->y));
+        loadFile.read(reinterpret_cast<char*>(&player->health), sizeof(player->health));
+        loadFile.read(reinterpret_cast<char*>(&player->kills), sizeof(player->kills));
+
+        // Wczytaj stan przeciwników
+        int numEnemies;
+        loadFile.read(reinterpret_cast<char*>(&numEnemies), sizeof(numEnemies));
+
+        enemyManager->enemies.clear();
+
+        for (int i = 0; i < numEnemies; ++i) 
+        {
+            float enemyX, enemyY;
+            loadFile.read(reinterpret_cast<char*>(&enemyX), sizeof(enemyX));
+            loadFile.read(reinterpret_cast<char*>(&enemyY), sizeof(enemyY));
+            auto enemy = std::make_unique<Enemy>(player, map, enemyManager->camera, enemyManager->renderer);
+            enemy->SetPosition(enemyX, enemyY);
+            enemyManager->enemies.push_back(std::move(enemy));
+        }
+
+        loadFile.close();
+    }
+}
+
+void reWriteSave()
+{
+    std::ofstream saveFile("savegame.dat", std::ios::trunc);
+
+    if (saveFile.is_open())
+    {
+        saveFile.close();
+    }
 }
