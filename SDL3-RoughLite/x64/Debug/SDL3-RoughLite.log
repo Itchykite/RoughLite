@@ -1,13 +1,4 @@
 ﻿  Buttons.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „Buttons.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(28,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „Buttons.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(39,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „Buttons.cpp”)
-  
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Buttons.hpp(43,28): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
   (kompilowanie pliku źródłowego „Buttons.cpp”)
   
@@ -21,15 +12,6 @@ C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Buttons.hpp(78,18): wa
   (kompilowanie pliku źródłowego „Buttons.cpp”)
   
   Enemy.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „Enemy.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(28,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „Enemy.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(39,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „Enemy.cpp”)
-  
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(59,37): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(59,37): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(59,62): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
@@ -40,49 +22,9 @@ C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(59,89): warn
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(59,89): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Enemy.cpp(140,25): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
   EnemyManager.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(28,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(39,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69): error C2065: "Enemy": niezadeklarowany identyfikator
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2923: „std::unique_ptr”: „Enemy” nie jest prawidłowym argumentem typu szablon dla parametru „_Ty”
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69):
-      zobacz deklarację „Enemy”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2976: „std::unique_ptr”: za mało argumentów szablon
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3335,7):
-      zobacz deklarację „std::unique_ptr”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C3203: „unique_ptr”: nie można używać klasy niespecjalizowanej klasa szablon jako argumentu szablon dla parametru szablon „_Ty”, oczekiwano typu rzeczywistego
-  (kompilowanie pliku źródłowego „EnemyManager.cpp”)
-  
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(56,16): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\EnemyManager.cpp(57,16): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
   GameState.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(28,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(39,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include\SDL3_image\SDL_image.h(40,12): error C2143: błąd składniowy: brakuje „;” przed „{”
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
-F:\lib\SDL3_image-devel-3.2.0-VC\SDL3_image-3.2.0\include\SDL3_image\SDL_image.h(40,12): error C2447: "{": brak nagłówka funkcji (stary styl formalnej listy?)
-  (kompilowanie pliku źródłowego „GameState.cpp”)
-  
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Buttons.hpp(43,28): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
   (kompilowanie pliku źródłowego „GameState.cpp”)
   
@@ -95,118 +37,24 @@ C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Buttons.hpp(77,18): wa
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Buttons.hpp(78,18): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
   (kompilowanie pliku źródłowego „GameState.cpp”)
   
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(26,1): error C2059: błąd składniowy: „<<”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(30,58): error C2065: "window_placement_y": niezadeklarowany identyfikator
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(31,1): error C2760: błąd składniowy: element „==” był nieoczekiwany w tym miejscu; oczekiwano elementu „{”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(31,3): error C2059: błąd składniowy: „==”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(32,86): error C2143: błąd składniowy: brakuje „;” przed „{”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(32,86): error C2143: błąd składniowy: brakuje „)” przed „;”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(32,86): error C2447: "{": brak nagłówka funkcji (stary styl formalnej listy?)
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(32,102): error C2059: błąd składniowy: „,”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(34,1): error C2143: błąd składniowy: brakuje „;” przed „{”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(34,1): error C2447: "{": brak nagłówka funkcji (stary styl formalnej listy?)
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(38,2): error C2059: błąd składniowy: „)”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(40,1): error C2059: błąd składniowy: „<<”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(41,96): error C2143: błąd składniowy: brakuje „;” przed „{”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(41,96): error C2143: błąd składniowy: brakuje „)” przed „;”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(41,96): error C2447: "{": brak nagłówka funkcji (stary styl formalnej listy?)
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(41,114): error C2059: błąd składniowy: „,”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(43,86): error C2143: błąd składniowy: brakuje „;” przed „{”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(43,86): error C2143: błąd składniowy: brakuje „)” przed „;”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(43,86): error C2447: "{": brak nagłówka funkcji (stary styl formalnej listy?)
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(43,104): error C2059: błąd składniowy: „,”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(45,1): error C2143: błąd składniowy: brakuje „;” przed „{”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(45,1): error C2447: "{": brak nagłówka funkcji (stary styl formalnej listy?)
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(48,2): error C2059: błąd składniowy: „)”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(108,24): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(109,24): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(121,1): error C2059: błąd składniowy: „<<”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(123,1): error C2143: błąd składniowy: brakuje „;” przed „{”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(123,1): error C2447: "{": brak nagłówka funkcji (stary styl formalnej listy?)
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(317,1): error C1004: napotkano nieoczekiwany znacznik końca pliku
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(99,24): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(100,24): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(126,132): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(126,77): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(137,101): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(137,77): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(148,129): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(148,75): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(189,21): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(190,22): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.cpp(251,24): warning C4267: "inicjowanie": konwersja z "size_t" do "int", możliwa utrata danych
   Init.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „Init.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(28,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „Init.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(39,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „Init.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69): error C2065: "Enemy": niezadeklarowany identyfikator
-  (kompilowanie pliku źródłowego „Init.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2923: „std::unique_ptr”: „Enemy” nie jest prawidłowym argumentem typu szablon dla parametru „_Ty”
-  (kompilowanie pliku źródłowego „Init.cpp”)
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69):
-      zobacz deklarację „Enemy”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2976: „std::unique_ptr”: za mało argumentów szablon
-  (kompilowanie pliku źródłowego „Init.cpp”)
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3335,7):
-      zobacz deklarację „std::unique_ptr”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C3203: „unique_ptr”: nie można używać klasy niespecjalizowanej klasa szablon jako argumentu szablon dla parametru szablon „_Ty”, oczekiwano typu rzeczywistego
-  (kompilowanie pliku źródłowego „Init.cpp”)
-  
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(20,79): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(20,65): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(27,29): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(27,19): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
   main.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(28,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(39,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69): error C2065: "Enemy": niezadeklarowany identyfikator
-  (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2923: „std::unique_ptr”: „Enemy” nie jest prawidłowym argumentem typu szablon dla parametru „_Ty”
-  (kompilowanie pliku źródłowego „main.cpp”)
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69):
-      zobacz deklarację „Enemy”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2976: „std::unique_ptr”: za mało argumentów szablon
-  (kompilowanie pliku źródłowego „main.cpp”)
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3335,7):
-      zobacz deklarację „std::unique_ptr”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C3203: „unique_ptr”: nie można używać klasy niespecjalizowanej klasa szablon jako argumentu szablon dla parametru szablon „_Ty”, oczekiwano typu rzeczywistego
-  (kompilowanie pliku źródłowego „main.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\main.cpp(115,9): error C3861: "gameMenu": identyfikatora nie odnaleziono
   Map.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „Map.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(28,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „Map.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(39,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „Map.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69): error C2065: "Enemy": niezadeklarowany identyfikator
-  (kompilowanie pliku źródłowego „Map.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2923: „std::unique_ptr”: „Enemy” nie jest prawidłowym argumentem typu szablon dla parametru „_Ty”
-  (kompilowanie pliku źródłowego „Map.cpp”)
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69):
-      zobacz deklarację „Enemy”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2976: „std::unique_ptr”: za mało argumentów szablon
-  (kompilowanie pliku źródłowego „Map.cpp”)
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3335,7):
-      zobacz deklarację „std::unique_ptr”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C3203: „unique_ptr”: nie można używać klasy niespecjalizowanej klasa szablon jako argumentu szablon dla parametru szablon „_Ty”, oczekiwano typu rzeczywistego
-  (kompilowanie pliku źródłowego „Map.cpp”)
-  
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(61,37): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(61,37): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(61,44): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
@@ -216,59 +64,9 @@ C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(62,51): warnin
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(62,58): warning C4838: konwersja z „const int” do „float” wymaga konwersji zawężającej
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Map.cpp(62,58): warning C4244: "inicjowanie": konwersja z "const int" do "float", możliwa utrata danych
   OtherFunctions.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „OtherFunctions.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(28,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „OtherFunctions.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(39,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „OtherFunctions.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69): error C2065: "Enemy": niezadeklarowany identyfikator
-  (kompilowanie pliku źródłowego „OtherFunctions.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2923: „std::unique_ptr”: „Enemy” nie jest prawidłowym argumentem typu szablon dla parametru „_Ty”
-  (kompilowanie pliku źródłowego „OtherFunctions.cpp”)
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69):
-      zobacz deklarację „Enemy”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2976: „std::unique_ptr”: za mało argumentów szablon
-  (kompilowanie pliku źródłowego „OtherFunctions.cpp”)
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3335,7):
-      zobacz deklarację „std::unique_ptr”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C3203: „unique_ptr”: nie można używać klasy niespecjalizowanej klasa szablon jako argumentu szablon dla parametru szablon „_Ty”, oczekiwano typu rzeczywistego
-  (kompilowanie pliku źródłowego „OtherFunctions.cpp”)
-  
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\OtherFunctions.cpp(36,21): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\OtherFunctions.cpp(37,22): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
   Player.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „Player.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(28,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „Player.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(39,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „Player.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69): error C2065: "Enemy": niezadeklarowany identyfikator
-  (kompilowanie pliku źródłowego „Player.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2923: „std::unique_ptr”: „Enemy” nie jest prawidłowym argumentem typu szablon dla parametru „_Ty”
-  (kompilowanie pliku źródłowego „Player.cpp”)
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69):
-      zobacz deklarację „Enemy”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2976: „std::unique_ptr”: za mało argumentów szablon
-  (kompilowanie pliku źródłowego „Player.cpp”)
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3335,7):
-      zobacz deklarację „std::unique_ptr”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C3203: „unique_ptr”: nie można używać klasy niespecjalizowanej klasa szablon jako argumentu szablon dla parametru szablon „_Ty”, oczekiwano typu rzeczywistego
-  (kompilowanie pliku źródłowego „Player.cpp”)
-  
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(190,25): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(209,57): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(209,57): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
@@ -282,119 +80,8 @@ C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(253,66): wa
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(253,66): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(253,100): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(253,100): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(341,14): error C2511: „void Player::attack(SDL_Renderer *,std::vector<std::unique_ptr<Enemy,std::default_delete<Enemy>>,std::allocator<std::unique_ptr<Enemy,std::default_delete<Enemy>>>> &,float,float)”: Przeciążona funkcja składowa nie została znaleziona w „Player”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(15,7):
-      zobacz deklarację „Player”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(343,5): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::isAttacking”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(74,10):
-      zobacz deklarację „Player::isAttacking”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(344,5): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::attackFrame”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(75,9):
-      zobacz deklarację „Player::attackFrame”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(348,9): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::attackRow”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(76,9):
-      zobacz deklarację „Player::attackRow”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(352,9): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::attackRow”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(76,9):
-      zobacz deklarację „Player::attackRow”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(356,9): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::attackRow”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(76,9):
-      zobacz deklarację „Player::attackRow”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(360,9): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::attackRow”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(76,9):
-      zobacz deklarację „Player::attackRow”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(364,9): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::attackRow”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(76,9):
-      zobacz deklarację „Player::attackRow”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(368,9): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::attackRow”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(76,9):
-      zobacz deklarację „Player::attackRow”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(372,9): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::attackRow”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(76,9):
-      zobacz deklarację „Player::attackRow”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(376,9): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::attackRow”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(76,9):
-      zobacz deklarację „Player::attackRow”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(383,24): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::x”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(43,11):
-      zobacz deklarację „Player::x”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(383,27): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::y”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(44,11):
-      zobacz deklarację „Player::y”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(389,17): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::kills”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(389,17):
-      zobacz deklarację „Player::kills”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(389,17): error C3867: „Player::kills”: niestandardowa składnia; użyj znaku „&”, aby utworzyć wskaźnik do składowej
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(389,17): error C2568: "++": nie można rozpoznać przeciążenia funkcji
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(390,5): error C2597: niedozwolone odwołanie do niestatycznej składowej „Player::totalKills”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(390,5):
-      zobacz deklarację „Player::totalKills”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(390,5): error C3867: „Player::totalKills”: niestandardowa składnia; użyj znaku „&”, aby utworzyć wskaźnik do składowej
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(390,5): error C2568: "++": nie można rozpoznać przeciążenia funkcji
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(391,17): error C2352: „Player::UpdateKillsTexture“: wywołanie niestatycznej funkcji składowej wymaga obiektu
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(36,10):
-      zobacz deklarację „Player::UpdateKillsTexture”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(443,1): error C2059: błąd składniowy: „<<”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(455,1): error C2059: błąd składniowy: „}”
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.cpp(455,1): error C2143: błąd składniowy: brakuje „;” przed „}”
   PlayerEventHandling.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „PlayerEventHandling.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(28,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „PlayerEventHandling.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(39,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „PlayerEventHandling.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69): error C2065: "Enemy": niezadeklarowany identyfikator
-  (kompilowanie pliku źródłowego „PlayerEventHandling.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2923: „std::unique_ptr”: „Enemy” nie jest prawidłowym argumentem typu szablon dla parametru „_Ty”
-  (kompilowanie pliku źródłowego „PlayerEventHandling.cpp”)
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,69):
-      zobacz deklarację „Enemy”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C2976: „std::unique_ptr”: za mało argumentów szablon
-  (kompilowanie pliku źródłowego „PlayerEventHandling.cpp”)
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3335,7):
-      zobacz deklarację „std::unique_ptr”
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,58): error C3203: „unique_ptr”: nie można używać klasy niespecjalizowanej klasa szablon jako argumentu szablon dla parametru szablon „_Ty”, oczekiwano typu rzeczywistego
-  (kompilowanie pliku źródłowego „PlayerEventHandling.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\PlayerEventHandling.cpp(103,25): error C2664: „void Player::attack(SDL_Renderer *,std::vector<int,std::allocator<int>> &,float,float)”: nie można dokonać konwersji argumentu 2 z „std::vector<std::unique_ptr<Enemy,std::default_delete<Enemy>>,std::allocator<std::unique_ptr<Enemy,std::default_delete<Enemy>>>>” do „std::vector<int,std::allocator<int>> &”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Player.hpp(35,10):
-      zobacz deklarację „Player::attack”
-      C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\PlayerEventHandling.cpp(103,25):
-      podczas próby dopasowania listy argumentów "(SDL_Renderer *, std::vector<std::unique_ptr<Enemy,std::default_delete<Enemy>>,std::allocator<std::unique_ptr<Enemy,std::default_delete<Enemy>>>>, float, float)"
-  
   RangeRover.cpp
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(26,1): error C2059: błąd składniowy: „<<”
-  (kompilowanie pliku źródłowego „RangeRover.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(28,1): error C2059: błąd składniowy: „==”
-  (kompilowanie pliku źródłowego „RangeRover.cpp”)
-  
-C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\GameState.hpp(39,1): error C2059: błąd składniowy: „>>”
-  (kompilowanie pliku źródłowego „RangeRover.cpp”)
-  
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,37): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,37): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,62): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
@@ -404,3 +91,6 @@ C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,77):
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,89): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
 C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\RangeRover.cpp(60,89): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
   Generowanie kodu...
+C:\Users\cyran\source\repos\SDL3-RoughLite\SDL3-RoughLite\Init.cpp(88,1): warning C4715: "InitEverything”: niewszystkie ścieżki kodu zwracają wartość
+  LINK : nie znaleziono elementu C:\Users\cyran\source\repos\SDL3-RoughLite\x64\Debug\SDL3-RoughLite.exe ani nie został on skompilowany podczas ostatniego konsolidowania przyrostowego; zostanie wykonana pełna konsolidacja
+  SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\SDL3-RoughLite\x64\Debug\SDL3-RoughLite.exe
