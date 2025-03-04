@@ -74,7 +74,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 
                 gameState = GameStateRunning::MENU;
 
-                SDL_Log("Prze³¹czono na PAUSE");
+                SDL_Log("Przelaczono na PAUSE");
             }
             else if (gameState != GameStateRunning::GAME)
             {

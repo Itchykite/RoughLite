@@ -14,7 +14,7 @@ Player::Player(Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor 
     currentFrame(0), totalFrames(0), lastFrameTime(0), frameDuration(100),
     attackFrameDuration(10), // Inicjalizacja zmiennej attackFrameDuration
 	currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr), health(100), isGameOver(false),
-    deathRegistered(false)
+    deathRegistered(false), wasMoving(false)
 {
     SDL_Log("Loading player texture...");
     LoadTexture(renderer, "spritesheet.png"); // Wczytanie tekstury gracza
@@ -91,25 +91,35 @@ void Player::Update(float deltaTime, GameStateRunning currentState) // Aktualiza
         y = newY; // Ustaw pozycjê y
     }
 
-    if (velocityX == 0 && velocityY == 0) // Jeœli prêdkoœæ x i y s¹ równe 0
+    bool isMoving = (velocityX != 0) || (velocityY != 0);
+
+    if (isMoving)
     {
-        currentFrame = 0; // Ustaw klatkê na 0
+        wasMoving = true;
+        if (velocityX > 0) // Right
+        {
+            currentRow = 3; // Ustaw klatkê na 3
+        }
+        else if (velocityX < 0) // Left
+        {
+            currentRow = 1; // Ustaw klatkê na 1
+        }
+        else if (velocityY > 0) // Up
+        {
+            currentRow = 2; // Ustaw klatkê na 2
+        }
+        else if (velocityY < 0) // Down
+        {
+            currentRow = 0; // Ustaw klatkê na 0
+        }
     }
-    else if (velocityX > 0) // Right
+    else
     {
-        currentRow = 3; // Ustaw klatkê na 3
-    }
-    else if (velocityX < 0) // Left
-    {
-        currentRow = 1; // Ustaw klatkê na 1
-    }
-    else if (velocityY > 0) // Up
-    {
-        currentRow = 2; // Ustaw klatkê na 2
-    }
-    else if (velocityY < 0) // Down
-    {
-        currentRow = 0; // Ustaw klatkê na 0
+        if (wasMoving)
+        {
+            currentFrame = 0; // Ustawienie klatki na 0 tylko raz, gdy przestaje siê poruszaæ
+            wasMoving = false;
+        }
     }
 
     if (camera != nullptr) // Jeœli kamera istnieje
@@ -121,7 +131,10 @@ void Player::Update(float deltaTime, GameStateRunning currentState) // Aktualiza
         SDL_Log("Camera is not initialized!");
     }
 
-    UpdateAnimation(); // Aktualizacja animacji
+    if (isMoving)
+    {
+        UpdateAnimation(); // Aktualizacja animacji tylko gdy postaæ siê porusza
+    }
 }
 
 void Player::SetCurrentRow(int row) // Ustawienie aktualnego wiersza dla animacji

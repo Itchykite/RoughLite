@@ -48,6 +48,7 @@ public:
     double health; // Zdrowie
     bool isGameOver;
     bool deathRegistered;
+    bool wasMoving;
     Uint64 gameOverTime;
 
     SDL_Texture* texture; // Tekstura
