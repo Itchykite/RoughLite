@@ -45,8 +45,10 @@ public:
     long int kills; // Wynik
     long int totalKills; // Ca³kowita liczba zabitych przeciwników
     long int totalDeaths; // Ca³kowita liczba zabitych przeciwników
+	Uint64 totalTime; // Ca³kowity czas gry
     double health; // Zdrowie
     bool isGameOver;
+    bool isGameStart = false;
     bool deathRegistered;
     bool wasMoving;
     Uint64 gameOverTime;
@@ -57,6 +59,7 @@ public:
 
 private:
     void UpdateAnimation(); // Aktualizacja animacji
+	void UpdateAttackAnimation(); // Aktualizacja animacji ataku
 
     float velocityX; // Prêdkoœæ x
     float velocityY; // Prêdkoœæ y

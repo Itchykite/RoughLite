@@ -135,6 +135,8 @@ void Player::Update(float deltaTime, GameStateRunning currentState) // Aktualiza
     {
         UpdateAnimation(); // Aktualizacja animacji tylko gdy postaæ siê porusza
     }
+
+	UpdateAttackAnimation(); // Aktualizacja animacji ataku
 }
 
 void Player::SetCurrentRow(int row) // Ustawienie aktualnego wiersza dla animacji
@@ -180,7 +182,11 @@ void Player::UpdateAnimation() // Aktualizacja animacji
         currentFrame = (currentFrame + 1) % totalFrames; // Ustaw klatkê
         lastFrameTime = currentTime; // Ustaw ostatni czas klatki
     }
+}
 
+void Player::UpdateAttackAnimation()
+{
+    Uint64 currentTime = SDL_GetTicks(); // Aktualny czas
     if (isAttacking)
     {
         if (currentTime > lastFrameTime + attackFrameDuration) // U¿yj attackFrameDuration dla animacji ataku

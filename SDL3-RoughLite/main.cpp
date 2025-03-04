@@ -45,6 +45,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
     InitEverything(renderer, window, player, map, camera, enemyManager, font, startTime, lastTime, appstate);
     loadPlayerStats(player);
+    loadGameTime(player);
+
 
 	return SDL_APP_CONTINUE;  /* continue running the program. */
 }
@@ -66,15 +68,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         {
             if (gameState != GameStateRunning::MENU)
             {
-                if (gameState == GameStateRunning::GAME)
-                {
-                    gamePause(renderer, font); // Wywo³anie funkcji pauzy
-                    gameState = GameStateRunning::MENU;
-                }
-
                 gameState = GameStateRunning::MENU;
-
-                SDL_Log("Przelaczono na PAUSE");
             }
             else if (gameState != GameStateRunning::GAME)
             {
@@ -125,6 +119,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 		break;
 
     case GameStateRunning::EXIT:
+        saveGameTime(player, startTime);
 		savePlayerStats(player);
         return SDL_APP_SUCCESS;
         break;

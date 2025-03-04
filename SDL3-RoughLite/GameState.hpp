@@ -2,6 +2,7 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <string>
 
 class Player;
 class Map;
@@ -23,7 +24,6 @@ SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Came
 
 void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& endTime, Uint64& startTime);
 
-void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager, Camera* camera);
 void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager);
 
 void gamePause(SDL_Renderer* renderer, TTF_Font* font);
@@ -34,3 +34,6 @@ void savePlayerStats(Player* player);
 void loadPlayerStats(Player* player);
 void resetLastTime();
 void gameStats(SDL_Renderer* renderer, TTF_Font* font, Player* player);
+
+void statTemplate(SDL_Renderer* renderer, TTF_Font* font, Player* player, std::string statText, float offSet, long int value);
+void statTemplate(SDL_Renderer* renderer, TTF_Font* font, Player* player, std::string statText, float offSet, Uint64 value);

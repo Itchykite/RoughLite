@@ -17,7 +17,6 @@
 #include <memory>
 #include <iostream>
 #include <fstream>
-#include <string>
 
 extern GameStateRunning gameState;
 extern Uint64 lastTime;
@@ -47,6 +46,8 @@ Button statsButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200
 SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager,
     const Uint64& startTime, Uint64& lastTime, SDL_Event& event, TTF_Font* font, void* appstate, GameStateRunning currentState)
 {
+    player->isGameStart = true;
+
     Uint64 currentTime = SDL_GetTicks();
 
     if (!player->isGameOver && currentState == GameStateRunning::GAME)
@@ -80,6 +81,8 @@ SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Came
 
 void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& endTime, Uint64& startTime) // Funkcja wyœwietlaj¹ca napis Game Over
 {
+    player->isGameStart = false;
+
     SDL_Color textColor = { 255, 255, 255, 255 };
 
     SDL_Surface* textSurface = TTF_RenderText_Solid(font, "Game Over", 0, textColor);
@@ -114,6 +117,11 @@ void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* 
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
     SDL_RenderClear(renderer);
+
+    if (player->isGameStart)
+    {
+		gamePause(renderer, font);
+    }
 
     float OffSet = 24.0f;
 
@@ -186,27 +194,50 @@ void gameStats(SDL_Renderer* renderer, TTF_Font* font, Player* player)
     SDL_DestroySurface(textSurface);
     SDL_DestroyTexture(textTexture);
 
+    statTemplate(renderer, font, player, "Total Kills", 0, player->totalKills);
+    statTemplate(renderer, font, player, "Total Deaths", 2, player->totalDeaths);
+	statTemplate(renderer, font, player, "Total Time", -2, player->totalTime / 100);
+}
+
+void statTemplate(SDL_Renderer* renderer, TTF_Font* font, Player* player, std::string statText, float offSet, long int value)
+{
+    SDL_FRect rect = { WINDOW_WIDTH / 2 - 100, 100, 200, 100 };
+
+    SDL_Color white = { 255, 255, 255, 255 };
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, statText.c_str(), 0, white);
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FRect textRect = { rect.x + 50, rect.y + 25, 100, 50 };
+
     float textWidth = textSurface->w;
     float textHeight = textSurface->h;
 
-    std::string killsText = "Total kills: " + std::to_string(player->totalKills);
-    textSurface = TTF_RenderText_Solid(font, killsText.c_str(), 0, white);
-    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-
-    textRect = { (WINDOW_WIDTH - textWidth * 2) / 2, WINDOW_HEIGHT / 2, textWidth * 2, textHeight };
-    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
-
-    SDL_DestroySurface(textSurface);
-    SDL_DestroyTexture(textTexture);
-
-    std::string deathsText = "Total deaths: " + std::to_string(player->totalDeaths);
+    std::string deathsText = statText + ": " + std::to_string(value);
     textSurface = TTF_RenderText_Solid(font, deathsText.c_str(), 0, white);
     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
-    textRect = { (WINDOW_WIDTH - textWidth * 2) / 2, WINDOW_HEIGHT / 2 - textHeight, textWidth * 2, textHeight };
+    textRect = { (WINDOW_WIDTH - textWidth) / 2, WINDOW_HEIGHT / 2 - textHeight * offSet, textWidth, textHeight };
     SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+    SDL_DestroyTexture(textTexture);
+}
 
-    SDL_DestroySurface(textSurface);
+void statTemplate(SDL_Renderer* renderer, TTF_Font* font, Player* player, std::string statText, float offSet, Uint64 value)
+{
+    SDL_FRect rect = { WINDOW_WIDTH / 2 - 100, 100, 200, 100 };
+
+    SDL_Color white = { 255, 255, 255, 255 };
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, statText.c_str(), 0, white);
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FRect textRect = { rect.x + 50, rect.y + 25, 100, 50 };
+
+    float textWidth = textSurface->w;
+    float textHeight = textSurface->h;
+
+    std::string deathsText = statText + ": " + std::to_string(value) + " s.";
+    textSurface = TTF_RenderText_Solid(font, deathsText.c_str(), 0, white);
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+    textRect = { (WINDOW_WIDTH - textWidth) / 2, WINDOW_HEIGHT / 2 - textHeight * offSet, textWidth, textHeight };
+    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
     SDL_DestroyTexture(textTexture);
 }
 
