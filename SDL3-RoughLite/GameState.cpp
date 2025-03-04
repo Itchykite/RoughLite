@@ -22,14 +22,14 @@ extern GameStateRunning gameState;
 extern Uint64 lastTime;
 extern void resetLastTime();
 
-Button startButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 8, 200, 80, { 255, 0, 0, 255 }, []()
+Button startButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 8, 200, 80, {255, 0, 0, 255}, []()
 {
     SDL_Log("Start Game!");
     gameState = GameStateRunning::GAME;
     resetLastTime(); // Resetowanie lastTime poprzez wywo³anie funkcji
 });
 
-Button exitButton(WINDOW_WIDTH / 2 - WINDOW_WIDTH / 32, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200, 80, { 255, 0, 0, 255 }, []()
+Button exitButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200, 80, { 255, 0, 0, 255 }, []()
 {
     SDL_Log("Exit Game!");
     gameState = GameStateRunning::EXIT;
@@ -108,11 +108,29 @@ void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& en
 
 void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager)
 {
-	startButton.Render(renderer, font, "start", player, map, enemyManager); // Renderowanie przycisku start
-	startButton.handleClick(event); // Obs³uga klikniêcia przycisku start
+    float OffSet = 24.0f;
 
-	exitButton.Render(renderer, font, "exit", player, map, enemyManager); // Renderowanie przycisku exit
-	exitButton.handleClick(event); // Obs³uga klikniêcia przycisku exit
+    // Renderowanie przycisku start
+    SDL_Surface* startTextSurface = TTF_RenderText_Solid(font, "start", 0, { 255, 255, 255, 255 });
+    if (startTextSurface)
+    {
+        int startTextWidth = startTextSurface->w;
+        SDL_DestroySurface(startTextSurface);
+        startButton.SetPosition(WINDOW_WIDTH / 2 - startButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2 - startButton.GetFRect().h - OffSet);
+    }
+    startButton.Render(renderer, font, "start", player, map, enemyManager);
+    startButton.handleClick(event);
+
+    // Renderowanie przycisku exit
+    SDL_Surface* exitTextSurface = TTF_RenderText_Solid(font, "exit", 0, { 255, 255, 255, 255 });
+    if (exitTextSurface)
+    {
+        int exitTextWidth = exitTextSurface->w;
+        SDL_DestroySurface(exitTextSurface);
+        exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2);
+    }
+    exitButton.Render(renderer, font, "exit", player, map, enemyManager);
+    exitButton.handleClick(event);
 
     SDL_RenderPresent(renderer); // Renderowanie ekranu menu
 }
@@ -121,7 +139,7 @@ void gamePause(SDL_Renderer* renderer, TTF_Font* font)
 {
     // Renderowanie t³a pauzy
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128); // Pó³przezroczyste czarne t³o
-    SDL_FRect pauseRect = { WINDOW_WIDTH / 2 - 100, WINDOW_HEIGHT / 2 - 50, 200, 100 };
+    SDL_FRect pauseRect = { WINDOW_WIDTH / 2 - 100, 100, 200, 100 };
     SDL_RenderFillRect(renderer, &pauseRect);
 
     // Renderowanie napisu "PAUZA"
@@ -194,15 +212,5 @@ void loadGameState(Player* player, Map* map, EnemyManager* enemyManager, SDL_Ren
         }
 
         loadFile.close();
-    }
-}
-
-void reWriteSave()
-{
-    std::ofstream saveFile("savegame.dat", std::ios::trunc);
-
-    if (saveFile.is_open())
-    {
-        saveFile.close();
     }
 }

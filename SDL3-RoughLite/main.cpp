@@ -56,7 +56,6 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 
     if (event->type == SDL_EVENT_QUIT)  // Zamkniêcie po naciœniêciu przycisku 'X'
     {
-		reWriteSave(); // Zapisz stan gry
         return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
     }
 
@@ -64,32 +63,18 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 	{
         if (event->key.key == SDLK_ESCAPE)
         {
-            if (gameState == GameStateRunning::GAME)
+            if (gameState == GameStateRunning::GAME || gameState == GameStateRunning::GAMEOVER)
             {
                 gameState = GameStateRunning::MENU;
+				gamePause(renderer, font); // Wywo³anie funkcji pauzy
                 SDL_Log("Prze³¹czono na PAUSE");
             }
             else if (gameState == GameStateRunning::MENU)
             {
                 gameState = GameStateRunning::GAME;
-                SDL_Log("Wznowiono grê (GAME)");
+                SDL_Log("Wznowiono gre (GAME)");
                 resetLastTime(); // Resetowanie lastTime przy przejœciu do GAME
             }
-        }
-
-        if (event->key.key == SDLK_P)
-        {
-			if (gameState == GameStateRunning::GAME)
-			{
-				gameState = GameStateRunning::PAUSE;
-				SDL_Log("Prze³¹czono na PAUSE");
-			}
-			else if (gameState == GameStateRunning::PAUSE)
-			{
-				gameState = GameStateRunning::GAME;
-				SDL_Log("Wznowiono grê (GAME)");
-                resetLastTime(); // Resetowanie lastTime przy przejœciu do GAME
-			}
         }
 	}
 
@@ -116,24 +101,16 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     switch (gameState)
     {
     case GameStateRunning::GAME:
-        SDL_Log("Tryb gry: GAME");
         gameRunning(renderer, player, map, camera, enemyManager, startTime, lastTime, lastEvent, font, appstate, gameState);
         break;
 
     case GameStateRunning::MENU:
-        SDL_Log("Tryb gry: MENU");
         gameMenu(renderer, lastEvent, font, player, map, enemyManager);
         break;
         
     case GameStateRunning::GAMEOVER:
-        SDL_Log("Tryb gry: GAMEOVER");
         GameOver(renderer, font, player, lastTime, startTime);
         break;
-
-    case GameStateRunning::PAUSE:
-		SDL_Log("Tryb gry: PAUSE");
-		gamePause(renderer, font);
-		break;
 
     case GameStateRunning::EXIT:
         return SDL_APP_SUCCESS;
@@ -153,15 +130,9 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 void SDL_AppQuit(void* appstate, SDL_AppResult result)
 {
     // Zwolnienie wskaŸników
-
     SDL_Log("Cleaning up...");
     delete player;
     delete map;
     delete camera;
     delete enemyManager;
-
-    if (font) { TTF_CloseFont(font); }
-
-    TTF_Quit();
-    SDL_Quit();
 }

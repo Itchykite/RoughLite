@@ -28,5 +28,4 @@ void gamePause(SDL_Renderer* renderer, TTF_Font* font);
 
 void saveGameState(Player* player, Map* map, EnemyManager* enemyManager);
 void loadGameState(Player* player, Map* map, EnemyManager* enemyManager, SDL_Renderer* renderer);
-void reWriteSave();
 void resetLastTime();
