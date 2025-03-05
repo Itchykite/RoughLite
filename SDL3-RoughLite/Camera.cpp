@@ -27,6 +27,11 @@ void Camera::Update(float playerX, float playerY)
     {
 		y = playerY - thresholdY; // Przesuñ kamerê w górê
     }
+
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
+    if (x + width > mapWidth) x = mapWidth - width;
+    if (y + height > mapHeight) y = mapHeight - height;
 }
 
 float Camera::GetX() const

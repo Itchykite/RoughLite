@@ -1,7 +1,18 @@
 #pragma once
 
-static const float WINDOW_WIDTH = 1280;
-static const float WINDOW_HEIGHT = 720;
+#include <vector>
+
+struct Resolution
+{
+    int width;
+    int height;
+};
+
+extern std::vector<Resolution> availableResolutions;
+extern Resolution currentResolution;
+
+extern float WINDOW_WIDTH;
+extern float WINDOW_HEIGHT;
 
 // dla mapy dla rodziny 16:9
 

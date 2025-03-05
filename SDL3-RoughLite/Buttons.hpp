@@ -44,6 +44,7 @@ public:
         dst.h = textSurface->h;
         dst.x = rect.x + (rect.w - textSurface->w) / 2.0f;
         dst.y = rect.y + (rect.h - textSurface->h) / 2.0f;
+
         SDL_RenderTexture(renderer, texture, NULL, &dst);
         SDL_DestroyTexture(texture);
         SDL_DestroySurface(textSurface);

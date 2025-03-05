@@ -158,6 +158,8 @@ void Player::LoadTexture(SDL_Renderer* renderer, const char* pathFile) // Wczyta
     frameHeight = surface->h / 4; // Wysokoœæ klatki
     totalFrames = 4; // Ca³kowita liczba klatek
 
+    SDL_SetTextureScaleMode(playerTexture, SDL_SCALEMODE_NEAREST);
+
     SDL_DestroySurface(surface); // Usuniêcie powierzchni
 }
 

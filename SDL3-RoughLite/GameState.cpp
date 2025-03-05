@@ -23,6 +23,8 @@ extern Uint64 lastTime;
 extern void resetLastTime();
 
 float yOffSet = 100.0f;
+bool dropdownOpen = false;
+int selectedResolutionIndex = 3; 
 
 Button startButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 8, 200, 80, {255, 0, 0, 255}, []()
 {
@@ -43,6 +45,12 @@ Button statsButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200
 	gameState = GameStateRunning::STATS;
 });
 
+Button settingsButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 24, 200, 80, { 255, 0, 0, 255 }, []()
+{
+    SDL_Log("Stats Game!");
+    gameState = GameStateRunning::SETTINGS;
+});
+
 SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager,
     const Uint64& startTime, Uint64& lastTime, SDL_Event& event, TTF_Font* font, void* appstate, GameStateRunning currentState)
 {
@@ -58,8 +66,17 @@ SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Came
         enemyManager->Update(deltaTime, currentState);
         player->Update(deltaTime, currentState);
 
+        camera->Update(player->GetX(), player->GetY());
+
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
+
+        SDL_Rect viewport;
+        viewport.x = 0;
+        viewport.y = 0;
+        viewport.w = WINDOW_WIDTH;
+        viewport.h = WINDOW_HEIGHT;
+        SDL_SetRenderViewport(renderer, &viewport);
 
         map->Render(renderer, camera->GetX(), camera->GetY());
         enemyManager->Render(renderer, currentState);
@@ -147,17 +164,27 @@ void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* 
     statsButton.Render(renderer, font, "stats", player, map, enemyManager);
     statsButton.handleClick(event);
 
+
+    SDL_Surface* settingsTextSurface = TTF_RenderText_Solid(font, "settings", 0, { 255, 255, 255, 255 });
+    if (settingsTextSurface)
+    {
+        SDL_DestroySurface(settingsTextSurface);
+        settingsButton.SetPosition(WINDOW_WIDTH / 2 - settingsButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2 + settingsButton.GetFRect().h + OffSet);
+    }
+    settingsButton.Render(renderer, font, "settings", player, map, enemyManager);
+    settingsButton.handleClick(event);
+
     // Renderowanie przycisku exit
     SDL_Surface* exitTextSurface = TTF_RenderText_Solid(font, "exit", 0, { 255, 255, 255, 255 });
     if (exitTextSurface)
     {
         int exitTextWidth = exitTextSurface->w;
         SDL_DestroySurface(exitTextSurface);
-        exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2 + exitButton.GetFRect().h + OffSet);
+        exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2 + exitButton.GetFRect().h + OffSet * 5 + 8.0f);
     }
     exitButton.Render(renderer, font, "exit", player, map, enemyManager);
     exitButton.handleClick(event);
-
+    
     SDL_RenderPresent(renderer); // Renderowanie ekranu menu
 }
 
@@ -239,6 +266,194 @@ void statTemplate(SDL_Renderer* renderer, TTF_Font* font, Player* player, std::s
     textRect = { (WINDOW_WIDTH - textWidth) / 2, WINDOW_HEIGHT / 2 - textHeight * offSet, textWidth, textHeight };
     SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
     SDL_DestroyTexture(textTexture);
+}
+
+// Dodanie funkcji gameSettings
+void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, GameStateRunning& currentState, SDL_Window* window, Camera* camera, Player* player)
+{
+    bool inSettings = true;
+    bool isFullscreen = true;
+    SDL_Color white = { 255, 255, 255, 255 };
+    SDL_Color gray = { 200, 200, 200, 255 };
+
+    while (inSettings)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_EVENT_QUIT)
+            {
+                currentState = GameStateRunning::EXIT;
+                inSettings = false;
+            }
+            else if (event.type == SDL_EVENT_KEY_DOWN)
+            {
+                if (event.key.key == SDLK_ESCAPE)
+                {
+                    currentState = GameStateRunning::MENU;
+                    inSettings = false;
+                }
+
+                else if (event.key.key == SDL_SCANCODE_F11) // Prze³¹czanie trybu pe³noekranowego za pomoc¹ F11
+                {
+                    isFullscreen = !isFullscreen;
+                    if (isFullscreen)
+                    {
+                        SDL_SetWindowFullscreen(window, SDL_GetWindowFullscreenMode);
+                    }
+                    else
+                    {
+                        SDL_SetWindowFullscreen(window, 0); // Powrót do trybu okienkowego
+                    }
+
+                    SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
+                }
+            }
+            else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
+            {
+                int mouseX = event.button.x;
+                int mouseY = event.button.y;
+
+                SDL_FRect fullscreenRect = { 400.0f, 100.0f, 200.0f, 30.0f };
+                if (mouseX >= fullscreenRect.x && mouseX <= fullscreenRect.x + fullscreenRect.w &&
+                    mouseY >= fullscreenRect.y && mouseY <= fullscreenRect.y + fullscreenRect.h)
+                {
+                    isFullscreen = !isFullscreen;
+                    if (isFullscreen)
+                    {
+                        SDL_SetWindowFullscreen(window, SDL_GetWindowFullscreenMode);
+                    }
+                    else
+                    {
+                        SDL_SetWindowFullscreen(window, 0);
+                    }
+
+                    SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
+                }
+
+                // Obs³uga klikniêcia mysz¹
+                // SprawdŸ, czy klikniêto na pole rozwijanej listy
+                SDL_FRect dropdownRect = { 100.0f, 100.0f, 200.0f, 30.0f };
+                if (mouseX >= dropdownRect.x && mouseX <= dropdownRect.x + dropdownRect.w &&
+                    mouseY >= dropdownRect.y && mouseY <= dropdownRect.y + dropdownRect.h)
+                {
+                    dropdownOpen = !dropdownOpen;
+                }
+
+                // Jeœli lista jest otwarta, sprawdŸ, czy wybrano jedn¹ z opcji
+                if (dropdownOpen)
+                {
+                    for (size_t i = 0; i < availableResolutions.size(); ++i)
+                    {
+                        SDL_FRect optionRect = { 100.0f, 130.0f + 30.0f * i, 200.0f, 30.0f };
+                        if (mouseX >= optionRect.x && mouseX <= optionRect.x + optionRect.w &&
+                            mouseY >= optionRect.y && mouseY <= optionRect.y + optionRect.h)
+                        {
+                            selectedResolutionIndex = static_cast<int>(i);
+                            currentResolution = availableResolutions[i];
+                            dropdownOpen = false;
+
+                            // Zmiana rozmiaru okna
+                            SDL_Window* window = SDL_GetRenderWindow(renderer);
+                            SDL_SetWindowSize(window, currentResolution.width, currentResolution.height);
+
+                            SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
+
+                            // Aktualizacja zmiennych rozmiaru okna
+                            WINDOW_WIDTH = currentResolution.width;
+                            WINDOW_HEIGHT = currentResolution.height;
+
+                            // Aktualizacja viewportu renderera
+                            SDL_SetRenderViewport(renderer, NULL);
+                        }
+                    }
+                }
+            }
+            else if (event.type >= SDL_EVENT_WINDOW_FIRST && event.type <= SDL_EVENT_WINDOW_LAST)
+            {
+                // Obs³uga zdarzeñ okna
+                if(event.type == SDL_EVENT_WINDOW_RESIZED)
+                {
+                    WINDOW_WIDTH = event.window.data1;
+                    WINDOW_HEIGHT = event.window.data2;
+
+                    // Aktualizacja rozmiaru kamery
+                    camera->width = static_cast<float>(WINDOW_WIDTH);
+                    camera->height = static_cast<float>(WINDOW_HEIGHT);
+
+                    // Jeœli u¿ywasz progów, zaktualizuj je
+                    camera->thresholdX = camera->width / 2.0f;
+                    camera->thresholdY = camera->height / 2.0f;
+
+                    // Aktualizacja viewportu renderera
+                    SDL_SetRenderViewport(renderer, NULL);
+
+                    // Opcjonalnie, jeœli korzystasz z logicznego prezentowania renderowania
+                    SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
+
+                    camera->Update(player->GetX(), player->GetY());
+                }
+
+                else if (event.type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)
+                {
+                    // Obs³uga zmiany rozmiaru bufora tylnego okna
+                    SDL_SetRenderViewport(renderer, NULL);
+                }
+            }
+            // Dodaj obs³ugê innych istotnych zdarzeñ
+        }
+
+        // Renderowanie t³a ustawieñ
+        SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+        SDL_RenderClear(renderer);
+
+        // Renderowanie pola rozwijanej listy
+        SDL_FRect dropdownRect = { 100, 100, 200, 40 };
+        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+        SDL_RenderFillRect(renderer, &dropdownRect);
+
+        // Wyœwietlanie wybranej rozdzielczoœci
+        std::string selectedResolutionText = std::to_string(currentResolution.width) + " x " + std::to_string(currentResolution.height);
+        SDL_Surface* selectedSurface = TTF_RenderText_Solid(font, selectedResolutionText.c_str(), 0, white);
+        SDL_Texture* selectedTexture = SDL_CreateTextureFromSurface(renderer, selectedSurface);
+        SDL_FRect textRect = { dropdownRect.x + 10, dropdownRect.y + 5, static_cast<float>(selectedSurface->w), static_cast<float>(selectedSurface->h) };
+        SDL_RenderTexture(renderer, selectedTexture, NULL, &textRect);
+        SDL_DestroySurface(selectedSurface);
+        SDL_DestroyTexture(selectedTexture);
+
+        // Renderowanie przycisku pe³noekranowego
+        SDL_SetRenderDrawColor(renderer, 80, 80, 80, 255);
+        SDL_FRect fullscreenButtonRect = { 400, 100, 200, 40 };
+        SDL_RenderFillRect(renderer, &fullscreenButtonRect);
+
+        std::string fullscreenText = isFullscreen ? "Full Screen OFF" : "Full Screen ON";
+        SDL_Surface* fullscreenSurface = TTF_RenderText_Solid(font, fullscreenText.c_str(), 0, white);
+        SDL_Texture* fullscreenTexture = SDL_CreateTextureFromSurface(renderer, fullscreenSurface);
+        SDL_FRect fullscreenTextRect = { fullscreenButtonRect.x + 10, fullscreenButtonRect.y + 5, static_cast<float>(fullscreenSurface->w), static_cast<float>(fullscreenSurface->h) };
+        SDL_RenderTexture(renderer, fullscreenTexture, NULL, &fullscreenTextRect);
+        SDL_DestroySurface(fullscreenSurface);
+        SDL_DestroyTexture(fullscreenTexture);
+
+        // Jeœli lista jest rozwiniêta, wyœwietl opcje
+        if (dropdownOpen)
+        {
+            for (size_t i = 0; i < availableResolutions.size(); ++i)
+            {
+                SDL_FRect optionRect = { 100, 130 + 30 * i, 200, 30 };
+                SDL_SetRenderDrawColor(renderer, 80, 80, 80, 255);
+                SDL_RenderFillRect(renderer, &optionRect);
+
+                std::string optionText = std::to_string(availableResolutions[i].width) + " x " + std::to_string(availableResolutions[i].height);
+                SDL_Surface* optionSurface = TTF_RenderText_Solid(font, optionText.c_str(), 0, white);
+                SDL_Texture* optionTexture = SDL_CreateTextureFromSurface(renderer, optionSurface);
+                SDL_FRect optionTextRect = { optionRect.x + 10, optionRect.y + 5, static_cast<float>(optionSurface->w), static_cast<float>(optionSurface->h) };
+                SDL_RenderTexture(renderer, optionTexture, NULL, &optionTextRect);
+                SDL_DestroySurface(optionSurface);
+                SDL_DestroyTexture(optionTexture);
+            }
+        }
+
+        SDL_RenderPresent(renderer);
+    }
 }
 
 void savePlayerStats(Player* player)

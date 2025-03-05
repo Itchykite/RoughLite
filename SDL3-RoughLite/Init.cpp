@@ -17,12 +17,17 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
         return SDL_APP_FAILURE;
     }
 
-    if (!SDL_CreateWindowAndRenderer("examples/renderer/clear", WINDOW_WIDTH, WINDOW_HEIGHT, 0, &window, &renderer)) // Inicjalizacja okna i jego wielkoœci SDL
+    if (!SDL_CreateWindowAndRenderer("examples/renderer/clear", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_BORDERLESS, &window, &renderer)) // Inicjalizacja okna i jego wielkoœci SDL
     {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+    
+    SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
 
+    SDL_SetRenderViewport(renderer, NULL);
+
+    // Ustawienie jakoœci skalowania tekstur
     SDL_Log("Creating map...");
     map = new Map(mapWidth, mapHeight); // Tworzenie mapy
     if (!map->LoadTexture(renderer, "Images/mapa.png"))

@@ -118,6 +118,10 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 		gameStats(renderer, font, player);
 		break;
 
+    case GameStateRunning::SETTINGS:
+        gameSettings(renderer, lastEvent, font, gameState, window, camera, player);
+        break;
+
     case GameStateRunning::EXIT:
         saveGameTime(player, startTime);
 		savePlayerStats(player);

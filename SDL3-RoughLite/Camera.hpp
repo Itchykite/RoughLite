@@ -8,8 +8,9 @@ public:
     float GetX() const; // pobierz x
     float GetY() const; // pobierz y
 
-private:
-    float x, y; // x y
     float width, height; // szerokoœæ i wysokoœæ ekranu
     float thresholdX, thresholdY; // próg zakresu kamery
+
+private:
+    float x, y; // x y
 };

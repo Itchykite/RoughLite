@@ -51,6 +51,7 @@ bool Map::IsWithinBounds(float x, float y, float px, float py) const // Czy jest
 bool Map::LoadTexture(SDL_Renderer* renderer, const char* pathFile) // Wczytanie tekstury
 { 
 	backgroundTexture = IMG_LoadTexture(renderer, pathFile); // Wczytanie tekstury
+    SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
 	return backgroundTexture != nullptr; // Zwróæ czy tekstura istnieje
 }
 
@@ -191,6 +192,8 @@ void Map::AddObjectWithCollision(SDL_Renderer* renderer, const char* objectTextu
         SDL_Log("Nie mo¿na wczytaæ tekstury obiektu %s! SDL_image Error: %s", objectTexturePath, SDL_GetError());
         return;
     }
+
+    SDL_SetTextureScaleMode(objectTexture, SDL_SCALEMODE_NEAREST);
 
     SDL_FRect dstRect = { posX, posY, objWidth, objHeight };
 
