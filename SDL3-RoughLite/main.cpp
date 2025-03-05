@@ -90,6 +90,8 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
+    Uint32 frameStart = SDL_GetTicks();
+
     if (gameState != previousState)
     {
         if (gameState == GameStateRunning::GAME)
@@ -135,7 +137,13 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
     SDL_RenderPresent(renderer); // Renderowanie ca³oœci
 
-	SDL_Delay(fps); // OpoŸnienie
+    Uint32 frameTime = SDL_GetTicks() - frameStart;
+    Uint32 frameDelayTime = 1000 / fps_t;
+
+    if (frameDelayTime > frameTime)
+    {
+        SDL_Delay(frameDelayTime - frameTime);
+    }
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }

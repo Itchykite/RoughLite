@@ -24,3 +24,23 @@ Resolution currentResolution = availableResolutions[12]; // Domyœlna rozdzielczo
 
 float WINDOW_WIDTH = currentResolution.width;
 float WINDOW_HEIGHT = currentResolution.height;
+
+// Delay = 1000 / fps
+
+// 30 - 33.33f
+// 60 - 16.67f
+// 120 - 8.33f
+// 144 - 6.94f
+// 240 - 4.17f
+
+std::vector<float> availableFPS =
+{
+	30.0f,
+	60.0f,
+	120.0f, 
+	144.0f, 
+	240.0f 
+};
+
+float fps_t = availableFPS[1]; // Domyœlna iloœæ klatek na sekundê
+float fpsf = 1000.0f / fps_t; // Domyœlna iloœæ klatek na sekundê

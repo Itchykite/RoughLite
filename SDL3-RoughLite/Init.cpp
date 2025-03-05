@@ -17,9 +17,23 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
         return SDL_APP_FAILURE;
     }
 
-    if (!SDL_CreateWindowAndRenderer("examples/renderer/clear", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_BORDERLESS, &window, &renderer)) // Inicjalizacja okna i jego wielkoœci SDL
+    window = SDL_CreateWindow("RoughLite", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_BORDERLESS);
+    if (!window)
     {
-        SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
+        SDL_Log("Couldn't create window: %s", SDL_GetError());
+        return SDL_APP_FAILURE;
+    }
+
+    //Uint32 rendererFlags = SDL_RENDERER_ACCELERATED;
+    //if (vSyncEnabled) // Zmienna okreœlaj¹ca, czy vSync jest w³¹czony
+    //{
+    //    rendererFlags |= SDL_RENDERER_PRESENTVSYNC;
+    //}
+
+    renderer = SDL_CreateRenderer(window, NULL);
+    if (!renderer)
+    {
+        SDL_Log("Couldn't create renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
     

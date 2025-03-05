@@ -25,12 +25,6 @@ static const float playerH = 128.0f; // Ustawienie wysokoœci gracza
 static const float enemyW = 128.0f; // Ustawienie szerokoœci przeciwnika
 static const float enemyH = 128.0f; // Ustawienie wysokoœci przeciwnika
 
-// Delay = 1000 / fps
-
-// 30 - 33.33f
-// 60 - 16.67f
-// 120 - 8.33f
-// 144 - 6.94f
-// 240 - 4.17f
-
-static float fps = 6.94f;
+extern std::vector<float> availableFPS;
+extern float fps_t;
+extern float fpsf;

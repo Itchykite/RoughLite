@@ -24,7 +24,9 @@ extern void resetLastTime();
 
 float yOffSet = 100.0f;
 bool dropdownOpen = false;
+bool vSyncOpen = false;
 int selectedResolutionIndex = 3; 
+int selectedFPSIndex = 1;
 
 Button startButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 8, 200, 80, {255, 0, 0, 255}, []()
 {
@@ -313,7 +315,7 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
                 int mouseX = event.button.x;
                 int mouseY = event.button.y;
 
-                SDL_FRect fullscreenRect = { 400.0f, 100.0f, 200.0f, 30.0f };
+                SDL_FRect fullscreenRect = { 700.0f, 100.0f, 200.0f, 30.0f };
                 if (mouseX >= fullscreenRect.x && mouseX <= fullscreenRect.x + fullscreenRect.w &&
                     mouseY >= fullscreenRect.y && mouseY <= fullscreenRect.y + fullscreenRect.h)
                 {
@@ -364,6 +366,28 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
 
                             // Aktualizacja viewportu renderera
                             SDL_SetRenderViewport(renderer, NULL);
+                        }
+                    }
+                }
+
+                SDL_FRect vSyncRect = { 400.0f, 100.0f, 200.0f, 30.0f };
+                if (mouseX >= vSyncRect.x && mouseX <= vSyncRect.x + vSyncRect.w &&
+                    mouseY >= vSyncRect.y && mouseY <= vSyncRect.y + vSyncRect.h)
+                {
+                    vSyncOpen = !vSyncOpen;
+                }
+
+                if (vSyncOpen)
+                {
+                    for (size_t i = 0; i < availableFPS.size(); ++i)
+                    {
+                        SDL_FRect optionRect = { 400.0f, 130.0f + 30.0f * i, 200.0f, 30.0f };
+                        if (mouseX >= optionRect.x && mouseX <= optionRect.x + optionRect.w &&
+                            mouseY >= optionRect.y && mouseY <= optionRect.y + optionRect.h)
+                        {
+                            selectedFPSIndex = static_cast<int>(i);
+                            fps_t = availableFPS[i];
+                            vSyncOpen = false;
                         }
                     }
                 }
@@ -420,9 +444,22 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
         SDL_DestroySurface(selectedSurface);
         SDL_DestroyTexture(selectedTexture);
 
+        SDL_FRect vSyncRect = { 400, 100, 200, 40 };
+        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+        SDL_RenderFillRect(renderer, &vSyncRect);
+
+        // Wyœwietlanie wybranej rozdzielczoœci
+        std::string selectedFPSText = std::to_string(static_cast<int>(fps_t));
+        SDL_Surface* FPSselectedSurface = TTF_RenderText_Solid(font, selectedFPSText.c_str(), 0, white);
+        SDL_Texture* FPSselectedTexture = SDL_CreateTextureFromSurface(renderer, FPSselectedSurface);
+        SDL_FRect FPSTextRect = { vSyncRect.x + 10, vSyncRect.y + 5, static_cast<float>(FPSselectedSurface->w), static_cast<float>(FPSselectedSurface->h) };
+        SDL_RenderTexture(renderer, FPSselectedTexture, NULL, &FPSTextRect);
+        SDL_DestroySurface(FPSselectedSurface);
+        SDL_DestroyTexture(FPSselectedTexture);
+
         // Renderowanie przycisku pe³noekranowego
         SDL_SetRenderDrawColor(renderer, 80, 80, 80, 255);
-        SDL_FRect fullscreenButtonRect = { 400, 100, 200, 40 };
+        SDL_FRect fullscreenButtonRect = { 700, 100, 200, 40 };
         SDL_RenderFillRect(renderer, &fullscreenButtonRect);
 
         std::string fullscreenText = isFullscreen ? "Full Screen OFF" : "Full Screen ON";
@@ -443,6 +480,24 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
                 SDL_RenderFillRect(renderer, &optionRect);
 
                 std::string optionText = std::to_string(availableResolutions[i].width) + " x " + std::to_string(availableResolutions[i].height);
+                SDL_Surface* optionSurface = TTF_RenderText_Solid(font, optionText.c_str(), 0, white);
+                SDL_Texture* optionTexture = SDL_CreateTextureFromSurface(renderer, optionSurface);
+                SDL_FRect optionTextRect = { optionRect.x + 10, optionRect.y + 5, static_cast<float>(optionSurface->w), static_cast<float>(optionSurface->h) };
+                SDL_RenderTexture(renderer, optionTexture, NULL, &optionTextRect);
+                SDL_DestroySurface(optionSurface);
+                SDL_DestroyTexture(optionTexture);
+            }
+        }
+
+        if(vSyncOpen)
+        {
+            for (size_t i = 0; i < availableFPS.size(); ++i)
+            {
+                SDL_FRect optionRect = { 400, 130 + 30 * i, 200, 30 };
+                SDL_SetRenderDrawColor(renderer, 80, 80, 80, 255);
+                SDL_RenderFillRect(renderer, &optionRect);
+
+                std::string optionText = std::to_string(static_cast<int>(availableFPS[i]));
                 SDL_Surface* optionSurface = TTF_RenderText_Solid(font, optionText.c_str(), 0, white);
                 SDL_Texture* optionTexture = SDL_CreateTextureFromSurface(renderer, optionSurface);
                 SDL_FRect optionTextRect = { optionRect.x + 10, optionRect.y + 5, static_cast<float>(optionSurface->w), static_cast<float>(optionSurface->h) };

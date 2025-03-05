@@ -37,7 +37,6 @@ void savePlayerStats(Player* player);
 void loadPlayerStats(Player* player);
 void resetLastTime();
 void gameStats(SDL_Renderer* renderer, TTF_Font* font, Player* player);
-void UpdateButtons();
 
 void statTemplate(SDL_Renderer* renderer, TTF_Font* font, Player* player, std::string statText, float offSet, long int value);
 void statTemplate(SDL_Renderer* renderer, TTF_Font* font, Player* player, std::string statText, float offSet, Uint64 value);
