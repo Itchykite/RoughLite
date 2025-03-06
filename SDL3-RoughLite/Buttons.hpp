@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "GameState.hpp"
+#include "Settings.hpp"
 
 class Player;
 class Map;
@@ -15,14 +16,15 @@ class Button
 {
 public:
     Button(float x, float y, float w, float h, SDL_Color color, std::function<void()> onClick)
-        : rect{ x, y, w, h }, color(color), onClick(onClick), isPressed(false) 
+        : rect{ x * scaleX, y * scaleY, w , h  }, color(color), onClick(onClick), isPressed(false) 
     {
     }
 
     void Render(SDL_Renderer* renderer, TTF_Font* font, const char* name, Player* player, Map* map, EnemyManager* enemyManager)
     {
+        SDL_FRect scaledRect = { rect.x, rect.y, rect.w * scaleX + WINDOW_WIDTH / 512, rect.h * scaleY + WINDOW_HEIGHT / 256 };
         SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-		SDL_RenderFillRect(renderer, &rect);
+        SDL_RenderFillRect(renderer, &rect);
 
         SDL_Color textColor = { 255, 255, 255, 255 };
 
@@ -42,8 +44,8 @@ public:
         SDL_FRect dst;
         dst.w = textSurface->w;
         dst.h = textSurface->h;
-        dst.x = rect.x + (rect.w - textSurface->w) / 2.0f;
-        dst.y = rect.y + (rect.h - textSurface->h) / 2.0f;
+        dst.x = (scaledRect.x + (scaledRect.w - textSurface->w) / 2.0f);
+        dst.y = (scaledRect.y + (scaledRect.h - textSurface->h) / 2.0f);
 
         SDL_RenderTexture(renderer, texture, NULL, &dst);
         SDL_DestroyTexture(texture);
@@ -55,8 +57,9 @@ public:
         float mouseX = event.button.x;
         float mouseY = event.button.y;
 
-        bool isInside = mouseX >= rect.x && mouseX <= rect.x + rect.w &&
-            mouseY >= rect.y && mouseY <= rect.y + rect.h;
+        SDL_FRect scaledRect = { rect.x, rect.y, rect.w * scaleX, rect.h * scaleY };
+        bool isInside = mouseX >= scaledRect.x && mouseX <= scaledRect.x + scaledRect.w &&
+            mouseY >= scaledRect.y && mouseY <= scaledRect.y + scaledRect.h;
 
         if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN && isInside)
         {
@@ -73,10 +76,10 @@ public:
         }
     }
 
-    void SetPosition(int x, int y)
+    void SetPosition(float x, float y)
     {
-        rect.x = x;
-        rect.y = y;
+        rect.x = x * scaleX;
+        rect.y = y * scaleY;
     }
 
     SDL_FRect GetFRect() const

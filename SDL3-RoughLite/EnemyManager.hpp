@@ -18,22 +18,23 @@ public:
 	EnemyManager(Player* player, Map* map, Camera* camera, SDL_Renderer* renderer); // Konstrutkor przeciwnika, gracz, mapa, kamera, renderer
 
 	void AddEnemy(); // Dodanie przeciwnika
-	void AddRangeRover(); // Dodanie RangeRovera
+	void AddBigEnemy(); // Dodanie bossa
 
 	void Update(float deltaTime, GameStateRunning currentState); // Aktualizacja przeciwnika
 	void Render(SDL_Renderer* renderer, GameStateRunning currentState); // Renderowanie przeciwnika
 
-	void Render(SDL_Renderer* renderer); // Renderowanie przeciwnika
-	void RenderRangeRover(SDL_Renderer* renderer); // Renderowanie RangeRovera
 	void Reset();
 	void AdjustSpawnTime(Uint64 pauseDuration); // Nowa metoda
 
 	std::vector<std::unique_ptr<Enemy>> enemies; // Przeciwnicy
+	std::vector<std::unique_ptr<Enemy>> bigEnemies; // Przeciwnicy
 
 	Player* player; // Gracz
 	Map* map; // Mapa
 	Camera* camera; // Kamera
 	SDL_Renderer* renderer; // Renderer
+
+	Uint64 lastCollisionTime = 0; // Ostatni czas spawnu przeciwnika
 
 private:
 	bool CheckCollision(const SDL_FRect& rect1, const SDL_FRect& rect2) const; // Sprawdzenie kolizji
@@ -42,5 +43,5 @@ private:
 	float GetRandomFloat(float min, float max); // Pobranie losowej liczby zmiennoprzecinkowej
 
 	Uint64 lastSpawnTime = 0; // Ostatni czas spawnu przeciwnika
-	Uint64 lastCollisionTime = 0; // Ostatni czas spawnu przeciwnika
+	Uint64 lastBigSpawnTime = 0; // Ostatni czas spawnu bossa
 };

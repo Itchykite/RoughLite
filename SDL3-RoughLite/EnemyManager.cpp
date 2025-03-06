@@ -45,20 +45,32 @@ void EnemyManager::AddEnemy() // Dodanie przeciwnika
 	enemies.push_back(std::move(enemy)); // Dodanie przeciwnika
 }
 
-void EnemyManager::AddRangeRover() // Dodanie RangeRovera
+void EnemyManager::AddBigEnemy() // Dodanie przeciwnika
 {
-	float angleStep = 360.0f / RangeRover::numOfRangeRovers; // Krok k¹towy
-	float radius = 200.0f; // Promieñ
+	float enemyX, enemyY; // Pozycja x, y przeciwnika
+	bool validPosition = false; // Czy pozycja jest poprawna
 
-	for (int i = 0; i < RangeRover::numOfRangeRovers; ++i) // Dla ka¿dego RangeRovera
-    {
-		float angle = i * angleStep; // K¹t
-		float enemyX = player->GetX() + radius * std::cos(angle * M_PI / 180.0f); // Pozycja x
-		float enemyY = player->GetY() + radius * std::sin(angle * M_PI / 180.0f); // Pozycja y
+	while (!validPosition) // Dopóki pozycja nie jest poprawna
+	{
+		enemyX = GetRandomFloat(0, mapWidth - enemyW); // Ustawienie losowej pozycji x przeciwnika
+		enemyY = GetRandomFloat(0, mapHeight - enemyH); // Ustawienie losowej pozycji y przeciwnika
 
-		auto rangeRover = std::make_unique<RangeRover>(player, map, camera, renderer); // Utworzenie nowego RangeRovera
-		rangeRover->SetPosition(enemyX, enemyY); // Ustawienie pozycji
-    }
+		validPosition = true; // Ustawienie pozycji na poprawn¹
+		SDL_FRect newEnemyRect = { enemyX, enemyY, enemyW * 2, enemyH * 2}; // Utworzenie nowego prostok¹ta kolizji
+
+		for (const auto& enemy : enemies) // Dla ka¿dego przeciwnika
+		{
+			if (CheckCollision(newEnemyRect, enemy->GetCollisionRect())) // Jeœli kolizja
+			{
+				validPosition = false; // Ustawienie pozycji na niepoprawn¹
+				break; // Przerwanie
+			}
+		}
+	}
+
+	auto enemy = std::make_unique<Enemy>(player, map, camera, renderer); // Utworzenie nowego przeciwnika
+	enemy->SetPosition(enemyX, enemyY); // Ustawienie pozycji przeciwnika
+	bigEnemies.push_back(std::move(enemy)); // Dodanie przeciwnika
 }
 
 void EnemyManager::Update(float deltaTime, GameStateRunning currentState) // Aktualizacja przeciwnika
@@ -79,7 +91,18 @@ void EnemyManager::Update(float deltaTime, GameStateRunning currentState) // Akt
 			lastSpawnTime = currentTime;
 		}
 
+		if (currentTime > lastBigSpawnTime + 100000)
+		{
+			AddBigEnemy();
+			lastBigSpawnTime = currentTime;
+		}
+
 		for (auto& enemy : enemies)
+		{
+			enemy->Update(deltaTime, currentState);
+		}
+
+		for (auto& enemy : bigEnemies)
 		{
 			enemy->Update(deltaTime, currentState);
 		}
@@ -117,11 +140,11 @@ void EnemyManager::Update(float deltaTime, GameStateRunning currentState) // Akt
 			}
 		}
 
-		if (IsPlayerInCollision() && (currentTime > lastCollisionTime + 1000)) // Jeœli kolizja i minê³o 1000 ms od ostatniej kolizji
+		if (IsPlayerInCollision() && (currentTime > lastCollisionTime + 1000))
 		{
-			player->health -= 10; // Zmniejszenie zdrowia gracza
-			lastCollisionTime = currentTime; // Ustawienie ostatniego czasu kolizji
-			player->renderHealthBar(player->health, renderer); // Renderowanie paska zdrowia
+			player->health -= 10;
+			lastCollisionTime = currentTime;
+			player->renderHealthBar(player->health, renderer);
 		}
 	}
 }
@@ -136,6 +159,11 @@ void EnemyManager::Render(SDL_Renderer* renderer, GameStateRunning currentState)
 	for (auto& enemy : enemies) // Dla ka¿dego przeciwnika
 	{
 		enemy->Render(renderer); // Renderowanie
+	}
+
+	for (auto& enemy : bigEnemies) // Dla ka¿dego przeciwnika
+	{
+		enemy->BigRender(renderer); // Renderowanie
 	}
 }
 

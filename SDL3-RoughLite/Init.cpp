@@ -24,6 +24,8 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
         return SDL_APP_FAILURE;
     }
 
+    SDL_SetWindowFullscreen(window, SDL_GetWindowFullscreenMode);
+
     //Uint32 rendererFlags = SDL_RENDERER_ACCELERATED;
     //if (vSyncEnabled) // Zmienna okreœlaj¹ca, czy vSync jest w³¹czony
     //{
@@ -37,7 +39,6 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
         return SDL_APP_FAILURE;
     }
     
-    SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
     SDL_SetRenderViewport(renderer, NULL);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 

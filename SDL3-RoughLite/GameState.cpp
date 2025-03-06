@@ -25,6 +25,8 @@ extern void resetLastTime();
 float yOffSet = 100.0f;
 bool dropdownOpen = false;
 bool vSyncOpen = false;
+bool isLevelUp = true;
+bool isFullscreen = false;
 int selectedResolutionIndex = 3; 
 int selectedFPSIndex = 1;
 
@@ -274,7 +276,6 @@ void statTemplate(SDL_Renderer* renderer, TTF_Font* font, Player* player, std::s
 void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, GameStateRunning& currentState, SDL_Window* window, Camera* camera, Player* player)
 {
     bool inSettings = true;
-    bool isFullscreen = true;
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Color gray = { 200, 200, 200, 255 };
 
@@ -293,21 +294,6 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
                 {
                     currentState = GameStateRunning::MENU;
                     inSettings = false;
-                }
-
-                else if (event.key.key == SDL_SCANCODE_F11) // Prze³¹czanie trybu pe³noekranowego za pomoc¹ F11
-                {
-                    isFullscreen = !isFullscreen;
-                    if (isFullscreen)
-                    {
-                        SDL_SetWindowFullscreen(window, SDL_GetWindowFullscreenMode);
-                    }
-                    else
-                    {
-                        SDL_SetWindowFullscreen(window, 0); // Powrót do trybu okienkowego
-                    }
-
-                    SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
                 }
             }
             else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
@@ -332,8 +318,8 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
                     SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
                 }
 
-                // Obs³uga klikniêcia mysz¹
-                // SprawdŸ, czy klikniêto na pole rozwijanej listy
+                // Handle mouse clicks
+                // Check if the dropdown list is clicked
                 SDL_FRect dropdownRect = { 100.0f, 100.0f, 200.0f, 30.0f };
                 if (mouseX >= dropdownRect.x && mouseX <= dropdownRect.x + dropdownRect.w &&
                     mouseY >= dropdownRect.y && mouseY <= dropdownRect.y + dropdownRect.h)
@@ -341,7 +327,7 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
                     dropdownOpen = !dropdownOpen;
                 }
 
-                // Jeœli lista jest otwarta, sprawdŸ, czy wybrano jedn¹ z opcji
+                // If the list is open, check if an option is selected
                 if (dropdownOpen)
                 {
                     for (size_t i = 0; i < availableResolutions.size(); ++i)
@@ -354,18 +340,28 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
                             currentResolution = availableResolutions[i];
                             dropdownOpen = false;
 
-                            // Zmiana rozmiaru okna
-                            SDL_Window* window = SDL_GetRenderWindow(renderer);
+                            // Change window size
                             SDL_SetWindowSize(window, currentResolution.width, currentResolution.height);
 
-                            SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
+                            // Update the renderer's logical presentation
+                            SDL_SetRenderLogicalPresentation(renderer, currentResolution.width, currentResolution.height, SDL_LOGICAL_PRESENTATION_STRETCH);
 
-                            // Aktualizacja zmiennych rozmiaru okna
+                            // Update window size variables
                             WINDOW_WIDTH = currentResolution.width;
                             WINDOW_HEIGHT = currentResolution.height;
 
-                            // Aktualizacja viewportu renderera
+                            // Update the camera's viewport size
+                            camera->SetViewportSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+                            // Update the renderer's viewport
                             SDL_SetRenderViewport(renderer, NULL);
+
+                            // Update the camera's thresholds
+                            camera->thresholdX = camera->width / 2.0f;
+                            camera->thresholdY = camera->height / 2.0f;
+
+                            // Update the camera's position
+                            camera->Update(player->GetX(), player->GetY());
                         }
                     }
                 }
@@ -394,48 +390,44 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
             }
             else if (event.type >= SDL_EVENT_WINDOW_FIRST && event.type <= SDL_EVENT_WINDOW_LAST)
             {
-                // Obs³uga zdarzeñ okna
-                if(event.type == SDL_EVENT_WINDOW_RESIZED)
+                // Handle window events
+                if (event.type == SDL_EVENT_WINDOW_RESIZED)
                 {
                     WINDOW_WIDTH = event.window.data1;
                     WINDOW_HEIGHT = event.window.data2;
 
-                    // Aktualizacja rozmiaru kamery
-                    camera->width = static_cast<float>(WINDOW_WIDTH);
-                    camera->height = static_cast<float>(WINDOW_HEIGHT);
+                    // Update the camera's viewport size
+                    camera->SetViewportSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-                    // Jeœli u¿ywasz progów, zaktualizuj je
+                    // Update the camera's thresholds
                     camera->thresholdX = camera->width / 2.0f;
                     camera->thresholdY = camera->height / 2.0f;
 
-                    // Aktualizacja viewportu renderera
+                    // Update the renderer's viewport
                     SDL_SetRenderViewport(renderer, NULL);
 
-                    // Opcjonalnie, jeœli korzystasz z logicznego prezentowania renderowania
-                    SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
-
+                    // Update the camera's position
                     camera->Update(player->GetX(), player->GetY());
                 }
-
                 else if (event.type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)
                 {
-                    // Obs³uga zmiany rozmiaru bufora tylnego okna
+                    // Handle changes in the window's back buffer size
                     SDL_SetRenderViewport(renderer, NULL);
                 }
             }
-            // Dodaj obs³ugê innych istotnych zdarzeñ
+            // Add handling for other relevant events
         }
 
-        // Renderowanie t³a ustawieñ
+        // Render the settings background
         SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
         SDL_RenderClear(renderer);
 
-        // Renderowanie pola rozwijanej listy
+        // Render the dropdown list
         SDL_FRect dropdownRect = { 100, 100, 200, 40 };
         SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
         SDL_RenderFillRect(renderer, &dropdownRect);
 
-        // Wyœwietlanie wybranej rozdzielczoœci
+        // Display the selected resolution
         std::string selectedResolutionText = std::to_string(currentResolution.width) + " x " + std::to_string(currentResolution.height);
         SDL_Surface* selectedSurface = TTF_RenderText_Solid(font, selectedResolutionText.c_str(), 0, white);
         SDL_Texture* selectedTexture = SDL_CreateTextureFromSurface(renderer, selectedSurface);
@@ -448,7 +440,7 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
         SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
         SDL_RenderFillRect(renderer, &vSyncRect);
 
-        // Wyœwietlanie wybranej rozdzielczoœci
+        // Display the selected FPS
         std::string selectedFPSText = std::to_string(static_cast<int>(fps_t));
         SDL_Surface* FPSselectedSurface = TTF_RenderText_Solid(font, selectedFPSText.c_str(), 0, white);
         SDL_Texture* FPSselectedTexture = SDL_CreateTextureFromSurface(renderer, FPSselectedSurface);
@@ -457,7 +449,7 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
         SDL_DestroySurface(FPSselectedSurface);
         SDL_DestroyTexture(FPSselectedTexture);
 
-        // Renderowanie przycisku pe³noekranowego
+        // Render the fullscreen button
         SDL_SetRenderDrawColor(renderer, 80, 80, 80, 255);
         SDL_FRect fullscreenButtonRect = { 700, 100, 200, 40 };
         SDL_RenderFillRect(renderer, &fullscreenButtonRect);
@@ -470,7 +462,7 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
         SDL_DestroySurface(fullscreenSurface);
         SDL_DestroyTexture(fullscreenTexture);
 
-        // Jeœli lista jest rozwiniêta, wyœwietl opcje
+        // If the list is open, display the options
         if (dropdownOpen)
         {
             for (size_t i = 0; i < availableResolutions.size(); ++i)
@@ -489,7 +481,7 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
             }
         }
 
-        if(vSyncOpen)
+        if (vSyncOpen)
         {
             for (size_t i = 0; i < availableFPS.size(); ++i)
             {
@@ -511,7 +503,17 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
     }
 }
 
-void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player* player, SDL_Event& event, GameStateRunning& currentState)
+void updateButtonPositions()
+{
+    float OffSet = 24.0f;
+
+    startButton.SetPosition(WINDOW_WIDTH / 2 - startButton.GetFRect().w / 2, WINDOW_HEIGHT / 2 - startButton.GetFRect().h - OffSet);
+    statsButton.SetPosition(WINDOW_WIDTH / 2 - statsButton.GetFRect().w / 2, WINDOW_HEIGHT / 2);
+    settingsButton.SetPosition(WINDOW_WIDTH / 2 - settingsButton.GetFRect().w / 2, WINDOW_HEIGHT / 2 + settingsButton.GetFRect().h + OffSet);
+    exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().w / 2, WINDOW_HEIGHT / 2 + exitButton.GetFRect().h + OffSet * 5 + 8.0f);
+}
+
+void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player* player, SDL_Event& event, GameStateRunning& currentState, EnemyManager* enemyManager)
 {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_FRect levelUpRect = { WINDOW_WIDTH / 2 - 150, 100, 300, 100 };
@@ -580,39 +582,50 @@ void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player* player, SDL_Event& 
 	SDL_DestroyTexture(damageTexture);
 	SDL_RenderPresent(renderer);
 
-    while (SDL_PollEvent(&event))
+    int mouseX = event.button.x;
+    int mouseY = event.button.y;
+        
+    if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
     {
-        if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
+        if (mouseX >= healthBoostRect.x && mouseX <= healthBoostRect.x + healthBoostRect.w &&
+            mouseY >= healthBoostRect.y && mouseY <= healthBoostRect.y + healthBoostRect.h)
         {
-            int mouseX = event.button.x;
-            int mouseY = event.button.y;
-
-            if (mouseX >= healthBoostRect.x && mouseX <= healthBoostRect.x + healthBoostRect.w &&
-                mouseY >= healthBoostRect.y && mouseY <= healthBoostRect.y + healthBoostRect.h)
-            {
-                player->maxHealth += 50;
-            }
-
-            if (mouseX >= rangeBoostRect.x && mouseX <= rangeBoostRect.x + rangeBoostRect.w &&
-                mouseY >= rangeBoostRect.y && mouseY <= rangeBoostRect.y + rangeBoostRect.h)
-            {
-                //player->range += 50;
-            }
-
-            if (mouseX >= speedBoostRect.x && mouseX <= speedBoostRect.x + speedBoostRect.w &&
-                mouseY >= speedBoostRect.y && mouseY <= speedBoostRect.y + speedBoostRect.h)
-            {
-                //player->speed += 50;
-            }
-
-            if (mouseX >= damageBoostRect.x && mouseX <= damageBoostRect.x + damageBoostRect.w &&
-                mouseY >= damageBoostRect.y && mouseY <= damageBoostRect.y + damageBoostRect.h)
-            {
-                //player->damage += 50;
-            }
-
-            currentState = GameStateRunning::GAME;
+            player->maxHealth *= 1.5f;
+			SDL_Log("Health Boost! %f", player->health);
+            isLevelUp = false;
         }
+
+        if (mouseX >= rangeBoostRect.x && mouseX <= rangeBoostRect.x + rangeBoostRect.w &&
+            mouseY >= rangeBoostRect.y && mouseY <= rangeBoostRect.y + rangeBoostRect.h)
+        {
+            player->attackRange *= 1.1f;
+			SDL_Log("Range Boost!");
+            isLevelUp = false;
+        }
+
+        if (mouseX >= speedBoostRect.x && mouseX <= speedBoostRect.x + speedBoostRect.w &&
+            mouseY >= speedBoostRect.y && mouseY <= speedBoostRect.y + speedBoostRect.h)
+        {
+            //player->speed += 50;
+			SDL_Log("Speed Boost!");
+            isLevelUp = false;
+        }
+
+        if (mouseX >= damageBoostRect.x && mouseX <= damageBoostRect.x + damageBoostRect.w &&
+            mouseY >= damageBoostRect.y && mouseY <= damageBoostRect.y + damageBoostRect.h)
+        {
+            //player->damage += 50;
+			SDL_Log("Damage Boost!");
+            isLevelUp = false;
+        }
+    }
+
+    if (!isLevelUp)
+    {
+        player->health = player->maxHealth;
+        enemyManager->lastCollisionTime = 0;
+        isLevelUp = true;
+        currentState = GameStateRunning::GAME;
     }
 }
 

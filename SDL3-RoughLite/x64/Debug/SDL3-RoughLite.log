@@ -1,16 +1,62 @@
-﻿  Player.cpp
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(221,25): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(241,25): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(260,57): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(260,57): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(260,100): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(260,100): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(260,133): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(260,133): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(260,163): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(260,163): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(304,66): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(304,66): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(304,100): warning C4838: konwersja z „int” do „float” wymaga konwersji zawężającej
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Player.cpp(304,100): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+﻿  Settings.cpp
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Settings.cpp(27,20): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Settings.cpp(28,21): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244: "inicjowanie": konwersja z "int" do "_Ty1", możliwa utrata danych
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:             _Ty1=float
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:         ]
+  (kompilowanie pliku źródłowego „Settings.cpp”)
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16):
+      kontekst tworzenia wystąpienia szablonu (najpierw najstarszy) to
+          C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Settings.cpp(51,42):
+          zobacz odwołanie do kompilowanego tworzenia wystąpienia „std::pair<float,float>::pair<int&,int&,0>(_Other1,_Other2) noexcept” funkcji szablon
+          with
+          [
+              _Other1=int &,
+              _Other2=int &
+          ]
+              C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Settings.cpp(51,42):
+              zobacz pierwsze odwołanie do elementu „std::pair<float,float>::pair” w „GetWindowSize”
+  
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244: "inicjowanie": konwersja z "int" do "_Ty2", możliwa utrata danych
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:             _Ty2=float
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:         ]
+  (kompilowanie pliku źródłowego „Settings.cpp”)
+  
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244: "inicjowanie": konwersja z "_Ty" do "_Ty1", możliwa utrata danych
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:             _Ty=int
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:         ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:         and
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:             _Ty1=float
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16): warning C4244:         ]
+  (kompilowanie pliku źródłowego „Settings.cpp”)
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,16):
+      kontekst tworzenia wystąpienia szablonu (najpierw najstarszy) to
+          C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Settings.cpp(39,9):
+          zobacz odwołanie do kompilowanego tworzenia wystąpienia „std::pair<float,float>::pair<int,int,0>(_Other1 &&,_Other2 &&) noexcept” funkcji szablon
+          with
+          [
+              _Other1=int,
+              _Other2=int
+          ]
+              C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Settings.cpp(39,9):
+              zobacz pierwsze odwołanie do elementu „std::pair<float,float>::pair” w „GetWindowSize”
+  
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244: "inicjowanie": konwersja z "_Ty" do "_Ty2", możliwa utrata danych
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:             _Ty=int
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:         ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:         and
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:             _Ty2=float
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\utility(263,54): warning C4244:         ]
+  (kompilowanie pliku źródłowego „Settings.cpp”)
+  
   SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\Itchykite\RoughLite\x64\Debug\SDL3-RoughLite.exe

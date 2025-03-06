@@ -2,6 +2,8 @@
 
 #include <vector>
 
+std::pair<float, float> GetWindowSize();
+
 struct Resolution
 {
     int width;
@@ -14,7 +16,11 @@ extern Resolution currentResolution;
 extern float WINDOW_WIDTH;
 extern float WINDOW_HEIGHT;
 
-// dla mapy dla rodziny 16:9
+extern float DEFAULT_WIDTH;
+extern float DEFAULT_HEIGHT;
+
+extern float scaleX;
+extern float scaleY;
 
 static const float mapWidth = 4096;
 static const float mapHeight = 4096;

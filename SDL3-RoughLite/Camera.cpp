@@ -34,6 +34,14 @@ void Camera::Update(float playerX, float playerY)
     if (y + height > mapHeight) y = mapHeight - height;
 }
 
+void Camera::SetViewportSize(float newWidth, float newHeight) 
+{
+    width = newWidth;
+    height = newHeight;
+    thresholdX = width / 2.0f;
+    thresholdY = height / 2.0f;
+}
+
 float Camera::GetX() const
 {
     return x;

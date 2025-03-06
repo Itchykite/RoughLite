@@ -1,4 +1,6 @@
+#include <tuple>
 #include "Settings.hpp"
+#include "SDL3/SDL.h"
 
 std::vector<Resolution> availableResolutions =
 {
@@ -24,6 +26,43 @@ Resolution currentResolution = availableResolutions[12]; // Domyœlna rozdzielczo
 
 float WINDOW_WIDTH = currentResolution.width;
 float WINDOW_HEIGHT = currentResolution.height;
+
+std::pair<float, float> GetWindowSize() 
+{
+    SDL_DisplayID display = SDL_GetPrimaryDisplay();
+
+    int num_modes = 0;
+    SDL_DisplayMode** modes = SDL_GetFullscreenDisplayModes(display, &num_modes);
+    if (modes == nullptr || num_modes == 0) 
+	{
+        SDL_Log("Nie uda³o siê pobraæ trybów wyœwietlania lub brak dostêpnych trybów.");
+        return { 1920, 1080 }; // Domyœlne wartoœci rozdzielczoœci
+    }
+
+    // Przyk³adowo wybieramy pierwszy dostêpny tryb
+    SDL_DisplayMode* mode = modes[0];
+    if (mode == nullptr)
+	{
+        SDL_Log("Pierwszy tryb wyœwietlania jest nieprawid³owy.");
+        SDL_free(modes);
+        return { 1920, 1080 }; // Domyœlne wartoœci rozdzielczoœci
+    }
+
+    std::pair<float, float> windowSize = { mode->w, mode->h };
+
+    // Zwolnienie pamiêci przydzielonej przez SDL_GetFullscreenDisplayModes
+    SDL_free(modes);
+
+    return windowSize;
+}
+
+auto [width, height] = GetWindowSize();
+
+float DEFAULT_WIDTH = width;
+float DEFAULT_HEIGHT = height;
+
+float scaleX = WINDOW_WIDTH / width;
+float scaleY = WINDOW_HEIGHT / height;
 
 // Delay = 1000 / fps
 

@@ -218,7 +218,7 @@ void Player::renderHealthBar(double healthValue, SDL_Renderer* renderer) // Rend
 	float barHeight = 25.0f; // Wysokoœæ paska
 	float barWidth = WINDOW_WIDTH; // Szerokoœæ paska
 
-	float healthPercentage = healthValue / 100; // Procent zdrowia
+	float healthPercentage = healthValue / maxHealth; // Procent zdrowia
 	float currentBarWidth = barWidth * healthPercentage; // Aktualna szerokoœæ paska
 
 	float x = (WINDOW_WIDTH - barWidth); // Pozycja x
@@ -426,7 +426,8 @@ void Player::attack(SDL_Renderer* renderer, std::vector<std::unique_ptr<Enemy>>&
     {
         attackRow = 7;
     }
-    float attackRange = 200.0f;
+
+    attackRange = 200.0f;
     float attackAngle = 100.0f;
 
     for (auto& enemy : enemies)

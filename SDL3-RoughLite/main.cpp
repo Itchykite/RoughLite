@@ -77,6 +77,22 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
                 resetLastTime(); // Resetowanie lastTime przy przejœciu do GAME
             }
         }
+
+        if (event->key.key == SDLK_F11) // Prze³¹czanie trybu pe³noekranowego za pomoc¹ F11
+        {
+			SDL_Log("F11 pressed");
+            isFullscreen = !isFullscreen;
+            if (isFullscreen)
+            {
+                SDL_SetWindowFullscreen(window, SDL_GetWindowFullscreenMode);
+            }
+            else
+            {
+                SDL_SetWindowFullscreen(window, 0); // Powrót do trybu okienkowego
+            }
+
+            SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
+        }
 	}
 
     if (gameState == GameStateRunning::GAME && !player->isGameOver)
@@ -125,7 +141,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
         break;
 
     case GameStateRunning::LEVELUP:
-		levelUp(renderer, font, player, lastEvent, gameState);
+		levelUp(renderer, font, player, lastEvent, gameState, enemyManager);
         break;
 
     case GameStateRunning::EXIT:

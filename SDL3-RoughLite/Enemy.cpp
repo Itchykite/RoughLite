@@ -61,6 +61,23 @@ void Enemy::Render(SDL_Renderer* renderer) // Renderowanie przeciwnika
 	SDL_RenderTexture(renderer, playerTexture, &srcRect, &dstRect); // Renderowanie tekstury
 }
 
+void Enemy::BigRender(SDL_Renderer* renderer) // Renderowanie przeciwnika
+{
+	if (!isAlive) return; // Jeœli nie ¿yje
+
+	if (camera == nullptr) // Jeœli kamera nie istnieje
+	{
+		SDL_Log("Enemy::Render() - camera is nullptr");
+		return;
+	}
+
+	renderHealthBar(health, renderer); // Renderowanie paska zdrowia
+
+	SDL_FRect srcRect = { currentFrame * frameWidth, currentRow * frameHeight, frameWidth, frameHeight }; // Ustawienie klatki
+	SDL_FRect dstRect = { x - camera->GetX() + (playerW / 16), y - camera->GetY() + (playerH / 16), enemyW * 4, enemyH * 4}; // Ustawienie pozycji
+	SDL_RenderTexture(renderer, playerTexture, &srcRect, &dstRect); // Renderowanie tekstury
+}
+
 void Enemy::SetPosition(float x, float y) // Ustawienie pozycji przeciwnika
 {
 	this->x = x; // Ustawienie pozycji x

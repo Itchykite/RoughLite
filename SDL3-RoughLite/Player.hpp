@@ -41,14 +41,15 @@ public:
     SDL_Texture* playerTexture; // Tekstura gracza
 
 
+    float attackRange;
     float x; // Pozycja x
     float y; // Pozycja y
     long int kills; // Wynik
     long int totalKills; // Ca³kowita liczba zabitych przeciwników
     long int totalDeaths; // Ca³kowita liczba zabitych przeciwników
 	Uint64 totalTime; // Ca³kowity czas gry
-    double health; // Zdrowie
 	double maxHealth; // Maksymalne zdrowie
+    double health; // Zdrowie
 	double exp; // Doœwiadczenie
 	double maxExp; // Maksymalne doœwiadczenie
     bool isGameOver;
