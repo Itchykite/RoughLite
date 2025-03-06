@@ -124,6 +124,10 @@ SDL_AppResult SDL_AppIterate(void* appstate)
         gameSettings(renderer, lastEvent, font, gameState, window, camera, player);
         break;
 
+    case GameStateRunning::LEVELUP:
+		levelUp(renderer, font, player, lastEvent, gameState);
+        break;
+
     case GameStateRunning::EXIT:
         saveGameTime(player, startTime);
 		savePlayerStats(player);

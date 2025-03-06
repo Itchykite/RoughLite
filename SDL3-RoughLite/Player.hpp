@@ -22,6 +22,7 @@ public:
     void LoadAttackTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury ataku
     void Render(SDL_Renderer* renderer); // Renderowanie gracza
     void renderHealthBar(double healthValue, SDL_Renderer* renderer); // Renderowanie paska zdrowia
+	void renderExpBar(double expValue, SDL_Renderer* renderer); // Renderowanie paska expa
     void SetPosition(float x, float y); // Ustwienie pozycji gracza
     void Update(float deltaTime, GameStateRunning currentState); // Aktualizacja gracza
     void SetVelocity(float x, float y); // Ustwienie prêdkoœci gracza
@@ -47,6 +48,9 @@ public:
     long int totalDeaths; // Ca³kowita liczba zabitych przeciwników
 	Uint64 totalTime; // Ca³kowity czas gry
     double health; // Zdrowie
+	double maxHealth; // Maksymalne zdrowie
+	double exp; // Doœwiadczenie
+	double maxExp; // Maksymalne doœwiadczenie
     bool isGameOver;
     bool isGameStart = false;
     bool deathRegistered;
@@ -78,4 +82,5 @@ private:
     bool isAttacking; // Czy gracz atakuje
     int attackFrame; // Aktualna klatka ataku
     int attackRow; // Aktualny wiersz ataku
+
 };

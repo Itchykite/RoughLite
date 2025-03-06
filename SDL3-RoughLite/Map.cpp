@@ -110,6 +110,7 @@ void Map::RenderObjects(SDL_Renderer* renderer, float cameraX, float cameraY, Pl
     }
 
     player->renderHealthBar(player->health, renderer); // Renderowanie paska jako pierwszego
+	player->renderExpBar(player->exp, renderer); // Renderowanie paska expa jako pierwszego
 }
 
 bool Map::IsNodeWalkable(int x, int y) const // Czy wêze³ jest dostêpny

@@ -17,6 +17,7 @@ enum class GameStateRunning
     PAUSE,
 	STATS,
     SETTINGS,
+    LEVELUP,
     EXIT
 };
 
@@ -30,6 +31,8 @@ void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* 
 void gamePause(SDL_Renderer* renderer, TTF_Font* font);
 
 void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, GameStateRunning& currentState, SDL_Window* window, Camera* camera, Player* player);
+
+void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player* player, SDL_Event& event, GameStateRunning& currentState);
 
 void saveGameState(Player* player, Map* map, EnemyManager* enemyManager);
 void loadGameState(Player* player, Map* map, EnemyManager* enemyManager, SDL_Renderer* renderer);

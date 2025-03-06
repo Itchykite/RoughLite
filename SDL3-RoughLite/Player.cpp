@@ -8,14 +8,16 @@
 
 extern GameStateRunning gameState;
 
-Player::Player(Map* map, Camera* camera, SDL_Renderer* renderer) // Konstruktor gracza, mapa, kamera, renderer
+Player::Player(Map* map, Camera* camera, SDL_Renderer* renderer)
     : map(map), camera(camera), x(0), y(0), velocityX(0), velocityY(0),
     playerTexture(nullptr), attackTexture(nullptr), frameWidth(0), frameHeight(0),
     currentFrame(0), totalFrames(0), lastFrameTime(0), frameDuration(100),
     attackFrameDuration(10), // Inicjalizacja zmiennej attackFrameDuration
-	currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr), health(100), isGameOver(false),
+    currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr), maxHealth(100), health(maxHealth), exp(0), maxExp(100), isGameOver(false),
     deathRegistered(false), wasMoving(false)
 {
+    SDL_Log("Player initialized with health: %f", health);
+
     SDL_Log("Loading player texture...");
     LoadTexture(renderer, "spritesheet.png"); // Wczytanie tekstury gracza
     SDL_Log("Loading attack texture...");
@@ -76,6 +78,14 @@ void Player::Update(float deltaTime, GameStateRunning currentState) // Aktualiza
         totalDeaths++; // Inkrementacja totalDeaths
         gameState = GameStateRunning::GAMEOVER; // Przejœcie do stanu GAMEOVER
     }
+
+    if (exp >= maxExp)
+	{
+		gameState = GameStateRunning::LEVELUP; // Przejœcie do stanu LEVELUP
+		double temp = exp - maxExp;
+        exp = temp;
+		maxExp *= 1.5f;
+	}
 
     if (currentState != GameStateRunning::GAME)
     {
@@ -208,19 +218,39 @@ void Player::renderHealthBar(double healthValue, SDL_Renderer* renderer) // Rend
 	float barHeight = 25.0f; // Wysokoœæ paska
 	float barWidth = WINDOW_WIDTH; // Szerokoœæ paska
 
-	float healthPercentage = healthValue / 100.0f; // Procent zdrowia
+	float healthPercentage = healthValue / 100; // Procent zdrowia
 	float currentBarWidth = barWidth * healthPercentage; // Aktualna szerokoœæ paska
 
 	float x = (WINDOW_WIDTH - barWidth); // Pozycja x
 	float y = (WINDOW_HEIGHT - barHeight); // Pozycja y
 
-	SDL_FRect backgroundBar = { x, y, barWidth, barHeight };
+	SDL_FRect backgroundBar = { x, y, barWidth / 2, barHeight };
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
 	SDL_RenderFillRect(renderer, &backgroundBar);
 
-	SDL_FRect foregroundBar = { x, y, currentBarWidth, barHeight };
+	SDL_FRect foregroundBar = { x, y, currentBarWidth / 2, barHeight };
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	SDL_RenderFillRect(renderer, &foregroundBar);
+}
+
+void Player::renderExpBar(double expValue, SDL_Renderer* renderer) // Renderowanie paska zdrowia
+{
+    float barHeight = 25.0f; // Wysokoœæ paska
+    float barWidth = WINDOW_WIDTH; // Szerokoœæ paska
+
+    float expPercentage = expValue / maxExp; // Procent expa
+    float currentBarWidth = barWidth * expPercentage; // Aktualna szerokoœæ paska
+
+    float x = (WINDOW_WIDTH - barWidth); // Pozycja x
+    float y = (WINDOW_HEIGHT - barHeight); // Pozycja y
+
+    SDL_FRect backgroundBar = { barWidth / 2, y, barWidth / 2, barHeight};
+    SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+    SDL_RenderFillRect(renderer, &backgroundBar);
+
+    SDL_FRect foregroundBar = { barWidth / 2, y, currentBarWidth / 2, barHeight };
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    SDL_RenderFillRect(renderer, &foregroundBar);
 }
 
 void Player::Render(SDL_Renderer* renderer) // Renderowanie gracza
@@ -407,6 +437,7 @@ void Player::attack(SDL_Renderer* renderer, std::vector<std::unique_ptr<Enemy>>&
             if (enemy->health <= 0)
             {
                 enemy->isAlive = false;
+				exp += 50.0f; // Zwiêkszenie doœwiadczenia
                 kills++; // Zwiêkszenie liczby zabójstw
 				totalKills++; // Zwiêkszenie ca³kowitej liczby zabójstw
                 UpdateKillsTexture(renderer); // Aktualizacja tekstury z liczb¹ zabójstw

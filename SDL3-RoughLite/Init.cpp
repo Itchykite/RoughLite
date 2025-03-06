@@ -38,8 +38,8 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
     }
     
     SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_STRETCH);
-
     SDL_SetRenderViewport(renderer, NULL);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     // Ustawienie jakoœci skalowania tekstur
     SDL_Log("Creating map...");

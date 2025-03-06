@@ -511,6 +511,111 @@ void gameSettings(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Game
     }
 }
 
+void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player* player, SDL_Event& event, GameStateRunning& currentState)
+{
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_FRect levelUpRect = { WINDOW_WIDTH / 2 - 150, 100, 300, 100 };
+    SDL_RenderFillRect(renderer, &levelUpRect);
+
+    // Renderowanie napisu "PAUZA"
+	SDL_Color gold = { 255, 215, 0, 255 };
+    SDL_Color black = { 0, 0, 0, 255 };
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, "LEVEL UP!", 0, gold);
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FRect textRect = { levelUpRect.x, levelUpRect.y, 300, 50 };
+    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+    SDL_DestroySurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+
+    // Wiêcej zdrowia
+    SDL_FRect healthBoostRect = { WINDOW_WIDTH / 4 - WINDOW_WIDTH / 6, WINDOW_HEIGHT / 2, 180, 180 };
+    SDL_RenderFillRect(renderer, &healthBoostRect);
+
+	// Wiêkszy zasiêg
+    SDL_FRect rangeBoostRect = { WINDOW_WIDTH / 4 * 2 - WINDOW_WIDTH / 6, WINDOW_HEIGHT / 2, 180, 180 };
+    SDL_RenderFillRect(renderer, &rangeBoostRect);
+
+	// Wiêksza prêdkoœæ
+    SDL_FRect speedBoostRect = { WINDOW_WIDTH / 4 * 3 - WINDOW_WIDTH / 6, WINDOW_HEIGHT / 2, 180, 180 };
+    SDL_RenderFillRect(renderer, &speedBoostRect);
+
+	// Wiêksze obra¿enia
+    SDL_FRect damageBoostRect = { WINDOW_WIDTH / 4  * 4 - WINDOW_WIDTH / 6, WINDOW_HEIGHT / 2, 180, 180 };
+    SDL_RenderFillRect(renderer, &damageBoostRect);
+
+	// Renderowanie upgrade zdrowia
+	SDL_Surface* healthTextSurface = TTF_RenderText_Solid(font, "Health Boost", 0, black);
+	SDL_Texture* healthTexture = SDL_CreateTextureFromSurface(renderer, healthTextSurface);
+	SDL_FRect healthTextRect = { healthBoostRect.x, healthBoostRect.y + 180, 180, 50 };
+
+	SDL_RenderTexture(renderer, healthTexture, NULL, &healthTextRect);
+	SDL_DestroySurface(healthTextSurface);
+	SDL_DestroyTexture(healthTexture);
+
+	// Renderowanie upgrade zasiêgu
+	SDL_Surface* rangeTextSurface = TTF_RenderText_Solid(font, "Range Boost", 0, black);
+	SDL_Texture* rangeTexture = SDL_CreateTextureFromSurface(renderer, rangeTextSurface);
+	SDL_FRect rangeTextRect = { rangeBoostRect.x, rangeBoostRect.y + 180, 180, 50 };
+
+	SDL_RenderTexture(renderer, rangeTexture, NULL, &rangeTextRect);
+	SDL_DestroySurface(rangeTextSurface);
+	SDL_DestroyTexture(rangeTexture);
+
+	// Renderowanie upgrade prêdkoœci
+	SDL_Surface* speedTextSurface = TTF_RenderText_Solid(font, "Speed Boost", 0, black);
+	SDL_Texture* speedTexture = SDL_CreateTextureFromSurface(renderer, speedTextSurface);
+	SDL_FRect speedTextRect = { speedBoostRect.x, speedBoostRect.y + 180, 180, 50 };
+
+	SDL_RenderTexture(renderer, speedTexture, NULL, &speedTextRect);
+	SDL_DestroySurface(speedTextSurface);
+	SDL_DestroyTexture(speedTexture);
+
+	// Renderowanie upgrade obra¿eñ
+	SDL_Surface* damageTextSurface = TTF_RenderText_Solid(font, "Damage Boost", 0, black);
+	SDL_Texture* damageTexture = SDL_CreateTextureFromSurface(renderer, damageTextSurface);
+	SDL_FRect damageTextRect = { damageBoostRect.x, damageBoostRect.y + 180, 180, 50 };
+
+	SDL_RenderTexture(renderer, damageTexture, NULL, &damageTextRect);
+	SDL_DestroySurface(damageTextSurface);
+	SDL_DestroyTexture(damageTexture);
+	SDL_RenderPresent(renderer);
+
+    while (SDL_PollEvent(&event))
+    {
+        if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
+        {
+            int mouseX = event.button.x;
+            int mouseY = event.button.y;
+
+            if (mouseX >= healthBoostRect.x && mouseX <= healthBoostRect.x + healthBoostRect.w &&
+                mouseY >= healthBoostRect.y && mouseY <= healthBoostRect.y + healthBoostRect.h)
+            {
+                player->maxHealth += 50;
+            }
+
+            if (mouseX >= rangeBoostRect.x && mouseX <= rangeBoostRect.x + rangeBoostRect.w &&
+                mouseY >= rangeBoostRect.y && mouseY <= rangeBoostRect.y + rangeBoostRect.h)
+            {
+                //player->range += 50;
+            }
+
+            if (mouseX >= speedBoostRect.x && mouseX <= speedBoostRect.x + speedBoostRect.w &&
+                mouseY >= speedBoostRect.y && mouseY <= speedBoostRect.y + speedBoostRect.h)
+            {
+                //player->speed += 50;
+            }
+
+            if (mouseX >= damageBoostRect.x && mouseX <= damageBoostRect.x + damageBoostRect.w &&
+                mouseY >= damageBoostRect.y && mouseY <= damageBoostRect.y + damageBoostRect.h)
+            {
+                //player->damage += 50;
+            }
+
+            currentState = GameStateRunning::GAME;
+        }
+    }
+}
+
 void savePlayerStats(Player* player)
 {
 	std::ofstream saveFile("playerstats.dat", std::ios::binary);
