@@ -135,8 +135,7 @@ void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& en
 
 void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager)
 {
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
     if (player->isGameStart)
