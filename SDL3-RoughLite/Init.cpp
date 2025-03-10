@@ -1,3 +1,4 @@
+#define SDL_HINT_RENDER_VSYNC "SDL_RENDER_VSYNC"
 #include "Init.hpp"
 #include "Settings.hpp"
 #include "Map.hpp"
@@ -17,7 +18,8 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
         return SDL_APP_FAILURE;
     }
 
-    InitializeAvailableResolutions();
+    InitializeSettings();
+    //SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
 
     window = SDL_CreateWindow("RoughLite", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_BORDERLESS);
     if (!window)
@@ -40,7 +42,9 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
         SDL_Log("Couldn't create renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    
+
+    SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1"); // Wymusza VSync dla SDL_Renderer
+
     SDL_SetRenderViewport(renderer, NULL);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 

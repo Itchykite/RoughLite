@@ -130,27 +130,27 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     case GameStateRunning::MENU:
         gameMenu(renderer, lastEvent, font, player, map, enemyManager);
         break;
-        
+
     case GameStateRunning::GAMEOVER:
         GameOver(renderer, font, player, lastTime, startTime);
         savePlayerStats(player);
         break;
 
     case GameStateRunning::STATS:
-		gameStats(renderer, font, player);
-		break;
+        gameStats(renderer, font, player);
+        break;
 
     case GameStateRunning::SETTINGS:
         gameSettings(renderer, lastEvent, font, gameState, window, camera, player);
         break;
 
     case GameStateRunning::LEVELUP:
-		levelUp(renderer, font, player, lastEvent, gameState, enemyManager);
+        levelUp(renderer, font, player, lastEvent, gameState, enemyManager);
         break;
 
     case GameStateRunning::EXIT:
         saveGameTime(player, startTime);
-		savePlayerStats(player);
+        savePlayerStats(player);
         return SDL_APP_SUCCESS;
         break;
 
@@ -161,13 +161,13 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
     SDL_RenderPresent(renderer); // Renderowanie ca³oœci
 
-    Uint32 frameTime = SDL_GetTicks() - frameStart;
+    /*Uint32 frameTime = SDL_GetTicks() - frameStart;
     Uint32 frameDelayTime = 1000 / fps_t;
 
     if (frameDelayTime > frameTime)
     {
         SDL_Delay(frameDelayTime - frameTime);
-    }
+    }*/
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }

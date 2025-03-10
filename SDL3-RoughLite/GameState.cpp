@@ -195,7 +195,6 @@ void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* 
 void gamePause(SDL_Renderer* renderer, TTF_Font* font)
 {
     // Renderowanie t³a pauzy
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128); // Pó³przezroczyste czarne t³o
     SDL_FRect pauseRect = { WINDOW_WIDTH / 2 - 100, 100, 200, 100 };
     SDL_RenderFillRect(renderer, &pauseRect);
 
@@ -211,8 +210,8 @@ void gamePause(SDL_Renderer* renderer, TTF_Font* font)
 
 void gameStats(SDL_Renderer* renderer, TTF_Font* font, Player* player)
 {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128); // Ustawienie koloru t³a na czarny
     SDL_RenderClear(renderer);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
     SDL_FRect statsRect = { WINDOW_WIDTH / 2 - 100, 100, 200, 100 };
     SDL_RenderFillRect(renderer, &statsRect);
 

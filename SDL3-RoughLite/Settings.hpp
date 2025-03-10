@@ -9,8 +9,9 @@ struct Resolution
 };
 
 std::vector<Resolution> GetAvailableResolutions();
+std::vector<float> GetAvailableFPS();
 std::pair<float, float> GetWindowSize();
-void InitializeAvailableResolutions();
+void InitializeSettings();
 
 extern std::vector<Resolution> availableResolutions;
 extern Resolution currentResolution;
