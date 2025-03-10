@@ -168,7 +168,7 @@ void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* 
     statsButton.Render(renderer, font, "stats", player, map, enemyManager);
     statsButton.handleClick(event);
 
-
+    // Renderowanei przycisku settings
     SDL_Surface* settingsTextSurface = TTF_RenderText_Solid(font, "settings", 0, { 255, 255, 255, 255 });
     if (settingsTextSurface)
     {

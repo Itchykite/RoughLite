@@ -2,13 +2,15 @@
 
 #include <vector>
 
-std::pair<float, float> GetWindowSize();
-
 struct Resolution
 {
     int width;
     int height;
 };
+
+std::vector<Resolution> GetAvailableResolutions();
+std::pair<float, float> GetWindowSize();
+void InitializeAvailableResolutions();
 
 extern std::vector<Resolution> availableResolutions;
 extern Resolution currentResolution;

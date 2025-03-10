@@ -47,6 +47,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     loadPlayerStats(player);
     loadGameTime(player);
 
+    for (auto& res : availableResolutions)
+    {
+		SDL_Log("Resolution: %dx%d", res.width, res.height);
+    }
 
 	return SDL_APP_CONTINUE;  /* continue running the program. */
 }
