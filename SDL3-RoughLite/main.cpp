@@ -141,7 +141,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
         break;
 
     case GameStateRunning::SETTINGS:
-        gameSettings(renderer, lastEvent, font, gameState, window, camera, player);
+        gameSettings();
         break;
 
     case GameStateRunning::LEVELUP:
