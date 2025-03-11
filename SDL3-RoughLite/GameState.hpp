@@ -21,6 +21,9 @@ enum class GameStateRunning
     EXIT
 };
 
+void LoadAnimationFrames(SDL_Renderer* renderer);
+void Cleanup();
+
 SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Camera* camera, EnemyManager* enemyManager,
     const Uint64& startTime, Uint64& lastTime, SDL_Event& event, TTF_Font* font, void* appstate, GameStateRunning currentState);
 
@@ -32,7 +35,9 @@ void gamePause(SDL_Renderer* renderer, TTF_Font* font);
 
 void gameSettings();
 
-void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player* player, SDL_Event& event, GameStateRunning& currentState, EnemyManager* enemyManager);
+void gameCurrentStats(SDL_Renderer* renderer, TTF_Font* font, Player* player);
+
+void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player*& player, SDL_Event& event, GameStateRunning& currentState, EnemyManager* enemyManager);
 
 void saveGameState(Player* player, Map* map, EnemyManager* enemyManager);
 void loadGameState(Player* player, Map* map, EnemyManager* enemyManager, SDL_Renderer* renderer);

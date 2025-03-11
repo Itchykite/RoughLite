@@ -30,6 +30,11 @@ bool isFullscreen = false;
 int selectedResolutionIndex = 3; 
 int selectedFPSIndex = 1;
 
+std::vector<SDL_Texture*> animationFrames;
+int currentFrame = 0;
+Uint64 lastFrameTime = 0;
+const int frameDuration = 100;
+
 Button startButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 8, 200, 80, {255, 0, 0, 255}, []()
 {
     SDL_Log("Start Game!");
@@ -67,7 +72,7 @@ SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Came
         float deltaTime = (currentTime - lastTime) / 1000.0f;
         lastTime = currentTime;
 
-        enemyManager->Update(deltaTime, currentState);
+        enemyManager->Update(deltaTime, currentState, font);
         player->Update(deltaTime, currentState);
 
         camera->Update(player->GetX(), player->GetY());
@@ -84,7 +89,7 @@ SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Came
 
         map->Render(renderer, camera->GetX(), camera->GetY());
         enemyManager->Render(renderer, currentState);
-        map->RenderObjects(renderer, camera->GetX(), camera->GetY(), player);
+        map->RenderObjects(renderer, camera->GetX(), camera->GetY(), player, font);
         player->UpdateKillsTexture(renderer);
 
         SDL_FPoint playerPosition = { player->GetX(), player->GetY() };
@@ -95,6 +100,8 @@ SDL_AppResult gameRunning(SDL_Renderer* renderer, Player* player, Map* map, Came
         {
             player->Update(-deltaTime, currentState);
         }
+
+		gameCurrentStats(renderer, font, player);
     }
 
     return SDL_APP_CONTINUE;
@@ -133,18 +140,34 @@ void GameOver(SDL_Renderer* renderer, TTF_Font* font, Player* player, Uint64& en
     RenderGameOverScreen(renderer, player, endTime, startTime); // Renderowanie ekranu "Game Over"
 }
 
-void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* player, Map* map, EnemyManager* enemyManager)
+void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* bigFont, Player* player, Map* map, EnemyManager* enemyManager)
 {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
     if (player->isGameStart)
     {
-        gamePause(renderer, font);
+        gamePause(renderer, bigFont);
     }
 
-    float OffSet = 24.0f;
-    float OffSetW = 48.0f;
+    float OffSet = 48.0f;
+    float OffSetW = 64.0f;
+
+    // Renderowanie animowanego t³a
+    Uint64 currentTime = SDL_GetTicks();
+    if (currentTime > lastFrameTime + frameDuration)
+    {
+        currentFrame = (currentFrame + 1) % animationFrames.size();
+        lastFrameTime = currentTime;
+    }
+
+    if (!animationFrames.empty())
+    {
+        SDL_Texture* currentTexture = animationFrames[currentFrame];
+        float texW = 0, texH = 0;
+        SDL_GetTextureSize(currentTexture, &texW, &texH);
+        SDL_FRect dstRect = { WINDOW_WIDTH - texW, WINDOW_HEIGHT - texH, texW, texH };
+        SDL_RenderTexture(renderer, currentTexture, NULL, &dstRect);
+    }
 
     // Za³aduj teksturê przycisku
     SDL_Texture* buttonTexture = IMG_LoadTexture(renderer, "Images/srodek_1.png");
@@ -171,74 +194,84 @@ void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* 
         SDL_Log("Failed to load background texture: %s", SDL_GetError());
     }
 
-    // Renderowanie t³a na œrodku ekranu
     if (badylTexture)
     {
         float texW = 0;
         float texH = 0;
-        float sizeScale = 2.0f;
+        float sizeScale = 2.0f; // Skala 2.0f
         SDL_GetTextureSize(badylTexture, &texW, &texH);
-        SDL_FRect dstRect = { (WINDOW_WIDTH - texW / sizeScale) / 2.0f, (WINDOW_HEIGHT - texH / sizeScale) / 1.5f, texW / sizeScale, texH / sizeScale + texH };
+
+        // Poprawione obliczenia dla dstRect
+        SDL_FRect dstRect = {
+            (WINDOW_WIDTH - texW / sizeScale) / 2.0f, // x
+            (WINDOW_HEIGHT - texH / sizeScale) + 16.0f, // y (wyœrodkowane w pionie)
+            texW / sizeScale, // szerokoœæ
+            texH / sizeScale // wysokoœæ
+        };
+
+        SDL_SetTextureBlendMode(badylTexture, SDL_BLENDMODE_BLEND);
         SDL_RenderTexture(renderer, badylTexture, NULL, &dstRect);
     }
 
-	SDL_Color black = { 0, 0, 0, 0 };
+    SDL_Color black = { 0, 0, 0, 0 };
 
     // Ustaw teksturê dla przycisków
     startButton.SetTexture(rightButtonTexture);
-    startButton.SetScale(1.5f); // Przyk³adowa skala 1.5x
+    startButton.SetScale(2.0f); // Przyk³adowa skala 1.5x
 
     statsButton.SetTexture(buttonTexture);
-    statsButton.SetScale(1.5f); // Przyk³adowa skala 1.5x
+    statsButton.SetScale(2.0f); // Przyk³adowa skala 1.5x
 
     settingsButton.SetTexture(buttonTexture);
-    settingsButton.SetScale(1.5f); // Przyk³adowa skala 1.5x
+    settingsButton.SetScale(2.0f); // Przyk³adowa skala 1.5x
 
     exitButton.SetTexture(leftButtonTexture);
-    exitButton.SetScale(1.5f); // Przyk³adowa skala 1.5x
+    exitButton.SetScale(2.0f); // Przyk³adowa skala 1.5x
 
     // Renderowanie przycisku start
-    SDL_Surface* startTextSurface = TTF_RenderText_Solid(font, "start", 0, black);
+    SDL_Surface* startTextSurface = TTF_RenderText_Solid(bigFont, "start", 0, black);
     if (startTextSurface)
     {
         int startTextWidth = startTextSurface->w;
         SDL_DestroySurface(startTextSurface);
-        startButton.SetPosition(WINDOW_WIDTH / 2 - startButton.GetFRect().h - OffSet - 24.0f, WINDOW_HEIGHT / 2 - startButton.GetFRect().h - OffSet);
+        startButton.SetPosition(WINDOW_WIDTH / 2 - startButton.GetFRect().h - OffSet - 48.0f, WINDOW_HEIGHT / 2 - startButton.GetFRect().h - OffSet * 2);
     }
-    startButton.Render(renderer, font, "start", player, map, enemyManager);
+    startButton.Render(renderer, bigFont, "start", player, map, enemyManager);
     startButton.handleClick(event);
+    startButton.SetTextOffset(24.0f, 0.0f);
 
     // Renderowanie przycisku stats
-    SDL_Surface* statsTextSurface = TTF_RenderText_Solid(font, "stats", 0, black);
+    SDL_Surface* statsTextSurface = TTF_RenderText_Solid(bigFont, "stats", 0, black);
     if (statsTextSurface)
     {
         int statsTextWidth = statsTextSurface->w;
         SDL_DestroySurface(statsTextSurface);
-        statsButton.SetPosition(WINDOW_WIDTH / 2 - statsButton.GetFRect().h - OffSet - OffSetW, WINDOW_HEIGHT / 2);
+        statsButton.SetPosition(WINDOW_WIDTH / 2 - statsButton.GetFRect().h - OffSet - OffSetW, WINDOW_HEIGHT / 2 - OffSet);
     }
-    statsButton.Render(renderer, font, "stats", player, map, enemyManager);
+    statsButton.Render(renderer, bigFont, "stats", player, map, enemyManager);
     statsButton.handleClick(event);
 
     // Renderowanei przycisku settings
-    SDL_Surface* settingsTextSurface = TTF_RenderText_Solid(font, "settings", 0, black);
+    SDL_Surface* settingsTextSurface = TTF_RenderText_Solid(bigFont, "settings", 0, black);
     if (settingsTextSurface)
     {
         SDL_DestroySurface(settingsTextSurface);
-        settingsButton.SetPosition(WINDOW_WIDTH / 2 - settingsButton.GetFRect().h - OffSet - OffSetW, WINDOW_HEIGHT / 2 + settingsButton.GetFRect().h + OffSet);
+        settingsButton.SetPosition(WINDOW_WIDTH / 2 - settingsButton.GetFRect().h - OffSet - OffSetW, WINDOW_HEIGHT / 2 + settingsButton.GetFRect().h);
     }
-    settingsButton.Render(renderer, font, "settings", player, map, enemyManager);
+    settingsButton.Render(renderer, bigFont, "settings", player, map, enemyManager);
     settingsButton.handleClick(event);
 
     // Renderowanie przycisku exit
-    SDL_Surface* exitTextSurface = TTF_RenderText_Solid(font, "exit", 0, black);
+    SDL_Surface* exitTextSurface = TTF_RenderText_Solid(bigFont, "exit", 0, black);
     if (exitTextSurface)
     {
         int exitTextWidth = exitTextSurface->w;
         SDL_DestroySurface(exitTextSurface);
-        exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().h - OffSet - 58.0f, WINDOW_HEIGHT / 2 + exitButton.GetFRect().h + OffSet * 5 + 8.0f);
+        exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().h - OffSet - 64.0f, WINDOW_HEIGHT / 2 + exitButton.GetFRect().h + OffSet * 3.5f + 16.0f);
     }
-    exitButton.Render(renderer, font, "exit", player, map, enemyManager);
+    exitButton.Render(renderer, bigFont, "exit", player, map, enemyManager);
     exitButton.handleClick(event);
+    startButton.SetTextOffset(-24.0f, 0.0f);
 
     SDL_RenderPresent(renderer); // Renderowanie ekranu menu
 
@@ -346,6 +379,47 @@ void gameSettings()
 
 }
 
+void gameCurrentStats(SDL_Renderer* renderer, TTF_Font* font, Player* player)
+{
+    float size = 1.5f;
+
+	SDL_Color black = { 0, 0, 0, 255 };
+
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, "Current Stats", 0, {0, 0, 0, 255} );
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FRect textRect = { 5, 50, static_cast<float>(textSurface->w), static_cast<float>(textSurface->h) };
+	SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+	SDL_DestroySurface(textSurface);
+
+	std::string hpText = "Max Health: " + std::to_string(static_cast<int>(player->maxHealth));
+	SDL_Surface* hpSurface = TTF_RenderText_Solid(font, hpText.c_str(), 0, black);
+	SDL_Texture* hpTexture = SDL_CreateTextureFromSurface(renderer, hpSurface);
+    SDL_FRect hpRect = { 5, 100, static_cast<float>(hpSurface->w) / size, static_cast<float>(hpSurface->h) / size };
+	SDL_RenderTexture(renderer, hpTexture, NULL, &hpRect);
+	SDL_DestroySurface(hpSurface);
+
+	std::string rangeText = "Range: " + std::to_string(static_cast<int>(player->attackRange));
+	SDL_Surface* rangeSurface = TTF_RenderText_Solid(font, rangeText.c_str(), 0, black);
+	SDL_Texture* rangeTexture = SDL_CreateTextureFromSurface(renderer, rangeSurface);
+    SDL_FRect rangeRect = { 5, 150, static_cast<float>(rangeSurface->w) / size, static_cast<float>(rangeSurface->h) / size };
+	SDL_RenderTexture(renderer, rangeTexture, NULL, &rangeRect);
+	SDL_DestroySurface(rangeSurface);
+
+	std::string speedText = "Speed: " + std::to_string(static_cast<int>(player->speed));
+	SDL_Surface* speedSurface = TTF_RenderText_Solid(font, speedText.c_str(), 0, black);
+	SDL_Texture* speedTexture = SDL_CreateTextureFromSurface(renderer, speedSurface);
+	SDL_FRect speedRect = { 5, 200, static_cast<float>(speedSurface->w) / size, static_cast<float>(speedSurface->h) / size };
+	SDL_RenderTexture(renderer, speedTexture, NULL, &speedRect);
+	SDL_DestroySurface(speedSurface);
+
+	std::string damageText = "Damage: " + std::to_string(static_cast<int>(player->damage));
+	SDL_Surface* damageSurface = TTF_RenderText_Solid(font, damageText.c_str(), 0, black);
+	SDL_Texture* damageTexture = SDL_CreateTextureFromSurface(renderer, damageSurface);
+	SDL_FRect damageRect = { 5, 250, static_cast<float>(damageSurface->w) / size, static_cast<float>(damageSurface->h) / size };
+	SDL_RenderTexture(renderer, damageTexture, NULL, &damageRect);
+	SDL_DestroySurface(damageSurface);
+}
+
 void updateButtonPositions()
 {
     float OffSet = 24.0f;
@@ -356,7 +430,7 @@ void updateButtonPositions()
     exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().w / 2, WINDOW_HEIGHT / 2 + exitButton.GetFRect().h + OffSet * 5 + 8.0f);
 }
 
-void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player* player, SDL_Event& event, GameStateRunning& currentState, EnemyManager* enemyManager)
+void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player*& player, SDL_Event& event, GameStateRunning& currentState, EnemyManager* enemyManager)
 {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_FRect levelUpRect = { WINDOW_WIDTH / 2 - 150, 100, 300, 100 };
@@ -433,7 +507,7 @@ void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player* player, SDL_Event& 
         if (mouseX >= healthBoostRect.x && mouseX <= healthBoostRect.x + healthBoostRect.w &&
             mouseY >= healthBoostRect.y && mouseY <= healthBoostRect.y + healthBoostRect.h)
         {
-            player->maxHealth *= 1.5f;
+            player->maxHealth *= 1.15f;
 			SDL_Log("Health Boost! %f", player->health);
             isLevelUp = false;
         }
@@ -449,7 +523,7 @@ void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player* player, SDL_Event& 
         if (mouseX >= speedBoostRect.x && mouseX <= speedBoostRect.x + speedBoostRect.w &&
             mouseY >= speedBoostRect.y && mouseY <= speedBoostRect.y + speedBoostRect.h)
         {
-            //player->speed += 50;
+			player->speed *= 1.05f;
 			SDL_Log("Speed Boost!");
             isLevelUp = false;
         }
@@ -457,7 +531,7 @@ void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player* player, SDL_Event& 
         if (mouseX >= damageBoostRect.x && mouseX <= damageBoostRect.x + damageBoostRect.w &&
             mouseY >= damageBoostRect.y && mouseY <= damageBoostRect.y + damageBoostRect.h)
         {
-            //player->damage += 50;
+            player->damage *= 1.15f;
 			SDL_Log("Damage Boost!");
             isLevelUp = false;
         }
@@ -470,6 +544,32 @@ void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player* player, SDL_Event& 
         isLevelUp = true;
         currentState = GameStateRunning::GAME;
     }
+}
+
+void LoadAnimationFrames(SDL_Renderer* renderer)
+{
+    for (int i = 1; i <= 30; ++i)
+    {
+        std::string filePath = "Images/Animacja/" + std::to_string(i) + ".png";
+        SDL_Texture* texture = IMG_LoadTexture(renderer, filePath.c_str());
+        if (!texture)
+        {
+            SDL_Log("Failed to load animation frame: %s", SDL_GetError());
+        }
+        else
+        {
+            animationFrames.push_back(texture);
+        }
+    }
+}
+
+void Cleanup()
+{
+    for (auto texture : animationFrames)
+    {
+        SDL_DestroyTexture(texture);
+    }
+    animationFrames.clear();
 }
 
 void savePlayerStats(Player* player)

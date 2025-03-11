@@ -3,6 +3,7 @@
 // EnemyManager odpowiada za zarz¹dzanie przeciwnikami
 
 #include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <memory>
 #include <vector>
 #include <random>
@@ -20,7 +21,7 @@ public:
 	void AddEnemy(); // Dodanie przeciwnika
 	void AddBigEnemy(); // Dodanie bossa
 
-	void Update(float deltaTime, GameStateRunning currentState); // Aktualizacja przeciwnika
+	void Update(float deltaTime, GameStateRunning currentState, TTF_Font* font); // Aktualizacja przeciwnika
 	void Render(SDL_Renderer* renderer, GameStateRunning currentState); // Renderowanie przeciwnika
 
 	void Reset();

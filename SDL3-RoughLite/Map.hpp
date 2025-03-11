@@ -4,6 +4,7 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <vector>
 #include <utility>
 #include "Settings.hpp"
@@ -24,7 +25,7 @@ public:
 	bool IsWithinBounds(float x, float y, float px, float py) const; // Czy jest w granicach
 	bool LoadTexture(SDL_Renderer* renderer, const char* pathFile); // Wczytanie tekstury
 	void Render(SDL_Renderer* renderer, float cameraX, float cameraY) const; // Renderowanie
-	void RenderObjects(SDL_Renderer* renderer, float cameraX, float CameraY, Player* player) const;
+	void RenderObjects(SDL_Renderer* renderer, float cameraX, float CameraY, Player* player, TTF_Font* font) const;
 	bool IsNodeWalkable(int x, int y) const; // Czy wêze³ jest dostêpny
 	void CreateGrid(int nodeSize); // Utworzenie siatki
 	void AddCollisionRect(const SDL_FRect& rect); // Dodanie prostok¹ta kolizji

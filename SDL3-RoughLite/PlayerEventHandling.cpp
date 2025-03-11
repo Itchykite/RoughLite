@@ -136,8 +136,8 @@ void PlayerEventHandling(SDL_Event* event, Player* player, std::vector<std::uniq
         }
     }
 
-    float velocityX = (rightPressed - leftPressed) * 500.0f;
-    float velocityY = (downPressed - upPressed) * 500.0f;
+    float velocityX = (rightPressed - leftPressed) * player->speed;
+    float velocityY = (downPressed - upPressed) * player->speed;
 
     if (velocityX != 0 || velocityY != 0)
     {
@@ -146,5 +146,5 @@ void PlayerEventHandling(SDL_Event* event, Player* player, std::vector<std::uniq
         lastDirY = velocityY / length;
     }
 
-    player->SetVelocity(velocityX, velocityY);
+    player->SetVelocity(velocityX * player->velocityBoost, velocityY * player->velocityBoost);
 }

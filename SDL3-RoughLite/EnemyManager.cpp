@@ -73,7 +73,7 @@ void EnemyManager::AddBigEnemy() // Dodanie przeciwnika
 	bigEnemies.push_back(std::move(enemy)); // Dodanie przeciwnika
 }
 
-void EnemyManager::Update(float deltaTime, GameStateRunning currentState) // Aktualizacja przeciwnika
+void EnemyManager::Update(float deltaTime, GameStateRunning currentState, TTF_Font* font) // Aktualizacja przeciwnika
 {
 	if (currentState != GameStateRunning::GAME || player->isGameOver)
 	{
@@ -144,7 +144,7 @@ void EnemyManager::Update(float deltaTime, GameStateRunning currentState) // Akt
 		{
 			player->health -= 10;
 			lastCollisionTime = currentTime;
-			player->renderHealthBar(player->health, renderer);
+			player->renderHealthBar(player->health, renderer, font);
 		}
 	}
 }

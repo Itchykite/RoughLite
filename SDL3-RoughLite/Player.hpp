@@ -21,8 +21,8 @@ public:
     void LoadTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury gracza
     void LoadAttackTexture(SDL_Renderer* renderer, const char* pathFile); // Za³adowanie tekstury ataku
     void Render(SDL_Renderer* renderer); // Renderowanie gracza
-    void renderHealthBar(double healthValue, SDL_Renderer* renderer); // Renderowanie paska zdrowia
-	void renderExpBar(double expValue, SDL_Renderer* renderer); // Renderowanie paska expa
+    void renderHealthBar(double healthValue, SDL_Renderer* renderer, TTF_Font* font); // Renderowanie paska zdrowia
+	void renderExpBar(double expValue, SDL_Renderer* renderer, TTF_Font* font); // Renderowanie paska expa
     void SetPosition(float x, float y); // Ustwienie pozycji gracza
     void Update(float deltaTime, GameStateRunning currentState); // Aktualizacja gracza
     void SetVelocity(float x, float y); // Ustwienie prêdkoœci gracza
@@ -58,6 +58,12 @@ public:
     bool wasMoving;
     Uint64 gameOverTime;
 
+    float velocityX; // Prêdkoœæ x
+    float velocityY; // Prêdkoœæ y
+    float velocityBoost;
+	float speed; // Prêdkoœæ
+	float damage; // Obra¿enia
+
     SDL_Texture* texture; // Tekstura
 
     Map* map;
@@ -66,8 +72,6 @@ private:
     void UpdateAnimation(); // Aktualizacja animacji
 	void UpdateAttackAnimation(); // Aktualizacja animacji ataku
 
-    float velocityX; // Prêdkoœæ x
-    float velocityY; // Prêdkoœæ y
     Camera* camera; // Kamera
     SDL_Texture* attackTexture; // Tekstura ataku
 	TTF_Font* font; // Czcionka

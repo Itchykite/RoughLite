@@ -28,6 +28,7 @@ Camera* camera = nullptr; // wskaünik kamera
 Player* player = nullptr; // wskaünik gracz
 EnemyManager* enemyManager = nullptr; // wskaünik przeciwnik
 TTF_Font* font = nullptr; // wskaünik czcionka
+TTF_Font* bigFont = nullptr; // wskaünik czcionka
 
 Uint64 lastTime = 0;
 Uint64 startTime = 0;
@@ -43,7 +44,7 @@ void resetLastTime()
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
-    InitEverything(renderer, window, player, map, camera, enemyManager, font, startTime, lastTime, appstate);
+    InitEverything(renderer, window, player, map, camera, enemyManager, font, bigFont, startTime, lastTime, appstate);
     loadPlayerStats(player);
     loadGameTime(player);
 
@@ -128,7 +129,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
         break;
 
     case GameStateRunning::MENU:
-        gameMenu(renderer, lastEvent, font, player, map, enemyManager);
+        gameMenu(renderer, lastEvent, bigFont, player, map, enemyManager);
         break;
 
     case GameStateRunning::GAMEOVER:
@@ -181,4 +182,6 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result)
     delete map;
     delete camera;
     delete enemyManager;
+
+    Cleanup();
 }

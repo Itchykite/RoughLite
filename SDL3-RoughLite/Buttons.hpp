@@ -16,7 +16,7 @@ class Button
 {
 public:
     Button(float x, float y, float w, float h, SDL_Color color, std::function<void()> onClick)
-        : rect{ x * scaleX, y * scaleY, w , h }, color(color), onClick(onClick), isPressed(false), texture(nullptr), scale(1.0f)
+        : rect{ x * scaleX, y * scaleY, w , h }, color(color), onClick(onClick), isPressed(false), texture(nullptr), scale(1.0f), textOffsetX(0), textOffsetY(0)
     {
     }
 
@@ -28,6 +28,12 @@ public:
     void SetScale(float newScale)
     {
         scale = newScale;
+    }
+
+    void SetTextOffset(float offsetX, float offsetY)
+    {
+        textOffsetX = offsetX;
+        textOffsetY = offsetY;
     }
 
     void Render(SDL_Renderer* renderer, TTF_Font* font, const char* name, Player* player, Map* map, EnemyManager* enemyManager)
@@ -44,7 +50,7 @@ public:
             SDL_RenderFillRect(renderer, &scaledRect);
         }
 
-        SDL_Color textColor = { 255, 255, 255, 255 };
+        SDL_Color textColor = { 0, 0, 0, 255 };
 
         SDL_Surface* textSurface = TTF_RenderText_Solid(font, name, 0, textColor);
         if (!textSurface)
@@ -62,8 +68,8 @@ public:
         SDL_FRect dst;
         dst.w = textSurface->w;
         dst.h = textSurface->h;
-        dst.x = (scaledRect.x + (scaledRect.w - textSurface->w) / 2.0f);
-        dst.y = (scaledRect.y + (scaledRect.h - textSurface->h) / 2.0f);
+        dst.x = (scaledRect.x + (scaledRect.w - textSurface->w) / 2.0f) + textOffsetX;
+        dst.y = (scaledRect.y + (scaledRect.h - textSurface->h) / 2.0f) + textOffsetY;
 
         SDL_RenderTexture(renderer, textTexture, NULL, &dst);
         SDL_DestroyTexture(textTexture);
@@ -112,4 +118,6 @@ private:
     bool isPressed;
     SDL_Texture* texture;
     float scale;
+    float textOffsetX;
+    float textOffsetY;
 };

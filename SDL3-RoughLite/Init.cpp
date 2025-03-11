@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Player*& player, Map*& map, Camera*& camera, EnemyManager*& enemyManager, TTF_Font*& font,
+SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Player*& player, Map*& map, Camera*& camera, EnemyManager*& enemyManager, TTF_Font*& font, TTF_Font*& bigFont,
     Uint64& startTime, Uint64& lastTime, void** appstate)
 {
     SDL_SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear");
@@ -103,6 +103,8 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
         return SDL_APP_FAILURE;
     }
 
+    LoadAnimationFrames(renderer);
+
     SDL_Log("Initialization complete");
 
     lastTime = SDL_GetTicks(); // Pobranie ostatniego czasu
@@ -111,4 +113,5 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
     mapCollisions(map, renderer); // Kolizja za pomoc¹ kwadratów
 
     font = TTF_OpenFont("Poppins-Bold.ttf", 24);
+    bigFont = TTF_OpenFont("Poppins-Bold.ttf", 50);
 }

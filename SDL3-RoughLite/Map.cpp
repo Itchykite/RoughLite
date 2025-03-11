@@ -65,7 +65,7 @@ void Map::Render(SDL_Renderer* renderer, float cameraX, float cameraY) const
     }
 }
 
-void Map::RenderObjects(SDL_Renderer* renderer, float cameraX, float cameraY, Player* player) const
+void Map::RenderObjects(SDL_Renderer* renderer, float cameraX, float cameraY, Player* player, TTF_Font* font) const
 {
     std::vector<Renderable> renderQueue;
 
@@ -109,8 +109,8 @@ void Map::RenderObjects(SDL_Renderer* renderer, float cameraX, float cameraY, Pl
         }
     }
 
-    player->renderHealthBar(player->health, renderer); // Renderowanie paska jako pierwszego
-	player->renderExpBar(player->exp, renderer); // Renderowanie paska expa jako pierwszego
+    player->renderHealthBar(player->health, renderer, font); // Renderowanie paska jako pierwszego
+	player->renderExpBar(player->exp, renderer, font); // Renderowanie paska expa jako pierwszego
 }
 
 bool Map::IsNodeWalkable(int x, int y) const // Czy wêze³ jest dostêpny
@@ -219,11 +219,11 @@ void Map::AddObjectWithCollision(SDL_Renderer* renderer, const char* objectTextu
 
 void mapCollisions(Map* map, SDL_Renderer* renderer) // Kolizje mapy
 {
-    map->AddObjectWithCollision(renderer, "Images/drzewo.png", 512.0f, 512.0f, 256.0f, 256.0f);
-    map->AddObjectWithCollision(renderer, "Images/drzewo.png", 620.0f, 948.0f, 256.0f, 256.0f);
-    map->AddObjectWithCollision(renderer, "Images/drzewo.png", 2400.0f, 428.0f, 256.0f, 256.0f);
-    map->AddObjectWithCollision(renderer, "Images/drzewo.png", 2200.0f, 1852.0f, 256.0f, 256.0f);
-    map->AddObjectWithCollision(renderer, "Images/drzewo.png", 1982.0f, 2355.0f, 256.0f, 256.0f);
+    map->AddObjectWithCollision(renderer, "Images/Trees/middle_lane_tree2.png", 512.0f, 512.0f, 256.0f, 256.0f);
+    map->AddObjectWithCollision(renderer, "Images/Trees/middle_lane_tree3.png", 620.0f, 948.0f, 256.0f, 256.0f);
+    map->AddObjectWithCollision(renderer, "Images/Trees/middle_lane_tree4.png", 2400.0f, 428.0f, 256.0f, 256.0f);
+    map->AddObjectWithCollision(renderer, "Images/Trees/middle_lane_tree6.png", 2200.0f, 1852.0f, 256.0f, 256.0f);
+    map->AddObjectWithCollision(renderer, "Images/Trees/middle_lane_tree7.png", 1982.0f, 2355.0f, 256.0f, 256.0f);
 }
 
 void Map::SortObjectsByY()

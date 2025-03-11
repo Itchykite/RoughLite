@@ -14,7 +14,7 @@ Player::Player(Map* map, Camera* camera, SDL_Renderer* renderer)
     currentFrame(0), totalFrames(0), lastFrameTime(0), frameDuration(100),
     attackFrameDuration(10), // Inicjalizacja zmiennej attackFrameDuration
     currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr), maxHealth(100), health(maxHealth), exp(0), maxExp(100), isGameOver(false),
-    deathRegistered(false), wasMoving(false)
+    deathRegistered(false), wasMoving(false), attackRange(100), velocityBoost(1.0f), speed(250.0f), damage(50)
 {
     SDL_Log("Player initialized with health: %f", health);
 
@@ -213,7 +213,7 @@ void Player::UpdateAttackAnimation()
     }
 }
 
-void Player::renderHealthBar(double healthValue, SDL_Renderer* renderer) // Renderowanie paska zdrowia
+void Player::renderHealthBar(double healthValue, SDL_Renderer* renderer, TTF_Font* font) // Renderowanie paska zdrowia
 {
 	float barHeight = 25.0f; // Wysokoœæ paska
 	float barWidth = WINDOW_WIDTH; // Szerokoœæ paska
@@ -231,9 +231,37 @@ void Player::renderHealthBar(double healthValue, SDL_Renderer* renderer) // Rend
 	SDL_FRect foregroundBar = { x, y, currentBarWidth / 2, barHeight };
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	SDL_RenderFillRect(renderer, &foregroundBar);
+
+    SDL_FRect hpValueRect = { x + barWidth / 2, y, barWidth / 2, barHeight };
+    SDL_Color textColor = { 255, 255, 255, 255 };
+    std::string hpValue = "HP: " + std::to_string(static_cast<int>(healthValue)) + " / " + std::to_string(static_cast<int>(maxHealth));
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, hpValue.c_str(), 0, textColor);
+
+    if (!textSurface) 
+    {
+        SDL_Log("Unable to render text surface: %s", SDL_GetError());
+        return;
+    }
+    
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    if (!textTexture) 
+    {
+        SDL_Log("Unable to create texture from rendered text: %s", SDL_GetError());
+        SDL_DestroySurface(textSurface);
+        return;
+    }
+    
+    SDL_FRect dst;
+    dst.w = textSurface->w;
+    dst.h = textSurface->h;
+    dst.x = x + barWidth / 4.0f - 56.0f;
+    dst.y = y - 5.0f;
+    SDL_RenderTexture(renderer, textTexture, NULL, &dst);
+    SDL_DestroyTexture(textTexture);
+    SDL_DestroySurface(textSurface);
 }
 
-void Player::renderExpBar(double expValue, SDL_Renderer* renderer) // Renderowanie paska zdrowia
+void Player::renderExpBar(double expValue, SDL_Renderer* renderer, TTF_Font* font) // Renderowanie paska zdrowia
 {
     float barHeight = 25.0f; // Wysokoœæ paska
     float barWidth = WINDOW_WIDTH; // Szerokoœæ paska
@@ -251,6 +279,34 @@ void Player::renderExpBar(double expValue, SDL_Renderer* renderer) // Renderowan
     SDL_FRect foregroundBar = { barWidth / 2, y, currentBarWidth / 2, barHeight };
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
     SDL_RenderFillRect(renderer, &foregroundBar);
+
+    SDL_FRect hpValueRect = { x + barWidth / 2, y, barWidth / 2, barHeight };
+    SDL_Color textColor = { 255, 255, 255, 255 };
+    std::string hpValue = "Exp: " + std::to_string(static_cast<int>(expValue)) + " / " + std::to_string(static_cast<int>(maxExp));
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, hpValue.c_str(), 0, textColor);
+
+    if (!textSurface)
+    {
+        SDL_Log("Unable to render text surface: %s", SDL_GetError());
+        return;
+    }
+
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    if (!textTexture)
+    {
+        SDL_Log("Unable to create texture from rendered text: %s", SDL_GetError());
+        SDL_DestroySurface(textSurface);
+        return;
+    }
+
+    SDL_FRect dst;
+    dst.w = textSurface->w;
+    dst.h = textSurface->h;
+    dst.x = x + barWidth - barWidth / 4 - 56.0f;
+    dst.y = y - 5.0f;
+    SDL_RenderTexture(renderer, textTexture, NULL, &dst);
+    SDL_DestroyTexture(textTexture);
+    SDL_DestroySurface(textSurface);
 }
 
 void Player::Render(SDL_Renderer* renderer) // Renderowanie gracza
@@ -427,14 +483,13 @@ void Player::attack(SDL_Renderer* renderer, std::vector<std::unique_ptr<Enemy>>&
         attackRow = 7;
     }
 
-    attackRange = 200.0f;
     float attackAngle = 100.0f;
 
     for (auto& enemy : enemies)
     {
         if (isEnemyHit(x, y, dirX, dirY, *enemy, attackRange, attackAngle))
         {
-            enemy->health -= 100;
+            enemy->health -= damage;
             if (enemy->health <= 0)
             {
                 enemy->isAlive = false;
