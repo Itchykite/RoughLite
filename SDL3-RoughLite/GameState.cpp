@@ -140,55 +140,125 @@ void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* font, Player* 
 
     if (player->isGameStart)
     {
-		gamePause(renderer, font);
+        gamePause(renderer, font);
     }
 
     float OffSet = 24.0f;
+    float OffSetW = 48.0f;
+
+    // Za³aduj teksturê przycisku
+    SDL_Texture* buttonTexture = IMG_LoadTexture(renderer, "Images/srodek_1.png");
+    if (!buttonTexture)
+    {
+        SDL_Log("Failed to load button texture: %s", SDL_GetError());
+    }
+
+    SDL_Texture* leftButtonTexture = IMG_LoadTexture(renderer, "Images/lewo.png");
+    if (!leftButtonTexture)
+    {
+        SDL_Log("Failed to load button texture: %s", SDL_GetError());
+    }
+
+    SDL_Texture* rightButtonTexture = IMG_LoadTexture(renderer, "Images/prawo.png");
+    if (!rightButtonTexture)
+    {
+        SDL_Log("Failed to load button texture: %s", SDL_GetError());
+    }
+
+    SDL_Texture* badylTexture = IMG_LoadTexture(renderer, "Images/badyl.png");
+    if (!badylTexture)
+    {
+        SDL_Log("Failed to load background texture: %s", SDL_GetError());
+    }
+
+    // Renderowanie t³a na œrodku ekranu
+    if (badylTexture)
+    {
+        float texW = 0;
+        float texH = 0;
+        float sizeScale = 2.0f;
+        SDL_GetTextureSize(badylTexture, &texW, &texH);
+        SDL_FRect dstRect = { (WINDOW_WIDTH - texW / sizeScale) / 2.0f, (WINDOW_HEIGHT - texH / sizeScale) / 1.5f, texW / sizeScale, texH / sizeScale + texH };
+        SDL_RenderTexture(renderer, badylTexture, NULL, &dstRect);
+    }
+
+	SDL_Color black = { 0, 0, 0, 0 };
+
+    // Ustaw teksturê dla przycisków
+    startButton.SetTexture(rightButtonTexture);
+    startButton.SetScale(1.5f); // Przyk³adowa skala 1.5x
+
+    statsButton.SetTexture(buttonTexture);
+    statsButton.SetScale(1.5f); // Przyk³adowa skala 1.5x
+
+    settingsButton.SetTexture(buttonTexture);
+    settingsButton.SetScale(1.5f); // Przyk³adowa skala 1.5x
+
+    exitButton.SetTexture(leftButtonTexture);
+    exitButton.SetScale(1.5f); // Przyk³adowa skala 1.5x
 
     // Renderowanie przycisku start
-    SDL_Surface* startTextSurface = TTF_RenderText_Solid(font, "start", 0, { 255, 255, 255, 255 });
+    SDL_Surface* startTextSurface = TTF_RenderText_Solid(font, "start", 0, black);
     if (startTextSurface)
     {
         int startTextWidth = startTextSurface->w;
         SDL_DestroySurface(startTextSurface);
-        startButton.SetPosition(WINDOW_WIDTH / 2 - startButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2 - startButton.GetFRect().h - OffSet);
+        startButton.SetPosition(WINDOW_WIDTH / 2 - startButton.GetFRect().h - OffSet - 24.0f, WINDOW_HEIGHT / 2 - startButton.GetFRect().h - OffSet);
     }
     startButton.Render(renderer, font, "start", player, map, enemyManager);
     startButton.handleClick(event);
 
-	// Renderowanie przycisku stats
-    SDL_Surface* statsTextSurface = TTF_RenderText_Solid(font, "stats", 0, { 255, 255, 255, 255 });
+    // Renderowanie przycisku stats
+    SDL_Surface* statsTextSurface = TTF_RenderText_Solid(font, "stats", 0, black);
     if (statsTextSurface)
     {
         int statsTextWidth = statsTextSurface->w;
         SDL_DestroySurface(statsTextSurface);
-        statsButton.SetPosition(WINDOW_WIDTH / 2 - statsButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2);
+        statsButton.SetPosition(WINDOW_WIDTH / 2 - statsButton.GetFRect().h - OffSet - OffSetW, WINDOW_HEIGHT / 2);
     }
     statsButton.Render(renderer, font, "stats", player, map, enemyManager);
     statsButton.handleClick(event);
 
     // Renderowanei przycisku settings
-    SDL_Surface* settingsTextSurface = TTF_RenderText_Solid(font, "settings", 0, { 255, 255, 255, 255 });
+    SDL_Surface* settingsTextSurface = TTF_RenderText_Solid(font, "settings", 0, black);
     if (settingsTextSurface)
     {
         SDL_DestroySurface(settingsTextSurface);
-        settingsButton.SetPosition(WINDOW_WIDTH / 2 - settingsButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2 + settingsButton.GetFRect().h + OffSet);
+        settingsButton.SetPosition(WINDOW_WIDTH / 2 - settingsButton.GetFRect().h - OffSet - OffSetW, WINDOW_HEIGHT / 2 + settingsButton.GetFRect().h + OffSet);
     }
     settingsButton.Render(renderer, font, "settings", player, map, enemyManager);
     settingsButton.handleClick(event);
 
     // Renderowanie przycisku exit
-    SDL_Surface* exitTextSurface = TTF_RenderText_Solid(font, "exit", 0, { 255, 255, 255, 255 });
+    SDL_Surface* exitTextSurface = TTF_RenderText_Solid(font, "exit", 0, black);
     if (exitTextSurface)
     {
         int exitTextWidth = exitTextSurface->w;
         SDL_DestroySurface(exitTextSurface);
-        exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().h - OffSet, WINDOW_HEIGHT / 2 + exitButton.GetFRect().h + OffSet * 5 + 8.0f);
+        exitButton.SetPosition(WINDOW_WIDTH / 2 - exitButton.GetFRect().h - OffSet - 58.0f, WINDOW_HEIGHT / 2 + exitButton.GetFRect().h + OffSet * 5 + 8.0f);
     }
     exitButton.Render(renderer, font, "exit", player, map, enemyManager);
     exitButton.handleClick(event);
-    
+
     SDL_RenderPresent(renderer); // Renderowanie ekranu menu
+
+    // Zwolnij teksturê przycisku
+    if (buttonTexture)
+    {
+        SDL_DestroyTexture(buttonTexture);
+    }
+    if (leftButtonTexture)
+    {
+        SDL_DestroyTexture(leftButtonTexture);
+    }
+    if (rightButtonTexture)
+    {
+        SDL_DestroyTexture(rightButtonTexture);
+    }
+    if (badylTexture)
+    {
+        SDL_DestroyTexture(badylTexture);
+    }
 }
 
 void gamePause(SDL_Renderer* renderer, TTF_Font* font)
