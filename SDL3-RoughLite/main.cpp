@@ -32,6 +32,7 @@ TTF_Font* bigFont = nullptr; // wskaŸnik czcionka
 
 Uint64 lastTime = 0;
 Uint64 startTime = 0;
+Uint64 lastUpdateTime = 0;
 
 GameStateRunning gameState = GameStateRunning::MENU;
 GameStateRunning previousState = gameState; // Dodanie zmiennej previousState
@@ -47,11 +48,6 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     InitEverything(renderer, window, player, map, camera, enemyManager, font, bigFont, startTime, lastTime, appstate);
     loadPlayerStats(player);
     loadGameTime(player);
-
-    for (auto& res : availableResolutions)
-    {
-		SDL_Log("Resolution: %dx%d", res.width, res.height);
-    }
 
 	return SDL_APP_CONTINUE;  /* continue running the program. */
 }
@@ -120,6 +116,14 @@ SDL_AppResult SDL_AppIterate(void* appstate)
             resetLastTime(); // Resetowanie lastTime przy przejœciu do GAME
         }
         previousState = gameState;
+    }
+
+    if (gameState == GameStateRunning::GAME)
+    {
+        Uint64 currentTime = SDL_GetTicks();
+        Uint64 deltaTime = (currentTime - lastUpdateTime) / 1000; // Oblicz ró¿nicê czasu w sekundach
+        player->totalTime += deltaTime; // Dodaj ró¿nicê czasu do totalTime
+        lastUpdateTime = currentTime; // Zaktualizuj lastUpdateTime
     }
 
     switch (gameState)

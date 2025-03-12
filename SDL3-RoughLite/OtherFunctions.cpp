@@ -1,4 +1,5 @@
 #include "OtherFunctions.hpp"
+#include "GameState.hpp"
 #include "Settings.hpp"
 
 #include <string>
@@ -13,6 +14,8 @@
 //	textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 //	SDL_DestroySurface(textSurface);
 //}
+
+extern GameStateRunning gameState;
 
 void RenderGameOverScreen(SDL_Renderer* renderer, Player* player, const Uint64& gameOverTime, const Uint64& startTime)
 {
@@ -74,10 +77,12 @@ void saveGameTime(Player*& player, const Uint64& startTime)
 {
     Uint64 currentTime = SDL_GetTicks();
     Uint64 elapsedTime = (currentTime - startTime) / 1000;
+    player->totalTime += elapsedTime; // Dodanie up³ywaj¹cego czasu do totalTime
+    SDL_Log("Saving totalTime: %llu", player->totalTime);
     std::ofstream saveFile("game_time.dat", std::ios::binary);
     if (saveFile.is_open())
     {
-        saveFile.write(reinterpret_cast<char*>(&player->totalTime + elapsedTime), sizeof(player->totalTime));
+        saveFile.write(reinterpret_cast<char*>(&player->totalTime), sizeof(player->totalTime));
         saveFile.close();
     }
 }
@@ -89,5 +94,11 @@ void loadGameTime(Player*& player)
     {
         loadFile.read(reinterpret_cast<char*>(&player->totalTime), sizeof(player->totalTime));
         loadFile.close();
+        SDL_Log("Loaded totalTime: %llu", player->totalTime);
+    }
+    else
+    {
+        player->totalTime = 0; // Inicjalizacja totalTime na 0, jeœli plik nie istnieje
+        SDL_Log("No save file found. Initializing totalTime to 0.");
     }
 }
