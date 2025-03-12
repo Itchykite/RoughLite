@@ -417,8 +417,8 @@ float Player::GetHeight() const
 // Funkcja sprawdzaj¹ca, czy wróg zosta³ trafiony
 bool isEnemyHit(float playerX, float playerY, float dirX, float dirY, Enemy& enemy, float attackRange, float attackAngle) 
 {
-    float playerCenterX = playerX + playerW / 16.0f;
-    float playerCenterY = playerY + playerH / 16.0f;
+    float playerCenterX = playerX + playerW / 2.0f;
+    float playerCenterY = playerY - playerH - 48.0f;
 
     float enemyVecX = (enemy.GetX() + enemyW / 2.0f - playerCenterX) + playerW / 16 - 32.0f;
     float enemyVecY = (enemy.GetY() + enemyH / 2.0f - playerCenterY) + playerH / 16 - 32.0f;
