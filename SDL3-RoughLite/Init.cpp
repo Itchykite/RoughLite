@@ -1,4 +1,3 @@
-#define GLEW_STATIC
 #define SDL_HINT_RENDER_VSYNC "SDL_RENDER_VSYNC"
 #include "Init.hpp"
 #include "Settings.hpp"
@@ -9,6 +8,8 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <SDL3/SDL_opengl.h>
+
+#include "OpenGLFun.hpp"
 
 SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Player*& player, Map*& map, Camera*& camera, EnemyManager*& enemyManager, TTF_Font*& font, TTF_Font*& bigFont,
     Uint64& startTime, Uint64& lastTime, void** appstate)
@@ -134,5 +135,8 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
     font = TTF_OpenFont("Poppins-Bold.ttf", 24);
     bigFont = TTF_OpenFont("Poppins-Bold.ttf", 50);
 	
+    //OpenGL things
     glewInit();
+
+    SetupShadowMapping();
 }

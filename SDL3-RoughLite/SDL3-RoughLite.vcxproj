@@ -158,6 +158,7 @@
     <ClCompile Include="Init.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="OpenGLFun.cpp" />
     <ClCompile Include="OtherFunctions.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerEventHandling.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="GameState.hpp" />
     <ClInclude Include="Init.hpp" />
     <ClInclude Include="Map.hpp" />
+    <ClInclude Include="OpenGLFun.hpp" />
     <ClInclude Include="OtherFunctions.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="PlayerEventHandling.hpp" />

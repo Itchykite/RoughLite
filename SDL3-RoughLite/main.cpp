@@ -3,6 +3,7 @@
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
 
+//SDL
 #include "Settings.hpp" // Postawowe ustwienia
 #include "Player.hpp" // Gracz
 #include "PlayerEventHandling.hpp" // Przechwytywanie przycisków
@@ -14,6 +15,9 @@
 #include "OtherFunctions.hpp" // Inne funkcje
 #include "GameState.hpp"
 #include "Init.hpp"
+
+//OpenGL
+#include "OpenGLFun.hpp"
 
 #include <vector>
 #include <memory>
