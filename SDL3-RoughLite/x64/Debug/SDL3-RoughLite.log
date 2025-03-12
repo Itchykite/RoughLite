@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  Init.cpp
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(26,58): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(26,44): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
@@ -9,4 +10,15 @@ C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(65,22): 
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(72,29): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(72,19): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(138,1): warning C4715: "InitEverything”: niewszystkie ścieżki kodu zwracają wartość
+=======
+﻿  OtherFunctions.cpp
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\OtherFunctions.cpp(41,21): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\OtherFunctions.cpp(42,22): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+  main.cpp
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\main.cpp(88,49): warning C4305: "argument": obcięcie z "const SDL_DisplayMode *(__cdecl *)(SDL_Window *)" do "bool"
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\main.cpp(95,70): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\main.cpp(95,56): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\main.cpp(110,23): warning C4244: "inicjowanie": konwersja z "Uint64" do "Uint32", możliwa utrata danych
+  Generowanie kodu...
+>>>>>>> 6e0ba8fd25343989c66d0b91996e91101feb47fd
   SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\Itchykite\RoughLite\x64\Debug\SDL3-RoughLite.exe

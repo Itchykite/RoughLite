@@ -33,7 +33,7 @@ int selectedFPSIndex = 1;
 std::vector<SDL_Texture*> animationFrames;
 int currentFrame = 0;
 Uint64 lastFrameTime = 0;
-const int frameDuration = 100;
+const int frameDuration = 500;
 
 Button startButton(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - WINDOW_HEIGHT / 8, 200, 80, {255, 0, 0, 255}, []()
 {
@@ -545,7 +545,7 @@ void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player*& player, SDL_Event&
 
 void LoadAnimationFrames(SDL_Renderer* renderer)
 {
-    for (int i = 1; i <= 30; ++i)
+    for (int i = 1; i <= 31; ++i)
     {
         std::string filePath = "Images/Animacja/" + std::to_string(i) + ".png";
         SDL_Texture* texture = IMG_LoadTexture(renderer, filePath.c_str());

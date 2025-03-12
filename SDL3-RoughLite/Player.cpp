@@ -14,7 +14,7 @@ Player::Player(Map* map, Camera* camera, SDL_Renderer* renderer)
     currentFrame(0), totalFrames(0), lastFrameTime(0), frameDuration(100),
     attackFrameDuration(10), // Inicjalizacja zmiennej attackFrameDuration
     currentRow(0), isAttacking(false), attackFrame(0), attackRow(0), kills(0), texture(nullptr), maxHealth(100), health(maxHealth), exp(0), maxExp(100), isGameOver(false),
-    deathRegistered(false), wasMoving(false), attackRange(100), velocityBoost(1.0f), speed(250.0f), damage(50)
+    deathRegistered(false), wasMoving(false), attackRange(100), velocityBoost(1.0f), speed(250.0f), damage(50), totalTime(0)
 {
     SDL_Log("Player initialized with health: %f", health);
 
@@ -417,8 +417,8 @@ float Player::GetHeight() const
 // Funkcja sprawdzaj¹ca, czy wróg zosta³ trafiony
 bool isEnemyHit(float playerX, float playerY, float dirX, float dirY, Enemy& enemy, float attackRange, float attackAngle) 
 {
-    float playerCenterX = playerX + playerW / 16.0f;
-    float playerCenterY = playerY + playerH / 16.0f;
+    float playerCenterX = playerX + 24.0f;
+    float playerCenterY = playerY + 24.0f;
 
     float enemyVecX = (enemy.GetX() + enemyW / 2.0f - playerCenterX) + playerW / 16 - 32.0f;
     float enemyVecY = (enemy.GetY() + enemyH / 2.0f - playerCenterY) + playerH / 16 - 32.0f;
