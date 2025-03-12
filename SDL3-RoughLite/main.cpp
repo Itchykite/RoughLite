@@ -33,6 +33,10 @@ TTF_Font* bigFont = nullptr; // wskaünik czcionka
 Uint64 lastTime = 0;
 Uint64 startTime = 0;
 
+Uint64 lastFrameTimeFPS = SDL_GetTicks();
+Uint64 frameCountFPS = 0;
+double fps = 0.0;
+
 GameStateRunning gameState = GameStateRunning::MENU;
 GameStateRunning previousState = gameState; // Dodanie zmiennej previousState
 
@@ -126,6 +130,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     {
     case GameStateRunning::GAME:
         gameRunning(renderer, player, map, camera, enemyManager, startTime, lastTime, lastEvent, font, appstate, gameState);
+        showFPS(renderer, lastFrameTimeFPS, frameCountFPS, fps, font);
         break;
 
     case GameStateRunning::MENU:

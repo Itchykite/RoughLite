@@ -67,7 +67,41 @@ void RenderGameOverScreen(SDL_Renderer* renderer, Player* player, const Uint64& 
     SDL_DestroyTexture(textTexture);
 
     TTF_CloseFont(font);
-    SDL_RenderPresent(renderer);
+}
+
+void showFPS(SDL_Renderer* renderer, Uint64& lastFrameTime, Uint64& frameCount, double& fps, TTF_Font* font)
+{
+    static Uint64 lastTime = SDL_GetPerformanceCounter();
+    static Uint64 frequency = SDL_GetPerformanceFrequency();
+
+    Uint64 currentTime = SDL_GetPerformanceCounter();
+    frameCount++;
+
+    if (currentTime - lastTime >= frequency) // Aktualizacja co sekundê
+    {
+        fps = frameCount / ((currentTime - lastTime) / static_cast<double>(frequency));
+        lastTime = currentTime;
+        frameCount = 0;
+    }
+
+    std::string fpsText = "FPS: " + std::to_string(static_cast<int>(fps));
+
+    SDL_Color textColor = { 255, 255, 255, 255 };
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, fpsText.c_str(), 0, textColor);
+    if (!textSurface) return;
+
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    if (!textTexture)
+    {
+        SDL_DestroySurface(textSurface);
+        return;
+    }
+
+    SDL_FRect textRect = { 10.0f, 10.0f, static_cast<float>(textSurface->w), static_cast<float>(textSurface->h) };
+    SDL_RenderTexture(renderer, textTexture, NULL, &textRect);
+
+    SDL_DestroySurface(textSurface);
+    SDL_DestroyTexture(textTexture);
 }
 
 void saveGameTime(Player*& player, const Uint64& startTime)

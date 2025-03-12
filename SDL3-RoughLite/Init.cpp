@@ -1,3 +1,4 @@
+#define GLEW_STATIC
 #define SDL_HINT_RENDER_VSYNC "SDL_RENDER_VSYNC"
 #include "Init.hpp"
 #include "Settings.hpp"
@@ -6,6 +7,8 @@
 #include "EnemyManager.hpp"
 
 #include <iostream>
+#include <GL/glew.h>
+#include <SDL3/SDL_opengl.h>
 
 SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Player*& player, Map*& map, Camera*& camera, EnemyManager*& enemyManager, TTF_Font*& font, TTF_Font*& bigFont,
     Uint64& startTime, Uint64& lastTime, void** appstate)
@@ -19,14 +22,27 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
     }
 
     InitializeSettings();
-    //SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
 
-    window = SDL_CreateWindow("RoughLite", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_BORDERLESS);
+    window = SDL_CreateWindow("RoughLite", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     if (!window)
     {
         SDL_Log("Couldn't create window: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+
+    // Tworzenie kontekstu OpenGL
+    SDL_GLContext glContext = SDL_GL_CreateContext(window);
+    if (!glContext) 
+    {
+        SDL_Log("Nie mo¿na utworzyæ kontekstu OpenGL: %s", SDL_GetError());
+        return SDL_APP_FAILURE;
+    }
+
+    // Ustawiamy kontekst jako aktywny
+    SDL_GL_MakeCurrent(window, glContext);
+
+    // W³¹czamy V-Sync (1 = w³¹czony)
+    SDL_GL_SetSwapInterval(1);
 
     SDL_SetWindowFullscreen(window, SDL_GetWindowFullscreenMode);
 
@@ -36,18 +52,21 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
     //    rendererFlags |= SDL_RENDERER_PRESENTVSYNC;
     //}
 
-    renderer = SDL_CreateRenderer(window, NULL);
+    renderer = SDL_CreateRenderer(window, "opengl");
     if (!renderer)
     {
         SDL_Log("Couldn't create renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
-    SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1"); // Wymusza VSync dla SDL_Renderer
-
+    SDL_SetRenderLogicalPresentation(renderer, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_LOGICAL_PRESENTATION_OVERSCAN);
+    SDL_SetRenderScale(renderer, 1.0f, 1.0f);
     SDL_SetRenderViewport(renderer, NULL);
+    glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+    SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
+    SDL_GL_MakeCurrent(window, SDL_GL_GetCurrentContext());
     // Ustawienie jakoœci skalowania tekstur
     SDL_Log("Creating map...");
     map = new Map(mapWidth, mapHeight); // Tworzenie mapy
@@ -114,4 +133,6 @@ SDL_AppResult InitEverything(SDL_Renderer*& renderer, SDL_Window*& window, Playe
 
     font = TTF_OpenFont("Poppins-Bold.ttf", 24);
     bigFont = TTF_OpenFont("Poppins-Bold.ttf", 50);
+	
+    glewInit();
 }

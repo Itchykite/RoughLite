@@ -273,8 +273,6 @@ void gameMenu(SDL_Renderer* renderer, SDL_Event& event, TTF_Font* bigFont, Playe
     exitButton.handleClick(event);
     startButton.SetTextOffset(-24.0f, 0.0f);
 
-    SDL_RenderPresent(renderer); // Renderowanie ekranu menu
-
     // Zwolnij teksturê przycisku
     if (buttonTexture)
     {
@@ -497,7 +495,6 @@ void levelUp(SDL_Renderer* renderer, TTF_Font* font, Player*& player, SDL_Event&
 	SDL_RenderTexture(renderer, damageTexture, NULL, &damageTextRect);
 	SDL_DestroySurface(damageTextSurface);
 	SDL_DestroyTexture(damageTexture);
-	SDL_RenderPresent(renderer);
 
     int mouseX = event.button.x;
     int mouseY = event.button.y;
