@@ -4,15 +4,7 @@ C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(27,44): 
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(48,37): warning C4305: "argument": obcięcie z "const SDL_DisplayMode *(__cdecl *)(SDL_Window *)" do "bool"
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(63,62): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(63,48): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(66,36): warning C4244: "argument": konwersja z "float" do "GLsizei", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(66,22): warning C4244: "argument": konwersja z "float" do "GLsizei", możliwa utrata danych
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(73,29): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(73,19): warning C4244: "argument": konwersja z "const float" do "int", możliwa utrata danych
-  main.cpp
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\main.cpp(96,49): warning C4305: "argument": obcięcie z "const SDL_DisplayMode *(__cdecl *)(SDL_Window *)" do "bool"
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\main.cpp(103,70): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\main.cpp(103,56): warning C4244: "argument": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\main.cpp(118,23): warning C4244: "inicjowanie": konwersja z "Uint64" do "Uint32", możliwa utrata danych
-  Generowanie kodu...
 C:\Users\cyran\source\repos\Itchykite\RoughLite\SDL3-RoughLite\Init.cpp(142,1): warning C4715: "InitEverything”: niewszystkie ścieżki kodu zwracają wartość
   SDL3-RoughLite.vcxproj -> C:\Users\cyran\source\repos\Itchykite\RoughLite\x64\Debug\SDL3-RoughLite.exe

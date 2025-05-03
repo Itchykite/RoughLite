@@ -17,7 +17,7 @@
 #include "Init.hpp"
 
 //OpenGL
-#include "OpenGLFun.hpp"
+//#include "OpenGLFun.hpp"
 
 #include <vector>
 #include <memory>
